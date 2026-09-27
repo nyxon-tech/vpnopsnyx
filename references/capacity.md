@@ -11,6 +11,7 @@
 8. Retransmits and loss
 9. Traffic volume and quotas
 10. Splitting one location across two exits
+11. Relay headroom and exit assignment
 
 ## 1. The one-line snapshot
 
@@ -92,3 +93,20 @@ Assign relays to exits (relays A and B → exit 1, relay C → exit 2) rather th
 inside one relay. Check that each relay can actually reach its exit, and keep checking: a direct DNAT
 path can get the exit IP blacklisted after hours of heavy traffic (`iran-filtering.md`). A reverse
 tunnel from the second exit into one relay is the most robust way to split.
+
+## 11. Relay Headroom And Exit Assignment
+
+Measure free relay bandwidth at peak, not only interface capacity. In one observed
+fleet, a relay carrying roughly 360 Mbit/s with about 90 Mbit/s download headroom
+slowed every location. Moving the heaviest DNS name to a less-loaded relay restored
+headroom. These values are fleet-specific; use current peak measurements and leave a
+documented safety margin.
+
+Where possible, assign relays deliberately across different exit IPs. This divides
+CPU and connection load and limits the effect of an exit-IP block. Do not call a
+relay move successful until per-relay traffic and client data paths are rechecked.
+
+If an exit is slow to several independent destinations and also shows packet loss
+and high TCP retransmission locally, treat the exit/provider path as the likely
+bottleneck. Preserve timestamped evidence, open a provider ticket, or replace the
+host; moving relays cannot repair a universally degraded exit upstream.

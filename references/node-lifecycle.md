@@ -8,6 +8,9 @@
 5. Migrating a location to a new server (keep the node ids)
 6. Retiring a server
 7. Upgrades and reboots
+8. Package mirrors on restricted networks
+9. Controlled package upgrade
+10. Reboot verification
 
 ## 1. First contact with a new server
 
@@ -102,3 +105,29 @@ The goal is to keep users, history, groups and hosts attached, with the shortest
   (and checks the year, so it can never fire again) works well. Afterwards, verify that the host came
   back, containers are up, tunnels are established, and the data test passes.
 - Clocks: servers run in UTC; Iran is UTC+3:30. Always state both when you schedule something.
+
+## 8. Package Mirrors On Restricted Networks
+
+Mirror reachability and speed vary by network and date. Test candidate Ubuntu mirrors
+by downloading the release-matched `Packages.gz`, record latency/throughput, back up
+the current deb822 or `sources.list` configuration, and validate `apt-get update`.
+Automatically restore the original configuration if Ubuntu indexes fail. Community
+mirror scripts are discovery sources, not permission to execute them as root.
+
+## 9. Controlled Package Upgrade
+
+Upgrade one host at a time, off-peak, with a provider console available. Hold Docker
+Engine, containerd, and related plugins during the general OS upgrade when restarting
+all containers would be unsafe; upgrade that stack separately in its own window.
+Use noninteractive package settings only after reviewing config-file behavior, keep
+the old configuration (`--force-confold`) where appropriate, and run detached with a
+durable log. `NEEDRESTART_MODE=l` lists restart requirements rather than silently
+restarting services; confirm behavior against https://github.com/liske/needrestart.
+
+## 10. Reboot Verification
+
+Detect a completed reboot by a changed `/proc/sys/kernel/random/boot_id`, not ping
+alone. Then verify failed units, every enabled tunnel/DNAT unit, nftables tables,
+`net.ipv4.ip_forward`, containers, core listeners, and a real data test from another
+in-country server. Start with the least risky host; reboot the panel host last when
+its startup is relied upon to resynchronize nodes.

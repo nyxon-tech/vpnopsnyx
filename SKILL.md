@@ -29,6 +29,9 @@ Assume the operator may run a paid VPN/proxy service where one bad command can d
 4. Stay read-only until the operator explicitly approves a change.
 5. Verify by real data flow after any networking change. Service status alone is not proof.
 6. Report what changed, what was verified, what remains uncertain, and how to roll back.
+7. Record the vantage point of every network test. A test run while the operator's
+   own VPN, TUN interface, or system proxy is active may measure a foreign egress
+   path instead of the customer's in-country path.
 
 ## Hard Safety Rules
 
@@ -39,6 +42,12 @@ Assume the operator may run a paid VPN/proxy service where one bad command can d
 - Treat `curl | bash`, `wget | bash`, and GitHub raw scripts as remote code execution.
 - Prefer key-only SSH. Do not ask the agent to type passwords into chat.
 - For production changes, preserve old values in the report so the operator can undo them.
+- Re-read live configuration immediately before reporting or changing a mapping;
+  another operator or agent may have changed it during the session.
+- For config files, build the complete candidate, show a diff, run the tool's check
+  mode (for example `nft -c -f`), back up the live file, then apply after approval.
+- Read gist and pastebin scripts, explain their effects, and reproduce reviewed steps
+  explicitly. Never pipe an unreviewed community script into a root shell.
 
 ## Source Trust Labels
 
@@ -83,6 +92,7 @@ Use these labels in plans and docs:
 | Agent runtime compatibility | `docs/agent-compatibility.md` |
 | Scheduled registry/source maintenance | `docs/maintenance.md` |
 | Version-specific API and restore evidence | `docs/api-restore-validation.md` |
+| Sanitized operator observations and evidence limits | `docs/field-observations-2026-09.md` |
 
 ## Product Runbook Rule
 
@@ -161,6 +171,12 @@ curl -s -m 8 --resolve www.cloudflare.com:PORT:RELAY_IP -o /dev/null \
 ```
 
 Any HTTP status usually means bytes flowed through the path. `000` means the path accepted no useful data or timed out. Use an SNI/domain that matches the inbound's fallback behavior.
+
+This test proves only the path to the listener and its TLS/Reality fallback. It does
+not prove user authentication, proxy outbound health, non-TLS inbounds, or available
+bandwidth. First test the same fallback locally on the exit. For throughput, isolate
+the relay-to-exit path with a short-lived operator-controlled test service and remove
+it immediately. For non-TLS protocols, use a protocol-appropriate end-to-end client.
 
 ## Reporting Shape
 

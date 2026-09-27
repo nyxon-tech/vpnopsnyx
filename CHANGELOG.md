@@ -15,6 +15,7 @@ All notable changes to VPNOpsNyx are documented here.
 - Security policy, structured issue form, pull request checklist, and CODEOWNERS.
 - Version-specific API probing and restore-drill evidence matrix for major panels.
 - Verified BackPack source entry, dedicated operational runbook, registry metadata, and multilingual README links.
+- Sanitized field observations covering test vantage points, Reality test limits, tunnel/provider behavior, PasarGuard reboot and port-collision incidents, capacity, safe upgrades, certificates, and Cloudflare token handling.
 
 ### Changed
 

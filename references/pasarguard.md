@@ -16,6 +16,8 @@ between releases.
 9. WARP inside Xray under heavy load
 10. Subscriptions
 11. Certificates behind relays
+12. Rebooted exit with a stopped core
+13. Host-service port collisions
 
 ## 1. Layout and read-only DB access
 
@@ -155,3 +157,27 @@ If the panel's subscription domain resolves to relays and the certificate is iss
 standalone (HTTP-01 on port 80), the relay tunnels must forward port 80 to the panel. Remove that
 forward and the next renewal fails silently weeks later. After a renewal, the reload command
 (`docker compose restart pasarguard`) is a full panel restart, with the consequences in section 2.
+
+## 12. Rebooted Exit With A Stopped Core
+
+An operator observed that after an exit host reboot, its node container reconnected
+while Xray remained stopped because the panel did not resend `Start`. Symptoms were
+node RPC `Unavailable` errors, no inbound listeners, and a collapse in real usage.
+Treat this as `operator-observed` until confirmed against the deployed PasarGuard
+version. After every reboot verify Xray listeners and data flow, not only node status.
+If approved, reconnect/restart the affected node or restart the panel during a
+maintenance window. For a fleet reboot, exits first and panel host last can force a
+fresh startup synchronization, but it also restarts every node and must be announced.
+
+## 13. Host-Service Port Collisions
+
+Compare every core inbound port against host listeners before reboot or upgrade:
+
+```bash
+ss -ltnp
+```
+
+A field incident showed a tunnel tool's web UI and an Xray inbound racing for the
+same port. After reboot the other service won, Xray exited, and unrelated inbounds in
+the same core disappeared. Stop/disable or reconfigure the conflicting service,
+reserve fixed listener ports, restart the core, and verify every inbound.

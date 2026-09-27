@@ -11,6 +11,10 @@
 8. FOU / IPIP kernel tunnels
 9. SSH reverse tunnels
 10. WireGuard through relays
+11. Test vantage point and evidence limits
+12. BackPack direct L3 and xDi
+13. GRE, SIT, and IPIP provider testing
+14. DNAT to an L3 tunnel peer
 
 ## 1. Backhaul reverse tunnels
 
@@ -196,3 +200,54 @@ the banner.
   in-country server.
 - Check usage before investing: in one fleet WireGuard carried **zero bytes** across all nodes for days,
   while it would have needed UDP forwarding added on every DNAT relay.
+
+## 11. Test vantage Point And Evidence Limits
+
+Before trusting a client delay test or panel request from an operator workstation,
+confirm whether a VPN, TUN interface, or system proxy is active and identify the
+egress country. A foreign egress can make an in-country-only relay look unavailable.
+Use an independent in-country probe for customer-path decisions.
+An optional lookup such as `curl -s https://ipinfo.io/country` reveals the probe's
+source IP to that external service; use it only when the operator accepts that
+privacy tradeoff. Disable both the VPN tunnel and system proxy before retesting.
+
+A TLS/Reality fallback request proves bytes reached the listener and fallback. It
+does not prove authentication, outbound routing, non-TLS protocols, or throughput.
+Test the fallback locally on the exit first. If the exit's own upstream is slow, a
+relay test through it is also slow. Use a short-lived, access-controlled test file
+from the exit only during an approved window and remove the listener afterwards.
+Client delay probes may create tiny usage rows, so a panel's "users per node" count
+is not equivalent to active customer traffic. Compare tunnel-interface bytes or
+per-listener acknowledged bytes and use a protocol-appropriate end-to-end test.
+
+## 12. BackPack Direct L3 And xDi
+
+BackPack documents direct layer-3 tunneling using GRE inside selectable carriers,
+including the experimental xDi ICMP carrier. See `guides/tunnels/backpack.md` and
+https://github.com/AminMGMT/BackPack. Operator measurements in September 2026 found
+xDi useful on some paths where TCP opened but carried no data, but ineffective on
+already lossy paths and CPU-heavy on small relays. Treat those numbers as
+`operator-observed`, not a universal benchmark.
+
+Test a temporary unit with a fixed lifetime before persistence. Prefer a pinned,
+checksum-verified binary copied through an approved channel. Keep setup links and
+64-character tokens secret. Verify routes, MTU, CPU, packet loss, and real traffic.
+
+## 13. GRE, SIT, And IPIP Provider Testing
+
+Kernel protocol availability is provider-specific. One field review found SIT/6to4
+blocked across three tested networks and GRE heavily rate-limited on one network,
+while other paths passed. A provider saying GRE is supported does not establish its
+capacity. Build reversible temporary links with an automatic cleanup timer, measure
+both directions, and remove them before deciding on persistent configuration.
+
+## 14. DNAT To An L3 Tunnel Peer
+
+nftables DNAT may target the far-side address of an L3 tunnel, with masquerade in a
+NAT postrouting chain. This can preserve a relay's public port while changing the
+private path behind it. The nftables wiki confirms DNAT and masquerade semantics:
+https://wiki.nftables.org/wiki-nftables/index.php/Performing_Network_Address_Translation_(NAT)
+
+Use a dedicated table, validate the complete candidate with `nft -c -f`, preserve a
+ruleset backup, verify forwarding and return routing, and never flush a remote host's
+entire firewall as rollback.

@@ -62,6 +62,7 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `docs/agent-compatibility.md` - Codex, Claude, and generic agent integration.
 - `docs/maintenance.md` - periodic source and registry review procedure.
 - `docs/api-restore-validation.md` - versioned API probes and repeatable restore-drill evidence.
+- `docs/field-observations-2026-09.md` - sanitized operator evidence with explicit limits on generalization.
 - `SECURITY.md` and `.github/` - safe reporting, issue, review, and ownership policy.
 - `CHANGELOG.md` - release history.
 

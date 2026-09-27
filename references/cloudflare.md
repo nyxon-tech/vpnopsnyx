@@ -33,6 +33,13 @@
   curl -s -H @<(printf 'Authorization: Bearer %s\n' "$(tr -d '\n' < "$TOKEN_FILE")") "$API$path"
   ```
 - If a token was ever pasted into a chat or a terminal transcript, ask the operator to roll it.
+- Use **Zone → DNS → Edit** plus **Zone → Zone → Read**, restricted to the required
+  zones where possible. Confirm current permission names in Cloudflare's token UI.
+- Secret input such as `read -rs` must happen in a real interactive terminal. A chat
+  runner may provide empty stdin; verify the token file is non-empty with `wc -c`
+  without displaying its contents.
+- Use a separate helper and token file per Cloudflare account to avoid accidental
+  cross-account changes.
 
 ## 3. The helper script
 

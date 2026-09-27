@@ -15,6 +15,7 @@ versions. Check them against the version you install, for example by opening the
 8. API cheat-sheet for sales bots
 9. Traps that break customers
 10. Bot-side robustness (timeouts and idempotency)
+11. Certificate renewal and origin checks
 
 ## 1. Which panel for what
 
@@ -163,3 +164,22 @@ fail loudly.
   panel dies halfway, the customer must not end up with free zero usage and no renewal.
 - Map errors honestly: timeout → "panel did not answer"; confirmed-missing client → "client not found";
   never report a timeout as HTTP 404.
+
+## 11. Certificate Renewal And Origin Checks
+
+Certbot standalone renewal needs to bind its challenge port. If nginx owns port 80,
+use release-appropriate pre/post hooks to stop and restart it, and a deploy hook to
+copy/reload the renewed certificate where the panel reads it. Review hook semantics
+in the official Certbot documentation:
+https://eff-certbot.readthedocs.io/en/stable/using.html#pre-and-post-validation-hooks
+
+Test with `certbot renew --dry-run` before relying on automation. Move stale renewal
+configs for domains that no longer point to the host into a reversible disabled
+location rather than leaving repeated failures. Any panel restart remains an
+operator-approved maintenance action.
+
+Cloudflare `Full` mode does not validate the origin certificate the way `Full
+(strict)` does. A proxied panel can therefore appear healthy while its origin
+certificate is invalid or expired. Check the origin directly with `openssl s_client`
+against the actual origin address/port and compare with Cloudflare's current SSL-mode
+and proxied-port documentation.
