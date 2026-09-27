@@ -1,0 +1,8 @@
+interface:
+  display_name: "VPNOpsNyx"
+  short_description: "VPN and network operations knowledge skill"
+  brand_color: "#00C8D7"
+  default_prompt: "Use $vpnopsnyx to inspect, plan, verify, or troubleshoot this VPN and network operations task safely."
+
+policy:
+  allow_implicit_invocation: true

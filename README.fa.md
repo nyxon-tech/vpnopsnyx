@@ -1,6 +1,6 @@
 # VPNOpsNyx
 
-[English](README.md) | [فارسی](README.fa.md)
+[English](README.md) | [فارسی](README.fa.md) | [Русский](README.ru.md) | [简体中文](README.zh-CN.md)
 
 ![نمای کلی عملیات شبکه VPNOpsNyx](assets/vpnopsnyx-hero.png)
 

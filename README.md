@@ -1,6 +1,6 @@
 # VPNOpsNyx
 
-[English](README.md) | [فارسی](README.fa.md)
+[English](README.md) | [فارسی](README.fa.md) | [Русский](README.ru.md) | [简体中文](README.zh-CN.md)
 
 ![VPNOpsNyx network operations overview](assets/vpnopsnyx-hero.png)
 
@@ -55,6 +55,7 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `assets/` - project artwork used by Markdown documentation.
 - `templates/fleet-inventory.example.md` - private inventory template; never commit a filled-in copy.
 - `metadata.json` - package metadata for non-Claude/Codex runtimes.
+- `agents/openai.yaml` - OpenAI/Codex skill interface metadata.
 
 ## Verification Policy
 
