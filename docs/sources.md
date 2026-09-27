@@ -13,11 +13,19 @@ This file records what was checked before adding commands and community referenc
 | PasarGuard node script | https://github.com/PasarGuard/scripts/raw/main/pg-node.sh | Redirects to raw GitHub and returns HTTP 200. Script validates `--name` and fetches shared libraries. | `verified` |
 | VPanel installer | https://raw.githubusercontent.com/vpaneladmin/vpanel-bash/main/vpanel-installer.sh | HTTP 200. Script is third-party and downloads additional zip payload. | `verified`, `third-party` |
 | Azumi67 tunnel repo | https://github.com/Azumi67/6TO4-GRE-IPIP-SIT | Repository README available. | `verified`, `third-party`, `community` |
+| Azumi67 Backhaul script | https://github.com/Azumi67/Backhaul_script | Repository and installer are reachable; installer downloads a release-hosted Python manager. | `verified`, `third-party`, `community` |
+| Paqet Tunnel Manager | https://github.com/behzadea12/Paqet-Tunnel-Manager | Repository and manager script are reachable; it changes sysctl, iptables, limits, and systemd. | `verified`, `third-party`, `community`, `high-impact` |
+| Musixal Rathole v1/v2 | https://github.com/Musixal/rathole-tunnel | Both user-provided installer URLs return HTTP 200. Scripts modify systemd, firewall state, and `/etc/hosts`. | `verified`, `third-party`, `community`, `high-impact` |
+| OPIran VPS Optimizer | https://github.com/opiran-club/VPS-Optimizer | Installer is reachable; it can change sysctl, DNS, APT mirrors, kernel packages, hosts entries, and reboot. | `verified`, `third-party`, `community`, `high-impact` |
+| Ubuntu mirror selector gist | https://gist.github.com/dev-ir/16e2be52370f21fb8dd1baad87818883 | Gist exists and raw script is reachable; it rewrites Ubuntu APT source URLs. | `verified`, `third-party`, `community` |
+| DaggerConnect | https://github.com/itsFLoKi/DaggerConnect | Repository, installer, and releases are reachable. The supplied 4.2.x notice was not found in reviewed public release metadata. | `verified-source`, `third-party`, `community`; notice `unverified` |
+| IP lookup page | https://whatismyipaddress.com/ip/ | Public URL supplied by user; automated review received HTTP 403. Not needed for automation. | `third-party`, `manual-only` |
+| Mahsa Alert | https://mahsaalert.com | Site returned HTTP 200, but no stable VPNOps integration contract was established. | `verified-reachable`, `third-party`, `informational` |
 | Certbot commands | `apt-get install certbot`, `certbot certonly`, `certbot renew --dry-run` | Standard certbot workflow; no project-specific secret included. | `verified` |
 
 ## Community GitHub Profiles
 
-These profiles were checked through public GitHub metadata and recent public repositories. Include them as community discovery sources, not as endorsements.
+These profiles were checked through the complete public-repository listing returned by GitHub on the review date. The snapshot contains 111 repositories: AsanFillter 6, azavaxhuman 22, ircfspace 28, MHSanaei 5, ppouria 24, primeZdev 6, and rezazoom 20. GitHub returned zero public repositories for erfjabplus. See `registries/community-repositories.json` for every repository and `docs/community-review.md` for the VPNOps-relevant subset. Inclusion is discovery, not endorsement.
 
 | Profile | Public signal from review | Label |
 |---|---|---|
@@ -35,4 +43,7 @@ These profiles were checked through public GitHub metadata and recent public rep
 - Any installer command not tied to an upstream URL in this repository is not included.
 - Any credential, panel login path, token, subscription link, or production IP was intentionally excluded.
 - Community repositories are listed as discovery sources only. Agents must inspect their README, license, issues, and scripts before use.
-
+- A reachable raw script is not considered safe merely because it returned HTTP 200.
+- The fixed GitHub hosts override `185.199.108.133 raw.githubusercontent.com` is retained only as a known unsafe/stale pattern; do not recommend it.
+- The user-provided DaggerConnect 4.2.1-4.2.3 notice remains `unverified` because reviewed public releases used a different version line.
+- The port/name string beginning `IRAN8080,...` has no confirmed schema or upstream source and was not turned into an executable recipe.

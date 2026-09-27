@@ -4,7 +4,7 @@
   "description": "AI skill for VPN, proxy, panel, node, tunnel, and network operations across Claude, Codex, ChatGPT, and other AI coding agents.",
   "repository": "https://github.com/nyxon-tech/vpnopsnyx",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "categories": [
     "ai-skill",
     "vpn",
@@ -14,5 +14,10 @@
   ],
   "primary_entrypoint": "SKILL.md",
   "contains_secrets": false,
-  "last_source_review": "2026-09-27"
+  "last_source_review": "2026-09-27",
+  "community_snapshot": {
+    "profiles_requested": 8,
+    "public_repositories_catalogued": 111,
+    "readmes_reviewed": 101
+  }
 }

@@ -33,7 +33,9 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 - `SKILL.md`: نقطه شروع اسکیل، قوانین امنیتی، مسیرهای بررسی و glossary فارسی.
 - `docs/install-recipes.md`: دستورهای نصب تأییدشده و نکات preflight.
 - `docs/sources.md`: گزارش اعتبارسنجی لینک‌ها و GitHubهای معرفی‌شده.
-- `registries/`: رجیستری پنل‌ها، coreها، تانل‌ها، ابزارها و کامیونیتی.
+- `registries/`: رجیستری پنل‌ها، coreها، تانل‌ها، ابزارها، کامیونیتی و فهرست کامل ۱۱۱ ریپازیتوری بررسی‌شده.
+- `docs/community-review.md`: بررسی ریپو به ریپوی پروژه‌های مرتبط کامیونیتی.
+- `docs/networking-recipes.md`: نکات DNS، فایروال، IPv4/IPv6، BBR و optimizerها.
 - `references/`: راهنماهای عملیاتی عمیق برای DNS، tunnel، panel، filtering، node lifecycle و incidentها.
 - `templates/fleet-inventory.example.md`: نمونه inventory خصوصی؛ نسخه واقعی را داخل repo نگذار.
 

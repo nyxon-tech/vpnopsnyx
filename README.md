@@ -36,11 +36,14 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `references/` - detailed operational guides for architecture, panels, tunnels, Cloudflare, incidents, capacity, filtering patterns, and node lifecycle.
 - `docs/install-recipes.md` - verified and third-party install commands, with preflight and verification notes.
 - `docs/sources.md` - source validation log and community profile review.
+- `docs/community-review.md` - repo-by-repo review of VPNOps-relevant community projects.
+- `docs/networking-recipes.md` - DNS, firewall, IPv4/IPv6, BBR, mirror, and hosts-file guidance.
 - `registries/panels.json` - panel and panel-adjacent tools.
 - `registries/cores.json` - VPN/proxy cores and protocol engines.
 - `registries/tunnels.json` - tunnel, relay, and forwarding tools.
 - `registries/tools.json` - supporting tools such as ACME, DNS, and optimizers.
 - `registries/community.json` - public GitHub profiles and relevant public repositories from the community list.
+- `registries/community-repositories.json` - complete snapshot of all 111 public repositories returned for the requested profiles.
 - `templates/fleet-inventory.example.md` - private inventory template; never commit a filled-in copy.
 - `metadata.json` - package metadata for non-Claude/Codex runtimes.
 

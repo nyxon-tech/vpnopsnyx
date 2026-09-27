@@ -67,6 +67,40 @@
       "status": ["community"],
       "repository": "https://github.com/rezazoom/Abuse-Defender",
       "notes": ["Community shell script. Firewall changes require explicit approval and rollback."]
+    },
+    {
+      "name": "OPIran VPS Optimizer",
+      "category": "server-optimizer",
+      "status": ["verified-source", "third-party", "community", "high-impact"],
+      "repository": "https://github.com/opiran-club/VPS-Optimizer",
+      "notes": [
+        "Can modify sysctl/BBR, DNS, APT mirrors, kernel packages, hosts entries, swap, and reboot.",
+        "Use selected changes only after reading docs/networking-recipes.md."
+      ]
+    },
+    {
+      "name": "dev-ir Ubuntu mirror selector",
+      "category": "apt-mirror-selector",
+      "status": ["verified-source", "third-party", "community"],
+      "repository": "https://gist.github.com/dev-ir/16e2be52370f21fb8dd1baad87818883",
+      "notes": [
+        "Benchmarks mirrors and rewrites Ubuntu APT source URLs.",
+        "Pin the gist revision and back up sources before use."
+      ]
+    },
+    {
+      "name": "WhatIsMyIPAddress lookup",
+      "category": "manual-ip-information",
+      "status": ["third-party", "manual-only"],
+      "url": "https://whatismyipaddress.com/ip/",
+      "notes": ["Automated review received HTTP 403; do not depend on it for machine verification."]
+    },
+    {
+      "name": "Mahsa Alert",
+      "category": "informational-site",
+      "status": ["verified-reachable", "third-party", "informational"],
+      "url": "https://mahsaalert.com",
+      "notes": ["No stable VPNOps API or installation contract was established during review."]
     }
   ]
 }

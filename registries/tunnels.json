@@ -64,6 +64,52 @@
         "Requires Linux kernel support and UDP path validation.",
         "Payload is not encrypted unless the carried protocol provides encryption."
       ]
+    },
+    {
+      "name": "Azumi67 Backhaul script",
+      "category": "reverse-tunnel-manager",
+      "status": ["verified-source", "third-party", "community", "high-impact"],
+      "repository": "https://github.com/Azumi67/Backhaul_script",
+      "installer": "https://raw.githubusercontent.com/Azumi67/Backhaul_script/refs/heads/main/backhaul.sh",
+      "notes": [
+        "Bootstrap downloads an additional Python manager from a GitHub release.",
+        "Review both stages and generated systemd services; pin a release for production."
+      ]
+    },
+    {
+      "name": "Paqet Tunnel Manager",
+      "category": "raw-socket-kcp-tunnel-manager",
+      "status": ["verified-source", "third-party", "community", "high-impact"],
+      "repository": "https://github.com/behzadea12/Paqet-Tunnel-Manager",
+      "upstream_core": "https://github.com/hanselime/paqet",
+      "notes": [
+        "Reviewed manager changes systemd, sysctl, security limits, and iptables.",
+        "Capture pre-change state and test rollback away from production."
+      ]
+    },
+    {
+      "name": "Musixal Rathole Tunnel",
+      "category": "reverse-tunnel-manager",
+      "status": ["verified-source", "third-party", "community", "high-impact"],
+      "repository": "https://github.com/Musixal/rathole-tunnel",
+      "entrypoints": [
+        "https://raw.githubusercontent.com/Musixal/rathole-tunnel/main/rathole.sh",
+        "https://raw.githubusercontent.com/Musixal/rathole-tunnel/main/rathole_v2.sh"
+      ],
+      "notes": [
+        "Both entrypoints were reachable during review.",
+        "Scripts may add a fixed raw.githubusercontent.com address to /etc/hosts; do not preserve that behavior."
+      ]
+    },
+    {
+      "name": "DaggerConnect",
+      "category": "reverse-tunnel",
+      "status": ["verified-source", "third-party", "community", "high-impact"],
+      "repository": "https://github.com/itsFLoKi/DaggerConnect",
+      "notes": [
+        "Installer downloads release binaries and writes services and optional network tuning.",
+        "User-supplied 4.2.x operational claims are unverified against reviewed public release metadata."
+      ]
     }
   ]
 }

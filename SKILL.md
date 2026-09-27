@@ -60,6 +60,9 @@ Use these labels in plans and docs:
 |---|---|
 | Install commands and preflight checks | `docs/install-recipes.md` |
 | Validated sources and community profiles | `docs/sources.md` |
+| Every repository from the requested community profiles | `registries/community-repositories.json` |
+| Repo-by-repo community review and selection guidance | `docs/community-review.md` |
+| DNS, firewall, IPv4/IPv6, BBR, mirrors, and hosts-file cautions | `docs/networking-recipes.md` |
 | Panels and panel-adjacent projects | `registries/panels.json` |
 | Cores, engines, and supported protocols | `registries/cores.json` |
 | Tunnel and relay methods | `registries/tunnels.json` |
@@ -121,6 +124,18 @@ Certificate paths:
 ```
 
 The Azumi67 `6TO4-GRE-IPIP-SIT` tunnel project is confirmed as a public third-party/community tunnel manager. Read `registries/tunnels.json` and the upstream README before using it.
+
+Additional user-provided projects were verified as reachable and are documented in
+`docs/install-recipes.md`: Azumi67 Backhaul, Paqet Tunnel Manager, Musixal Rathole v1/v2,
+OPIran VPS Optimizer, the `dev-ir` Ubuntu mirror selector, and DaggerConnect. Their
+installers modify privileged networking or system state, so availability is not a
+security endorsement. Inspect the downloaded script and prefer a pinned commit or
+release before execution.
+
+Do not recommend the historical `185.199.108.133 raw.githubusercontent.com` hosts-file
+override. GitHub CDN addresses can change, the address may be wrong for the operator's
+network, and the override bypasses normal DNS answers. Treat it only as an incident
+artifact to detect and remove after restoring working DNS/routing.
 
 ## Real Data Test
 

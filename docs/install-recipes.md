@@ -151,3 +151,120 @@ Notes:
 - The upstream README describes the project as educational.
 - It includes many tunnel types and automated reconfiguration options, so it can change routes, firewall behavior, cron/systemd timers, and kernel tunnel interfaces.
 
+The user-provided direct Python command is reachable, but the script was roughly
+6 MB at review time and accepts network-changing options. Do not execute it through
+process substitution. Download, inspect, hash, and run a pinned copy instead.
+
+## Azumi67 Backhaul Script
+
+Status: `verified`, `third-party`, `community`, `high-impact`
+
+Source:
+
+- Repository: https://github.com/Azumi67/Backhaul_script
+- Installer: https://raw.githubusercontent.com/Azumi67/Backhaul_script/refs/heads/main/backhaul.sh
+
+The supplied installer is only a small bootstrap: it installs `wget`, writes a
+launcher under `/etc`, and downloads `backhaul.py` from a GitHub release. Review
+both stages. Prefer downloading a pinned release and checking its digest rather
+than running this command directly:
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Azumi67/Backhaul_script/refs/heads/main/backhaul.sh)"
+```
+
+Verify the generated systemd units, listening ports, process owner, and an actual
+end-to-end data path. Keep the original configuration for rollback.
+
+## Paqet Tunnel Manager
+
+Status: `verified`, `third-party`, `community`, `high-impact`
+
+Source:
+
+- Repository: https://github.com/behzadea12/Paqet-Tunnel-Manager
+- Installer: https://raw.githubusercontent.com/behzadea12/Paqet-Tunnel-Manager/main/paqet-manager.sh
+- Core referenced by the manager: https://github.com/hanselime/paqet
+
+User-provided quick start:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/behzadea12/Paqet-Tunnel-Manager/main/paqet-manager.sh)
+```
+
+The reviewed manager changes systemd, sysctl, security limits, and iptables raw and
+mangle tables. Download and inspect it first. Record current `sysctl`, `iptables-save`,
+and service files, then test rollback on a non-production node.
+
+## Musixal Rathole Tunnel v1 and v2
+
+Status: `verified`, `third-party`, `community`, `high-impact`
+
+Source: https://github.com/Musixal/rathole-tunnel
+
+User-provided entrypoints:
+
+```bash
+bash <(curl -Ls --ipv4 https://raw.githubusercontent.com/Musixal/rathole-tunnel/main/rathole.sh)
+bash <(curl -Ls --ipv4 https://raw.githubusercontent.com/Musixal/rathole-tunnel/main/rathole_v2.sh)
+```
+
+Both URLs were reachable. Reviewed scripts install packages, download Rathole,
+write systemd units, change firewall state, and may append a fixed GitHub CDN
+address to `/etc/hosts`. That hosts override is not recommended. Remove or patch
+that behavior in a reviewed local copy before production use. Prefer upstream
+Rathole releases for the binary and verify the release artifact.
+
+## OPIran VPS Optimizer
+
+Status: `verified-source`, `third-party`, `community`, `high-impact`
+
+Source: https://github.com/opiran-club/VPS-Optimizer
+
+User-provided quick start:
+
+```bash
+apt install curl -y
+bash <(curl -s --ipv4 https://raw.githubusercontent.com/opiran-club/VPS-Optimizer/main/optimizer.sh)
+```
+
+Do not use the quick start blindly. Reviewed code can change BBR/sysctl settings,
+APT mirrors, DNS, kernel packages, `/etc/hosts`, swap, and reboot the host. Use
+`docs/networking-recipes.md` for preflight checks and apply only the selected change.
+
+## Ubuntu Mirror Selector Gist
+
+Status: `verified-source`, `third-party`, `community`
+
+Source: https://gist.github.com/dev-ir/16e2be52370f21fb8dd1baad87818883
+
+The user-provided command is reachable:
+
+```bash
+bash <(curl -sSL https://gist.githubusercontent.com/dev-ir/16e2be52370f21fb8dd1baad87818883/raw)
+```
+
+The script benchmarks mirrors and rewrites `/etc/apt/sources.list` or the deb822
+Ubuntu sources file. Pin the gist revision, back up the source files, inspect the
+selected mirror, and verify `apt-get update` before upgrading packages.
+
+## DaggerConnect
+
+Status: `verified-source`, `third-party`, `community`, `high-impact`
+
+Source: https://github.com/itsFLoKi/DaggerConnect
+
+Download-before-run workflow supplied by the user:
+
+```bash
+curl -O https://raw.githubusercontent.com/itsFLoKi/DaggerConnect/main/setup.sh
+chmod +x setup.sh
+sudo ./setup.sh
+```
+
+The installer and repository were reachable. Reviewed code downloads a release
+binary, writes systemd units, can obtain certificates, and can apply persistent
+network tuning. Inspect the script and pin the binary release. The user's prose
+about versions 4.2.1 through 4.2.3 and transports named Quantum+/DC could not be
+matched to the reviewed public release metadata, so those claims remain
+`unverified` and must not drive automated upgrades.
