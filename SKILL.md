@@ -93,6 +93,7 @@ Use these labels in plans and docs:
 | Scheduled registry/source maintenance | `docs/maintenance.md` |
 | Version-specific API and restore evidence | `docs/api-restore-validation.md` |
 | Sanitized operator observations and evidence limits | `docs/field-observations-2026-09.md` |
+| Lab and datacenter evidence program | `docs/lab-and-benchmark-program.md` |
 
 ## Product Runbook Rule
 
@@ -189,3 +190,6 @@ When answering operators, keep commands and paths unchanged and explain plainly:
 - uncertainty: anything labeled `third-party`, `community`, or `unverified`.
 
 Keep production inventories in private files based on `templates/fleet-inventory.example.md`; never commit filled inventories.
+Keep filled lab and benchmark evidence private until independently sanitized. Never
+change `not-run` to `pass` without the version, timestamp, real data-path result, and
+reviewable evidence required by `docs/lab-and-benchmark-program.md`.

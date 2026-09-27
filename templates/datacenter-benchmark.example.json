@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "measured_at": "",
+  "source_alias": "relay-lab-a",
+  "destination_alias": "exit-lab-a",
+  "vantage": "in-country-relay",
+  "operator_vpn_disabled": true,
+  "protocol": "tcp",
+  "duration_seconds": 0,
+  "download_mbps": null,
+  "upload_mbps": null,
+  "latency_ms": null,
+  "jitter_ms": null,
+  "packet_loss_percent": null,
+  "tcp_retransmit_percent": null,
+  "cpu_percent": null,
+  "result": "not-run",
+  "evidence": "",
+  "notes": "Do not include provider account details, public IPs, domains, tokens, or customer data."
+}

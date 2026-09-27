@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "",
+  "environment": "isolated-lab",
+  "contains_production_data": false,
+  "panels": [
+    {"name": "3x-ui", "version": "", "api_read": "not-run", "restore": "not-run", "data_path": "not-run", "evidence": ""},
+    {"name": "Marzban", "version": "", "api_read": "not-run", "restore": "not-run", "data_path": "not-run", "evidence": ""},
+    {"name": "PasarGuard", "version": "", "api_read": "not-run", "restore": "not-run", "data_path": "not-run", "evidence": ""},
+    {"name": "Remnawave", "version": "", "api_read": "not-run", "restore": "not-run", "data_path": "not-run", "evidence": ""},
+    {"name": "Hiddify", "version": "", "api_read": "not-run", "restore": "not-run", "data_path": "not-run", "evidence": ""},
+    {"name": "S-UI", "version": "", "api_read": "not-run", "restore": "not-run", "data_path": "not-run", "evidence": ""}
+  ]
+}

@@ -1,0 +1,43 @@
+name: Sanitized lab or benchmark evidence
+description: Propose versioned panel validation or anonymized path measurements.
+title: "[Evidence]: "
+labels: [documentation, triage]
+body:
+  - type: markdown
+    attributes:
+      value: Never submit credentials, public IPs, domains, provider account data, subscription URLs, private keys, or customer data.
+  - type: dropdown
+    id: evidence_type
+    attributes:
+      label: Evidence type
+      options:
+        - Panel API and restore lab
+        - Datacenter path benchmark
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Product version or measurement protocol
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Reproducible sanitized method
+      description: Use anonymous host aliases and explain the vantage point and duration.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Sanitized result and evidence
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I removed secrets, public infrastructure identifiers, account data, and customer information.
+          required: true

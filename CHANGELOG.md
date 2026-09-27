@@ -2,6 +2,20 @@
 
 All notable changes to VPNOpsNyx are documented here.
 
+## [0.6.0] - 2026-09-28
+
+### Added
+
+- Evidence-gated lab matrix for API, restore, and data-path tests across six panels.
+- Anonymized datacenter benchmark schema and operating procedure.
+- CI validation that prevents unsupported `pass` states without versioned evidence.
+- Community submission form for sanitized lab and benchmark findings.
+- Updated source-review and agent routing for the evidence program.
+
+### Changed
+
+- Bumped package metadata to `0.6.0`.
+
 ## [0.5.0] - 2026-09-27
 
 ### Added
@@ -29,4 +43,5 @@ All notable changes to VPNOpsNyx are documented here.
   visual assets, verified recipes, and safety guidance.
 
 [0.5.0]: https://github.com/nyxon-tech/vpnopsnyx/releases
+[0.6.0]: https://github.com/nyxon-tech/vpnopsnyx/releases
 [0.4.0]: https://github.com/nyxon-tech/vpnopsnyx/commits/main
