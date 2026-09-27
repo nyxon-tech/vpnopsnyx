@@ -1,0 +1,6 @@
+# private fleet data must never be committed
+fleet-inventory.md
+fleet.env
+*.local.*
+*.token
+.DS_Store
