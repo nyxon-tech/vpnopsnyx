@@ -3,3 +3,6 @@
 
 # Rejects automated GitHub-hosted checks with HTTP 403; retained as a manual diagnostic URL.
 ^https://whatismyipaddress\.com/ip/$
+
+# Previously reviewed community profile; currently returns HTTP 404. Attribution is retained.
+^https://github\.com/erfjabplus$

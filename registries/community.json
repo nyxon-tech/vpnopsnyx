@@ -6,10 +6,10 @@
     {
       "login": "erfjabplus",
       "url": "https://github.com/erfjabplus",
-      "status": ["community", "limited-public-data"],
+      "status": ["community", "limited-public-data", "unavailable-at-review"],
       "public_repos_observed": 0,
       "relevant_repositories": [],
-      "notes": ["Profile exists; no public repositories were returned during review."]
+      "notes": ["Profile existed during the initial review and returned no public repositories; the profile URL later returned HTTP 404, so attribution is retained with unavailable-at-review status."]
     },
     {
       "login": "AsanFillter",

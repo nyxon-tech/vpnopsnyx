@@ -50,7 +50,7 @@ These profiles were checked through the complete public-repository listing retur
 
 | Profile | Public signal from review | Label |
 |---|---|---|
-| https://github.com/erfjabplus | Public profile exists, no public repositories reported by the API at review time. | `community`, `limited-public-data` |
+| https://github.com/erfjabplus | Public profile existed during the initial review with no public repositories; it later returned HTTP 404. Attribution is retained. | `community`, `limited-public-data`, `unavailable-at-review` |
 | https://github.com/AsanFillter | Public repositories include Playit-Launcher, WatchGuard, Remnawave-AutoSetup, MarzPort, ov-panel, WarpOnWarp. | `community` |
 | https://github.com/rezazoom | Public repositories include subscription and Marzban-related tooling such as qoqnoos-template, sub-forward, mirzaplus, and Abuse-Defender. | `community` |
 | https://github.com/azavaxhuman | Public repositories include VESSL, IPTABLE-Tunnel-multi-port, DDS-Xray-Inbound-Generator, DDS-Xray-Routing-Editor, Nodex, and ocserv-users-management. | `community` |
