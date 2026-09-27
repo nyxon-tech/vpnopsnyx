@@ -54,7 +54,9 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 
 ## Благодарность сообществу
 
-Мы благодарим [erfjabplus](https://github.com/erfjabplus), [AsanFillter](https://github.com/AsanFillter), [rezazoom](https://github.com/rezazoom), [azavaxhuman](https://github.com/azavaxhuman), [ircfspace](https://github.com/ircfspace), [primeZdev](https://github.com/primeZdev), [ppouria](https://github.com/ppouria) и [MHSanaei](https://github.com/MHSanaei) за публичные проекты и документацию, помогающие сохранять интернет открытым и доступным. Упоминание не является гарантией безопасности всех проектов аккаунта.
+Мы благодарим [erfjabplus](https://github.com/erfjabplus), [AsanFillter](https://github.com/AsanFillter), [rezazoom](https://github.com/rezazoom), [azavaxhuman](https://github.com/azavaxhuman), [ircfspace](https://github.com/ircfspace), [primeZdev](https://github.com/primeZdev), [ppouria](https://github.com/ppouria) и [MHSanaei](https://github.com/MHSanaei) за публичные проекты и документацию, помогающие сохранять интернет открытым и доступным.
+
+Мы также благодарим разработчиков и сопровождающих инструментов, упомянутых в VPNOpsNyx: [Azumi67](https://github.com/Azumi67), [PasarGuard](https://github.com/PasarGuard), [vpaneladmin](https://github.com/vpaneladmin), [Gozargah](https://github.com/Gozargah), [marzneshin](https://github.com/marzneshin), [hiddify](https://github.com/hiddify), [remnawave](https://github.com/remnawave), [alireza0](https://github.com/alireza0), [Musixal](https://github.com/Musixal), [behzadea12](https://github.com/behzadea12), [opiran-club](https://github.com/opiran-club) и [itsFLoKi](https://github.com/itsFLoKi). Упоминание является благодарностью и указанием источника, а не гарантией безопасности всех проектов аккаунта.
 
 ## Fork и участие
 

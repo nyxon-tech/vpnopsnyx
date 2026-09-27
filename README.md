@@ -90,6 +90,22 @@ review:
 - [ppouria](https://github.com/ppouria)
 - [MHSanaei](https://github.com/MHSanaei)
 
+We also thank the maintainers whose panels, tunnels, and operational tools are
+referenced throughout VPNOpsNyx:
+
+- [Azumi67](https://github.com/Azumi67)
+- [PasarGuard](https://github.com/PasarGuard)
+- [vpaneladmin](https://github.com/vpaneladmin)
+- [Gozargah](https://github.com/Gozargah)
+- [marzneshin](https://github.com/marzneshin)
+- [hiddify](https://github.com/hiddify)
+- [remnawave](https://github.com/remnawave)
+- [alireza0](https://github.com/alireza0)
+- [Musixal](https://github.com/Musixal)
+- [behzadea12](https://github.com/behzadea12)
+- [opiran-club](https://github.com/opiran-club)
+- [itsFLoKi](https://github.com/itsFLoKi)
+
 Thank you to everyone building and documenting tools that help keep the internet
 open and accessible. Inclusion is recognition and source attribution, not a
 security endorsement. See `docs/community-review.md` and the community registries

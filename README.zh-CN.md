@@ -54,7 +54,9 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 
 ## 社区致谢
 
-感谢 [erfjabplus](https://github.com/erfjabplus)、[AsanFillter](https://github.com/AsanFillter)、[rezazoom](https://github.com/rezazoom)、[azavaxhuman](https://github.com/azavaxhuman)、[ircfspace](https://github.com/ircfspace)、[primeZdev](https://github.com/primeZdev)、[ppouria](https://github.com/ppouria) 和 [MHSanaei](https://github.com/MHSanaei) 提供公开项目与文档，帮助互联网保持开放和可访问。列入名单不代表对账号下所有项目作安全背书。
+感谢 [erfjabplus](https://github.com/erfjabplus)、[AsanFillter](https://github.com/AsanFillter)、[rezazoom](https://github.com/rezazoom)、[azavaxhuman](https://github.com/azavaxhuman)、[ircfspace](https://github.com/ircfspace)、[primeZdev](https://github.com/primeZdev)、[ppouria](https://github.com/ppouria) 和 [MHSanaei](https://github.com/MHSanaei) 提供公开项目与文档，帮助互联网保持开放和可访问。
+
+我们也感谢 VPNOpsNyx 所引用工具的开发者与维护者：[Azumi67](https://github.com/Azumi67)、[PasarGuard](https://github.com/PasarGuard)、[vpaneladmin](https://github.com/vpaneladmin)、[Gozargah](https://github.com/Gozargah)、[marzneshin](https://github.com/marzneshin)、[hiddify](https://github.com/hiddify)、[remnawave](https://github.com/remnawave)、[alireza0](https://github.com/alireza0)、[Musixal](https://github.com/Musixal)、[behzadea12](https://github.com/behzadea12)、[opiran-club](https://github.com/opiran-club) 和 [itsFLoKi](https://github.com/itsFLoKi)。列入名单仅表示致谢和来源归属，不代表对账号下所有项目作安全背书。
 
 ## Fork 与贡献
 

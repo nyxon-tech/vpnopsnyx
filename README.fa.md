@@ -82,6 +82,22 @@ VPNOpsNyx از افرادی که با پروژه‌های عمومی خود به
 - [ppouria](https://github.com/ppouria)
 - [MHSanaei](https://github.com/MHSanaei)
 
+همچنین از سازندگان و نگه‌دارندگان پنل‌ها، تونل‌ها و ابزارهایی که در VPNOpsNyx
+به آن‌ها ارجاع شده است قدردانی می‌کنیم:
+
+- [Azumi67](https://github.com/Azumi67)
+- [PasarGuard](https://github.com/PasarGuard)
+- [vpaneladmin](https://github.com/vpaneladmin)
+- [Gozargah](https://github.com/Gozargah)
+- [marzneshin](https://github.com/marzneshin)
+- [hiddify](https://github.com/hiddify)
+- [remnawave](https://github.com/remnawave)
+- [alireza0](https://github.com/alireza0)
+- [Musixal](https://github.com/Musixal)
+- [behzadea12](https://github.com/behzadea12)
+- [opiran-club](https://github.com/opiran-club)
+- [itsFLoKi](https://github.com/itsFLoKi)
+
 از تمام کسانی که برای باز و در دسترس ماندن اینترنت ابزار می‌سازند و دانش خود را
 منتشر می‌کنند سپاسگزاریم. حضور در این فهرست به معنی تأیید امنیتی تمام پروژه‌های
 یک حساب نیست؛ جزئیات هر ریپو در `docs/community-review.md` ثبت شده است.
