@@ -67,6 +67,40 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 - بعد از تغییر شبکه، فعال بودن service کافی نیست؛ مسیر واقعی داده باید تست شود.
 - ابزارهای نامطمئن، community یا third-party باید با برچسب روشن گزارش شوند.
 
+## قدردانی از کامیونیتی
+
+VPNOpsNyx از افرادی که با پروژه‌های عمومی خود به توسعه ابزارهای VPN، پراکسی،
+مسیریابی، subscription و دسترسی آزادتر به اینترنت کمک کرده‌اند قدردانی می‌کند.
+پروژه‌های این افراد در registry و بررسی منابع استفاده شده‌اند:
+
+- [erfjabplus](https://github.com/erfjabplus)
+- [AsanFillter](https://github.com/AsanFillter)
+- [rezazoom](https://github.com/rezazoom)
+- [azavaxhuman](https://github.com/azavaxhuman)
+- [ircfspace](https://github.com/ircfspace)
+- [primeZdev](https://github.com/primeZdev)
+- [ppouria](https://github.com/ppouria)
+- [MHSanaei](https://github.com/MHSanaei)
+
+از تمام کسانی که برای باز و در دسترس ماندن اینترنت ابزار می‌سازند و دانش خود را
+منتشر می‌کنند سپاسگزاریم. حضور در این فهرست به معنی تأیید امنیتی تمام پروژه‌های
+یک حساب نیست؛ جزئیات هر ریپو در `docs/community-review.md` ثبت شده است.
+
+## Fork و مشارکت
+
+**VPNOpsNyx را Fork کنید و در تکمیل این پایگاه دانش مشترک سهیم شوید.** اضافه‌کردن
+پنل یا تونل جدید، اصلاح لینک‌ها، آموزش نصب معتبر، rollback امن، تجربه عیب‌یابی،
+ترجمه و بهبود مستندات پذیرفته می‌شود.
+
+1. بالای صفحه روی **Fork** بزنید.
+2. داخل Fork خود یک branch بسازید.
+3. تغییر را همراه با لینک منابع معتبر انجام دهید.
+4. برای `nyxon-tech/vpnopsnyx` یک Pull Request بفرستید.
+
+قبل از ارسال، [CONTRIBUTING.md](CONTRIBUTING.md) را بخوانید. هیچ password، token،
+private key، subscription URL، IP inventory واقعی یا اطلاعات کاربران را commit
+نکنید.
+
 ## مجوز
 
 MIT

@@ -73,6 +73,42 @@ VPNOpsNyx assumes production VPN infrastructure can affect paying users. Agents 
 - record rollback steps for every change;
 - label uncertain tools and community scripts clearly.
 
+## Community Acknowledgements
+
+VPNOpsNyx recognizes the maintainers and community members whose public work has
+helped people operate VPN, proxy, routing, subscription, and anti-censorship
+infrastructure. Their repositories informed the community registry and source
+review:
+
+- [erfjabplus](https://github.com/erfjabplus)
+- [AsanFillter](https://github.com/AsanFillter)
+- [rezazoom](https://github.com/rezazoom)
+- [azavaxhuman](https://github.com/azavaxhuman)
+- [ircfspace](https://github.com/ircfspace)
+- [primeZdev](https://github.com/primeZdev)
+- [ppouria](https://github.com/ppouria)
+- [MHSanaei](https://github.com/MHSanaei)
+
+Thank you to everyone building and documenting tools that help keep the internet
+open and accessible. Inclusion is recognition and source attribution, not a
+security endorsement. See `docs/community-review.md` and the community registries
+for repository-level notes.
+
+## Fork and Contribute
+
+**Fork VPNOpsNyx and help improve the shared knowledge base.** Contributions are
+welcome for new panels, tunnels, verified install procedures, safer rollback
+steps, troubleshooting cases, source corrections, translations, and documentation.
+
+1. Click **Fork** at the top of this repository.
+2. Create a branch in your fork.
+3. Make the change and include authoritative source links.
+4. Open a Pull Request back to `nyxon-tech/vpnopsnyx`.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting. Please never include
+credentials, private keys, subscription URLs, production IP inventories, or user
+data.
+
 ## License
 
 MIT
