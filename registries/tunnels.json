@@ -110,6 +110,19 @@
         "Installer downloads release binaries and writes services and optional network tuning.",
         "User-supplied 4.2.x operational claims are unverified against reviewed public release metadata."
       ]
+    },
+    {
+      "name": "BackPack",
+      "category": "reverse-and-direct-tunnel-engine",
+      "status": ["verified-source", "third-party", "community", "high-impact"],
+      "repository": "https://github.com/AminMGMT/BackPack",
+      "installer": "https://raw.githubusercontent.com/AminMGMT/BackPack/main/install.sh",
+      "transports": ["TCP", "TCP Mux", "TCP Stealth", "PCK", "UDP", "KCP FEC", "QUIC", "WS", "WSS", "ICMP xDi", "direct L3"],
+      "notes": [
+        "Upstream documents reverse Iran-to-origin forwarding and direct layer-3 tunneling.",
+        "The installer downloads architecture-specific releases and verifies published SHA-256 checksums.",
+        "Tokens, setup links, panel credentials, recovery codes, API tokens, and backup archives are secrets."
+      ]
     }
   ]
 }

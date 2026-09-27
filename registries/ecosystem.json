@@ -71,7 +71,8 @@
     {"name":"Azumi67 Backhaul manager","repository":"https://github.com/Azumi67/Backhaul_script","status":["verified","community"]},
     {"name":"Musixal Rathole manager","repository":"https://github.com/Musixal/rathole-tunnel","status":["verified","community"]},
     {"name":"Paqet Tunnel Manager","repository":"https://github.com/behzadea12/Paqet-Tunnel-Manager","status":["verified","community"]},
-    {"name":"DaggerConnect","repository":"https://github.com/itsFLoKi/DaggerConnect","status":["verified","community"]}
+    {"name":"DaggerConnect","repository":"https://github.com/itsFLoKi/DaggerConnect","status":["verified","community"]},
+    {"name":"BackPack","repository":"https://github.com/AminMGMT/BackPack","status":["verified-source","community","high-impact"]}
   ],
   "clients_and_dashboards": [
     {"name":"Hiddify App","repository":"https://github.com/hiddify/Hiddify-app","status":["verified","official"]},

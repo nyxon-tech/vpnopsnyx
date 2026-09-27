@@ -12,7 +12,7 @@ VPNOpsNyx خودش پروتکل VPN، پیاده‌سازی تونل یا fork �
 
 - پنل‌ها و control planeها: 3x-ui، PasarGuard، Marzban، Marzneshin، Hiddify، Remnawave، S-UI، پنل‌های WireGuard و پروژه‌های مرتبط.
 - Coreها و پروتکل‌ها: Xray-core، sing-box، WireGuard، AmneziaWG، Hysteria2، TUIC، Trojan، VMess، VLESS، Shadowsocks، MTProto و Reality/TLS.
-- تونل‌ها و رله‌ها: Backhaul، Rathole، Paqet، FRP، DNAT/nftables، GRE، GRE6، 6TO4، SIT، IPIP، Geneve، WireGuard relay و SSH reverse tunnel.
+- تونل‌ها و رله‌ها: Backhaul، [BackPack](https://github.com/AminMGMT/BackPack)، Rathole، Paqet، FRP، DaggerConnect، DNAT/nftables، GRE، GRE6، 6TO4، SIT، IPIP، Geneve، WireGuard relay و SSH reverse tunnel.
 - عملیات: health check، تست واقعی مسیر داده، SSL، DNS، firewall، lifecycle نود، ظرفیت، incident، migration و rollback.
 - کامیونیتی: فهرست کامل پروفایل‌ها و ریپازیتوری‌های عمومی معرفی‌شده، همراه با لینک مستقیم و وضعیت اعتبارسنجی.
 
@@ -102,6 +102,7 @@ VPNOpsNyx از افرادی که با پروژه‌های عمومی خود به
 - [behzadea12](https://github.com/behzadea12)
 - [opiran-club](https://github.com/opiran-club)
 - [itsFLoKi](https://github.com/itsFLoKi)
+- [AminMGMT](https://github.com/AminMGMT)
 
 از تمام کسانی که برای باز و در دسترس ماندن اینترنت ابزار می‌سازند و دانش خود را
 منتشر می‌کنند سپاسگزاریم. حضور در این فهرست به معنی تأیید امنیتی تمام پروژه‌های

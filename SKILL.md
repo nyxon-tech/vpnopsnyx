@@ -87,7 +87,7 @@ Use these labels in plans and docs:
 ## Product Runbook Rule
 
 For 3x-ui, Marzban, PasarGuard, Remnawave, Hiddify, S-UI, Backhaul, rathole,
-Paqet, GRE-family tunnels, WireGuard, FRP, or DaggerConnect, read the matching
+Paqet, GRE-family tunnels, WireGuard, FRP, DaggerConnect, or BackPack, read the matching
 file in `guides/` before answering. Use the upstream release documentation to
 confirm version-specific commands. Never substitute one panel's database, API,
 service, backup, or upgrade procedure for another product.

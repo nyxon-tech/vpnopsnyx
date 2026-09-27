@@ -14,6 +14,7 @@ All notable changes to VPNOpsNyx are documented here.
 - Initial release documentation and a portable dependency-free validation script.
 - Security policy, structured issue form, pull request checklist, and CODEOWNERS.
 - Version-specific API probing and restore-drill evidence matrix for major panels.
+- Verified BackPack source entry, dedicated operational runbook, registry metadata, and multilingual README links.
 
 ### Changed
 

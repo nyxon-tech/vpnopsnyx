@@ -12,7 +12,7 @@ VPNOpsNyx 不是 VPN 协议、隧道实现或某个面板的分支。它是一�
 
 - 面板与控制平面：3x-ui、PasarGuard、Marzban、Marzneshin、Hiddify、Remnawave、S-UI 和 WireGuard 面板。
 - 核心与协议：Xray-core、sing-box、WireGuard、AmneziaWG、Hysteria2、TUIC、Trojan、VMess、VLESS、Shadowsocks、MTProto 和 Reality/TLS。
-- 隧道与中继：Backhaul、Rathole、Paqet、FRP、DNAT/nftables、GRE、GRE6、6TO4、SIT、IPIP、Geneve、WireGuard relay 和 SSH reverse tunnel。
+- 隧道与中继：Backhaul、[BackPack](https://github.com/AminMGMT/BackPack)、Rathole、Paqet、FRP、DaggerConnect、DNAT/nftables、GRE、GRE6、6TO4、SIT、IPIP、Geneve、WireGuard relay 和 SSH reverse tunnel。
 - 运维流程：健康检查、真实数据路径验证、SSL、DNS、防火墙、节点生命周期、容量、故障处理、迁移和回滚。
 - 社区研究：包含直接链接和验证状态的公开 GitHub 维护者与仓库目录。
 

@@ -12,7 +12,7 @@ VPNOpsNyx не является VPN-протоколом, реализацией
 
 - Панели и control plane: 3x-ui, PasarGuard, Marzban, Marzneshin, Hiddify, Remnawave, S-UI и панели WireGuard.
 - Ядра и протоколы: Xray-core, sing-box, WireGuard, AmneziaWG, Hysteria2, TUIC, Trojan, VMess, VLESS, Shadowsocks, MTProto и Reality/TLS.
-- Туннели и реле: Backhaul, Rathole, Paqet, FRP, DNAT/nftables, GRE, GRE6, 6TO4, SIT, IPIP, Geneve, WireGuard relay и SSH reverse tunnel.
+- Туннели и реле: Backhaul, [BackPack](https://github.com/AminMGMT/BackPack), Rathole, Paqet, FRP, DaggerConnect, DNAT/nftables, GRE, GRE6, 6TO4, SIT, IPIP, Geneve, WireGuard relay и SSH reverse tunnel.
 - Операции: health check, проверка реального потока данных, SSL, DNS, firewall, жизненный цикл узлов, capacity, incident response, migration и rollback.
 - Сообщество: каталог публичных профилей и репозиториев с прямыми ссылками и статусом проверки.
 

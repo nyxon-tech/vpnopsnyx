@@ -12,7 +12,7 @@ VPNOpsNyx is not a VPN protocol, tunnel implementation, or one-click panel fork.
 
 - Panels: 3x-ui/Sanaei, PasarGuard node scripts, VPanel installer, Marzban, Marzneshin, Hiddify, and related panel patterns.
 - Cores and protocols: Xray-core, sing-box, WireGuard, AmneziaWG, Hysteria2, TUIC, Trojan, VMess, VLESS, Shadowsocks, MTProto, HTTP/SOCKS, and Reality/TLS operations.
-- Tunnels and relays: Backhaul, DNAT/nftables, GRE/GRE6/6TO4/SIT/IPIP/Geneve, WireGuard relay paths, SSH reverse tunnels, and Cloudflare DNS steering.
+- Tunnels and relays: Backhaul, [BackPack](https://github.com/AminMGMT/BackPack), Rathole, Paqet, FRP, DaggerConnect, DNAT/nftables, GRE/GRE6/6TO4/SIT/IPIP/Geneve, WireGuard relay paths, SSH reverse tunnels, and Cloudflare DNS steering.
 - Operations: health checks, data-path verification, certificate handling, node lifecycle, capacity, incident triage, migration, and rollback.
 - Community research: a registry of public GitHub maintainers and repositories relevant to VPN/proxy tooling.
 
@@ -113,6 +113,7 @@ referenced throughout VPNOpsNyx:
 - [behzadea12](https://github.com/behzadea12)
 - [opiran-club](https://github.com/opiran-club)
 - [itsFLoKi](https://github.com/itsFLoKi)
+- [AminMGMT](https://github.com/AminMGMT)
 
 Thank you to everyone building and documenting tools that help keep the internet
 open and accessible. Inclusion is recognition and source attribution, not a
