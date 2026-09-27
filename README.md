@@ -1,5 +1,7 @@
 # VPNOpsNyx
 
+[English](README.md) | [فارسی](README.fa.md)
+
 ![VPNOpsNyx network operations overview](assets/vpnopsnyx-hero.png)
 
 AI skill for VPN, proxy, panel, node, tunnel, and network operations - built for Claude, Codex, ChatGPT, and other AI coding agents.
