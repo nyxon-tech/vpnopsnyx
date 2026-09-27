@@ -4,6 +4,26 @@ Review date: 2026-09-27
 
 This file records what was checked before adding commands and community references. The review confirms public availability, not security, project quality, or suitability for any particular legal context.
 
+## Ecosystem Inventory Review
+
+The user-supplied panel and tunnel inventory was normalized into
+`registries/ecosystem.json`. Repository paths were checked directly against GitHub
+where possible. Most listed projects resolved. Three supplied paths need special
+treatment:
+
+- `https://github.com/iran-v2ray/rules` did not resolve during direct review and
+  remains `unavailable-at-review`; the reachable Iran-focused rules source is
+  `https://github.com/Chocolate4U/Iran-v2ray-rules`.
+- `https://github.com/xtaci/kcptun` was visible in GitHub-indexed source results
+  but did not complete the direct Git check; it is `source-visible` rather than
+  fully verified in this snapshot.
+- `https://github.com/trailofbits/algo` was visible through its current official
+  GitHub documentation but did not complete the direct Git check. Upstream also
+  states that Algo is a privacy VPN, not a censorship-circumvention system.
+
+Rebecca, EylanPanel/OVPN Manager, and GoGuard were mentioned without an
+unambiguous upstream repository. They remain `unverified` with no invented URL.
+
 ## Verified User-Provided Links
 
 | Item | URL | Result | Label |

@@ -63,6 +63,8 @@ Use these labels in plans and docs:
 | Repo-by-repo community review and selection guidance | `docs/community-review.md` |
 | DNS, firewall, IPv4/IPv6, BBR, mirrors, and hosts-file cautions | `docs/networking-recipes.md` |
 | Panels and panel-adjacent projects | `registries/panels.json` |
+| Full panel/tunnel/client/routing/installer inventory | `registries/ecosystem.json` |
+| Ecosystem taxonomy and tool-selection rules | `docs/ecosystem-guide.md` |
 | Cores, engines, and supported protocols | `registries/cores.json` |
 | Tunnel and relay methods | `registries/tunnels.json` |
 | SSL, DNS, optimization, and support tooling | `registries/tools.json` |
