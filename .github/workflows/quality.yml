@@ -28,7 +28,6 @@ jobs:
             --no-progress
             --max-retries 2
             --timeout 20
-            --exclude-mail
             './**/*.md'
           fail: true
           jobSummary: true
