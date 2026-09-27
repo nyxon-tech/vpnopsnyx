@@ -4,3 +4,5 @@ fleet.env
 *.local.*
 *.token
 .DS_Store
+__pycache__/
+*.pyc

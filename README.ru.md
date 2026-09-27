@@ -43,6 +43,11 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 - `registries/ecosystem.json` — основной каталог панелей, ядер, туннелей, клиентов, installer и routing data.
 - `registries/community-repositories.json` — снимок 111 публичных репозиториев указанных аккаунтов.
 - `CONTRIBUTING.md` — правила Fork, Pull Request, проверки источников и безопасности.
+- `guides/panels/` — отдельные руководства по установке, API, backup, upgrade и troubleshooting основных панелей.
+- `guides/tunnels/` — пошаговые руководства для туннелей с verification и rollback.
+- `.github/workflows/` — автоматическая проверка JSON, структуры Skill, ссылок, шаблонов секретов и ежемесячная перепроверка источников.
+- `docs/agent-compatibility.md` — совместимость с Codex, Claude и другими агентами.
+- `CHANGELOG.md` — история выпусков.
 
 ## Безопасность
 

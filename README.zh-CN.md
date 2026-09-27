@@ -43,6 +43,11 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 - `registries/ecosystem.json`：面板、核心、隧道、客户端、安装器和路由数据主目录。
 - `registries/community-repositories.json`：指定账号的 111 个公开仓库快照。
 - `CONTRIBUTING.md`：Fork、Pull Request、来源验证和安全要求。
+- `guides/panels/`：主要面板的安装、API、备份、升级与故障排查专用指南。
+- `guides/tunnels/`：包含验证和回滚步骤的隧道操作指南。
+- `.github/workflows/`：自动检查 JSON、Skill 结构、链接、Secret 模式，并每月复查来源。
+- `docs/agent-compatibility.md`：Codex、Claude 与其他代理的兼容说明。
+- `CHANGELOG.md`：版本与变更记录。
 
 ## 安全模型
 

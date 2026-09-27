@@ -58,6 +58,8 @@ Use these labels in plans and docs:
 | Need | Read |
 |---|---|
 | Install commands and preflight checks | `docs/install-recipes.md` |
+| Product-specific panel operations | `guides/panels/README.md`, then the selected panel runbook |
+| Product-specific tunnel operations | `guides/tunnels/README.md`, then the selected tunnel runbook |
 | Validated sources and community profiles | `docs/sources.md` |
 | Every repository from the requested community profiles | `registries/community-repositories.json` |
 | Repo-by-repo community review and selection guidance | `docs/community-review.md` |
@@ -78,6 +80,16 @@ Use these labels in plans and docs:
 | Node lifecycle, migration, retirement | `references/node-lifecycle.md` |
 | Capacity, bandwidth, CPU steal, conntrack | `references/capacity.md` |
 | Real incident patterns | `references/incidents.md` |
+| Agent runtime compatibility | `docs/agent-compatibility.md` |
+| Scheduled registry/source maintenance | `docs/maintenance.md` |
+
+## Product Runbook Rule
+
+For 3x-ui, Marzban, PasarGuard, Remnawave, Hiddify, S-UI, Backhaul, rathole,
+Paqet, GRE-family tunnels, WireGuard, FRP, or DaggerConnect, read the matching
+file in `guides/` before answering. Use the upstream release documentation to
+confirm version-specific commands. Never substitute one panel's database, API,
+service, backup, or upgrade procedure for another product.
 
 ## Verified Commands From Current Source Review
 

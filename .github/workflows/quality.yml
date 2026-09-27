@@ -1,0 +1,34 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structure-and-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate registries, skill structure, and secret safety
+        run: python3 scripts/validate.py
+
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check documentation links
+        uses: lycheeverse/lychee-action@v2.9.0
+        with:
+          args: >-
+            --no-progress
+            --max-retries 2
+            --timeout 20
+            --exclude-mail
+            './**/*.md'
+          fail: true
+          jobSummary: true

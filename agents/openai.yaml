@@ -1,8 +1,8 @@
 interface:
   display_name: "VPNOpsNyx"
-  short_description: "VPN and network operations knowledge skill"
+  short_description: "Safe VPN panel and tunnel operations runbooks"
   brand_color: "#00C8D7"
-  default_prompt: "Use $vpnopsnyx to inspect, plan, verify, or troubleshoot this VPN and network operations task safely."
+  default_prompt: "Use $vpnopsnyx to inspect, plan, verify, or troubleshoot this VPN and network operations task safely. Load the matching product runbook, preserve secrets, and include verification and rollback."
 
 policy:
   allow_implicit_invocation: true

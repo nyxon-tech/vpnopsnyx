@@ -1,0 +1,28 @@
+name: Scheduled Source Review
+
+on:
+  schedule:
+    - cron: "23 4 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-sources:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate repository structure
+        run: python3 scripts/validate.py
+      - name: Recheck external documentation links
+        uses: lycheeverse/lychee-action@v2.9.0
+        with:
+          args: >-
+            --no-progress
+            --max-retries 3
+            --timeout 30
+            --exclude-mail
+            './**/*.md'
+          fail: true
+          jobSummary: true

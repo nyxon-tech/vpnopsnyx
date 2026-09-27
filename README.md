@@ -56,6 +56,12 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `templates/fleet-inventory.example.md` - private inventory template; never commit a filled-in copy.
 - `metadata.json` - package metadata for non-Claude/Codex runtimes.
 - `agents/openai.yaml` - OpenAI/Codex skill interface metadata.
+- `guides/panels/` - dedicated runbooks for major panels.
+- `guides/tunnels/` - dedicated operational runbooks for major tunnel families.
+- `.github/workflows/` - structure, JSON, link, secret-pattern, and monthly source checks.
+- `docs/agent-compatibility.md` - Codex, Claude, and generic agent integration.
+- `docs/maintenance.md` - periodic source and registry review procedure.
+- `CHANGELOG.md` - release history.
 
 ## Verification Policy
 

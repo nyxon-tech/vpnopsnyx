@@ -48,6 +48,11 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 - `registries/community-repositories.json`: snapshot کامل ۱۱۱ ریپازیتوری عمومی حساب‌های معرفی‌شده.
 - `references/`: راهنماهای عملیاتی معماری، پنل، تونل، Cloudflare، incident، capacity و lifecycle نود.
 - `templates/fleet-inventory.example.md`: نمونه inventory خصوصی؛ نسخه تکمیل‌شده را commit نکنید.
+- `guides/panels/`: راهنمای اختصاصی نصب، API، backup، upgrade و troubleshooting پنل‌های اصلی.
+- `guides/tunnels/`: راهنمای مرحله‌به‌مرحله Tunnelها همراه با verification و rollback.
+- `.github/workflows/`: کنترل خودکار JSON، ساختار Skill، لینک‌ها، الگوهای Secret و بازبینی ماهانه منابع.
+- `docs/agent-compatibility.md`: سازگاری Codex، Claude و سایر Agentها.
+- `CHANGELOG.md`: تاریخچه نسخه‌ها و تغییرات.
 
 ## وضعیت منابع
 
