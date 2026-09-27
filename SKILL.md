@@ -82,6 +82,7 @@ Use these labels in plans and docs:
 | Real incident patterns | `references/incidents.md` |
 | Agent runtime compatibility | `docs/agent-compatibility.md` |
 | Scheduled registry/source maintenance | `docs/maintenance.md` |
+| Version-specific API and restore evidence | `docs/api-restore-validation.md` |
 
 ## Product Runbook Rule
 

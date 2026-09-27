@@ -4,6 +4,8 @@
 **Trust:** `verified`, `official`  
 **Scope:** Xray panel installation, lifecycle, database backup, and diagnosis.
 
+Use the evidence matrix in [`docs/api-restore-validation.md`](../../docs/api-restore-validation.md) for every version-specific API or restore drill.
+
 ## Preflight
 
 1. Confirm a supported Linux distribution, root access, free ports, DNS, and time sync.

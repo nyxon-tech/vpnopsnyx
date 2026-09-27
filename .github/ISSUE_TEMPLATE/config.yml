@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security guidance
+    url: https://github.com/nyxon-tech/vpnopsnyx/blob/main/SECURITY.md
+    about: Read this before reporting a security-sensitive documentation problem.

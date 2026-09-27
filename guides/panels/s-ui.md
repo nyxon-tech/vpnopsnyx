@@ -3,6 +3,8 @@
 **Source:** https://github.com/alireza0/s-ui  
 **Trust:** `verified`, `official`
 
+Use the evidence matrix in [`docs/api-restore-validation.md`](../../docs/api-restore-validation.md) for every version-specific API or restore drill.
+
 ## Preflight And Install
 
 Confirm supported OS/architecture, free ports, sing-box compatibility, DNS, TLS, and

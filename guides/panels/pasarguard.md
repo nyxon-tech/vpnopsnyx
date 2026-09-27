@@ -3,6 +3,8 @@
 **Sources:** https://github.com/PasarGuard/panel and https://github.com/PasarGuard/scripts  
 **Trust:** `verified`, `official`; bootstrap scripts remain remote code execution.
 
+Use the evidence matrix in [`docs/api-restore-validation.md`](../../docs/api-restore-validation.md) for every version-specific API or restore drill.
+
 ## Preflight
 
 Read `references/pasarguard.md`. Determine panel versus node role, database mode,

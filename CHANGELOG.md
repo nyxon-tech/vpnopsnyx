@@ -12,6 +12,8 @@ All notable changes to VPNOpsNyx are documented here.
 - Monthly source-review workflow and maintainer checklist.
 - Cross-agent compatibility guidance for Codex, Claude, ChatGPT-compatible, and generic coding agents.
 - Initial release documentation and a portable dependency-free validation script.
+- Security policy, structured issue form, pull request checklist, and CODEOWNERS.
+- Version-specific API probing and restore-drill evidence matrix for major panels.
 
 ### Changed
 

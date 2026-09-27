@@ -3,6 +3,8 @@
 **Source:** https://github.com/hiddify/Hiddify-Manager  
 **Trust:** `verified`, `official`
 
+Use the evidence matrix in [`docs/api-restore-validation.md`](../../docs/api-restore-validation.md) for every version-specific API or restore drill.
+
 ## Preflight
 
 Record the manager version, installation channel, domain/DNS state, proxy core

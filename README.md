@@ -61,6 +61,8 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `.github/workflows/` - structure, JSON, link, secret-pattern, and monthly source checks.
 - `docs/agent-compatibility.md` - Codex, Claude, and generic agent integration.
 - `docs/maintenance.md` - periodic source and registry review procedure.
+- `docs/api-restore-validation.md` - versioned API probes and repeatable restore-drill evidence.
+- `SECURITY.md` and `.github/` - safe reporting, issue, review, and ownership policy.
 - `CHANGELOG.md` - release history.
 
 ## Verification Policy

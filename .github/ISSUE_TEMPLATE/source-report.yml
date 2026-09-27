@@ -1,0 +1,46 @@
+name: Source or documentation report
+description: Report a moved source, incorrect command, stale status, or missing project.
+title: "[Source]: "
+labels: [documentation, triage]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, private keys, subscription URLs, production IPs, or user data.
+  - type: input
+    id: source
+    attributes:
+      label: Public upstream URL
+      placeholder: https://github.com/owner/repository
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version, tag, or commit
+      description: Identify the upstream revision when possible.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Report type
+      options:
+        - Broken or moved link
+        - Incorrect instruction
+        - Stale version or status
+        - New panel, tunnel, core, or tool
+        - Attribution correction
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Explain the correction without private infrastructure details.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I removed secrets, private infrastructure identifiers, and user data.
+          required: true
