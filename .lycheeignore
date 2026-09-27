@@ -1,0 +1,5 @@
+# Documented as unavailable-at-review in docs/sources.md and the ecosystem registry.
+^https://github\.com/iran-v2ray/rules$
+
+# Rejects automated GitHub-hosted checks with HTTP 403; retained as a manual diagnostic URL.
+^https://whatismyipaddress\.com/ip/$

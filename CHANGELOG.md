@@ -24,5 +24,5 @@ All notable changes to VPNOpsNyx are documented here.
 - Added OpenAI/Codex interface metadata, ecosystem registries, community attribution,
   visual assets, verified recipes, and safety guidance.
 
-[0.5.0]: https://github.com/nyxon-tech/vpnopsnyx/releases/tag/v0.5.0
+[0.5.0]: https://github.com/nyxon-tech/vpnopsnyx/releases
 [0.4.0]: https://github.com/nyxon-tech/vpnopsnyx/commits/main
