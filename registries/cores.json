@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-09-27",
+  "items": [
+    {
+      "name": "Xray-core",
+      "category": "proxy-core",
+      "status": ["known"],
+      "repository": "https://github.com/XTLS/Xray-core",
+      "protocols": ["VLESS", "VMess", "Trojan", "Shadowsocks", "Dokodemo-door", "HTTP", "SOCKS"],
+      "transports": ["TCP", "mKCP", "WebSocket", "gRPC", "HTTPUpgrade", "XHTTP"],
+      "security": ["TLS", "XTLS", "REALITY"],
+      "notes": ["Common core behind many panels including 3x-ui and Marzban-family deployments."]
+    },
+    {
+      "name": "sing-box",
+      "category": "proxy-core",
+      "status": ["known"],
+      "repository": "https://github.com/SagerNet/sing-box",
+      "notes": ["Route to upstream documentation before generating configs."]
+    },
+    {
+      "name": "WireGuard",
+      "category": "vpn-protocol",
+      "status": ["known"],
+      "repository": "https://www.wireguard.com/",
+      "notes": ["Never expose private keys. Verify UDP reachability from the client vantage point."]
+    },
+    {
+      "name": "AmneziaWG",
+      "category": "wireguard-variant",
+      "status": ["known"],
+      "repository": "https://github.com/amnezia-vpn/amneziawg-go",
+      "notes": ["3x-ui README reports built-in AmneziaWG support."]
+    },
+    {
+      "name": "Hysteria2",
+      "category": "proxy-protocol",
+      "status": ["known"],
+      "repository": "https://github.com/apernet/hysteria",
+      "notes": ["Requires UDP path validation and congestion-control awareness."]
+    },
+    {
+      "name": "TUIC",
+      "category": "proxy-protocol",
+      "status": ["known"],
+      "repository": "https://github.com/EAimTY/tuic",
+      "notes": ["3x-ui README reports TUIC v5 sidecar support."]
+    },
+    {
+      "name": "MTProto",
+      "category": "telegram-proxy",
+      "status": ["known"],
+      "repository": "https://github.com/TelegramMessenger/MTProxy",
+      "notes": ["3x-ui and mtg-style tools may support MTProto; inspect exact implementation."]
+    }
+  ]
+}

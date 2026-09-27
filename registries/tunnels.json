@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-09-27",
+  "items": [
+    {
+      "name": "Backhaul",
+      "category": "reverse-tunnel",
+      "status": ["known"],
+      "repository": "https://github.com/Musixal/Backhaul",
+      "notes": [
+        "Used for relay-to-exit reverse tunnel patterns in references/tunnels.md.",
+        "Tunnel token is a secret and must be masked."
+      ]
+    },
+    {
+      "name": "nftables DNAT relay",
+      "category": "kernel-forwarding",
+      "status": ["built-in-linux"],
+      "notes": [
+        "Use for relay outbound forwarding when reverse tunnel data path fails.",
+        "Requires ip_forward, NAT table, masquerade, conntrack sizing, and rollback."
+      ]
+    },
+    {
+      "name": "Azumi67 6TO4-GRE-IPIP-SIT",
+      "category": "multi-tunnel-manager",
+      "status": ["verified", "third-party", "community"],
+      "repository": "https://github.com/Azumi67/6TO4-GRE-IPIP-SIT",
+      "methods": ["6TO4", "GRE", "GRE6", "IPIP", "SIT", "Geneve", "Erspan", "IPsec", "EOIP", "L2TP", "WireGuard", "ISATAP"],
+      "notes": [
+        "Upstream README describes the project as educational.",
+        "Can change routes, firewall behavior, timers, and tunnel interfaces.",
+        "Review before production use and keep rollback steps."
+      ]
+    },
+    {
+      "name": "IPTABLE-Tunnel-multi-port",
+      "category": "port-forwarding",
+      "status": ["community"],
+      "repository": "https://github.com/azavaxhuman/IPTABLE-Tunnel-multi-port",
+      "notes": ["Community project found in azavaxhuman public repos."]
+    },
+    {
+      "name": "ping-tunnel",
+      "category": "tunnel",
+      "status": ["community"],
+      "repository": "https://github.com/ppouria/ping-tunnel",
+      "notes": ["Community project found in ppouria public repos. Review before use."]
+    },
+    {
+      "name": "SSH reverse tunnel",
+      "category": "management-tunnel",
+      "status": ["built-in-openssh"],
+      "notes": [
+        "Suitable for management access, not high-volume user traffic.",
+        "Use autossh/systemd and key-only auth when appropriate."
+      ]
+    },
+    {
+      "name": "FOU/IPIP",
+      "category": "kernel-tunnel",
+      "status": ["built-in-linux"],
+      "notes": [
+        "Requires Linux kernel support and UDP path validation.",
+        "Payload is not encrypted unless the carried protocol provides encryption."
+      ]
+    }
+  ]
+}

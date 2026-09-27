@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-09-27",
+  "source": "public GitHub user metadata and recent public repositories",
+  "profiles": [
+    {
+      "login": "erfjabplus",
+      "url": "https://github.com/erfjabplus",
+      "status": ["community", "limited-public-data"],
+      "public_repos_observed": 0,
+      "relevant_repositories": [],
+      "notes": ["Profile exists; no public repositories were returned during review."]
+    },
+    {
+      "login": "AsanFillter",
+      "url": "https://github.com/AsanFillter",
+      "status": ["community"],
+      "relevant_repositories": [
+        {
+          "name": "Playit-Launcher",
+          "url": "https://github.com/AsanFillter/Playit-Launcher",
+          "description": "Bash utility for installing and managing Playit.gg tunneling service on Linux servers."
+        },
+        {
+          "name": "WatchGuard",
+          "url": "https://github.com/AsanFillter/WatchGuard",
+          "description": "FastAPI web panel and Telegram bot for tracking server/domain renewals."
+        },
+        {
+          "name": "Remnawave-AutoSetup",
+          "url": "https://github.com/AsanFillter/Remnawave-AutoSetup",
+          "description": "Automated setup script for Remnawave Panel and nodes."
+        },
+        {
+          "name": "ov-panel",
+          "url": "https://github.com/AsanFillter/ov-panel",
+          "description": "OpenVPN client management panel."
+        }
+      ]
+    },
+    {
+      "login": "rezazoom",
+      "url": "https://github.com/rezazoom",
+      "status": ["community"],
+      "relevant_repositories": [
+        {
+          "name": "qoqnoos-template",
+          "url": "https://github.com/rezazoom/qoqnoos-template",
+          "description": "Subscription page template for Marzban and Marzneshin."
+        },
+        {
+          "name": "sub-forward",
+          "url": "https://github.com/rezazoom/sub-forward",
+          "description": "Subscription forwarder for Marzban Panel."
+        },
+        {
+          "name": "mirzaplus",
+          "url": "https://github.com/rezazoom/mirzaplus",
+          "description": "VPN sales bot in PHP for Marzban panel."
+        },
+        {
+          "name": "Abuse-Defender",
+          "url": "https://github.com/rezazoom/Abuse-Defender",
+          "description": "Shell script for blocking abuse IP ranges."
+        }
+      ]
+    },
+    {
+      "login": "azavaxhuman",
+      "url": "https://github.com/azavaxhuman",
+      "status": ["community"],
+      "relevant_repositories": [
+        {
+          "name": "VESSL",
+          "url": "https://github.com/azavaxhuman/VESSL",
+          "description": "SSL certificate helper."
+        },
+        {
+          "name": "IPTABLE-Tunnel-multi-port",
+          "url": "https://github.com/azavaxhuman/IPTABLE-Tunnel-multi-port",
+          "description": "Multi-port tunnel/forwarding utility."
+        },
+        {
+          "name": "DDS-Xray-Inbound-Generator",
+          "url": "https://github.com/azavaxhuman/DDS-Xray-Inbound-Generator",
+          "description": "Web tool for generating Xray inbounds."
+        },
+        {
+          "name": "DDS-Xray-Routing-Editor",
+          "url": "https://github.com/azavaxhuman/DDS-Xray-Routing-Editor",
+          "description": "Web tool for creating and sorting Xray routing rules."
+        },
+        {
+          "name": "Nodex",
+          "url": "https://github.com/azavaxhuman/Nodex",
+          "description": "Unofficial 3x-ui node synchronization project."
+        },
+        {
+          "name": "ocserv-users-management",
+          "url": "https://github.com/azavaxhuman/ocserv-users-management",
+          "description": "OpenConnect server with user management panel."
+        }
+      ]
+    },
+    {
+      "login": "ircfspace",
+      "url": "https://github.com/ircfspace",
+      "status": ["community"],
+      "relevant_repositories": [
+        {
+          "name": "cf2dns",
+          "url": "https://github.com/ircfspace/cf2dns",
+          "description": "Clean IP discovery project."
+        },
+        {
+          "name": "masque-plus",
+          "url": "https://github.com/ircfspace/masque-plus",
+          "description": "Launcher for Cloudflare MASQUE-related SOCKS proxy usage."
+        },
+        {
+          "name": "tconfig",
+          "url": "https://github.com/ircfspace/tconfig",
+          "description": "Free V2Ray proxy list."
+        },
+        {
+          "name": "XrayRefiner",
+          "url": "https://github.com/ircfspace/XrayRefiner",
+          "description": "Utility for normalizing Xray subscription sources."
+        },
+        {
+          "name": "iran-based",
+          "url": "https://github.com/ircfspace/iran-based",
+          "description": "List of methods/services that provide Iran-originating connectivity."
+        }
+      ]
+    },
+    {
+      "login": "primeZdev",
+      "url": "https://github.com/primeZdev",
+      "status": ["community"],
+      "relevant_repositories": [
+        {
+          "name": "ov-panel",
+          "url": "https://github.com/primeZdev/ov-panel",
+          "description": "OpenVPN client management panel."
+        },
+        {
+          "name": "ov-node",
+          "url": "https://github.com/primeZdev/ov-node",
+          "description": "VPN backend manager for ov-panel."
+        },
+        {
+          "name": "whale-panel",
+          "url": "https://github.com/primeZdev/whale-panel",
+          "description": "Admin dashboard for managing X-UI panels."
+        },
+        {
+          "name": "Emergency-key",
+          "url": "https://github.com/primeZdev/Emergency-key",
+          "description": "Emergency subscription link project for V2Ray configs."
+        }
+      ]
+    },
+    {
+      "login": "ppouria",
+      "url": "https://github.com/ppouria",
+      "status": ["community"],
+      "relevant_repositories": [
+        {
+          "name": "Backuper",
+          "url": "https://github.com/ppouria/Backuper",
+          "description": "Automated backup script."
+        },
+        {
+          "name": "kabootar",
+          "url": "https://github.com/ppouria/kabootar",
+          "description": "Community project; review upstream before use."
+        },
+        {
+          "name": "3xuiMirror",
+          "url": "https://github.com/ppouria/3xuiMirror",
+          "description": "Community 3x-ui mirror helper."
+        },
+        {
+          "name": "ping-tunnel",
+          "url": "https://github.com/ppouria/ping-tunnel",
+          "description": "Community tunnel project."
+        },
+        {
+          "name": "marzhelp",
+          "url": "https://github.com/ppouria/marzhelp",
+          "description": "Database management robot for Marzban."
+        }
+      ]
+    },
+    {
+      "login": "MHSanaei",
+      "url": "https://github.com/MHSanaei",
+      "status": ["community", "official-for-3x-ui"],
+      "relevant_repositories": [
+        {
+          "name": "3x-ui",
+          "url": "https://github.com/MHSanaei/3x-ui",
+          "description": "Multi-protocol multi-user Xray-core web panel."
+        },
+        {
+          "name": "HLS-Proxy-Worker",
+          "url": "https://github.com/MHSanaei/HLS-Proxy-Worker",
+          "description": "HLS proxy for Cloudflare Workers."
+        },
+        {
+          "name": "mtg-multi",
+          "url": "https://github.com/MHSanaei/mtg-multi",
+          "description": "MTProto proxy for Telegram."
+        }
+      ]
+    }
+  ]
+}

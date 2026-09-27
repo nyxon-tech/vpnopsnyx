@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-09-27",
+  "items": [
+    {
+      "name": "certbot",
+      "category": "acme-client",
+      "status": ["verified"],
+      "commands": [
+        "apt-get install certbot -y",
+        "certbot certonly --standalone --agree-tos --register-unsafely-without-email -d yourdomain.com",
+        "certbot renew --dry-run"
+      ],
+      "outputs": [
+        "/etc/letsencrypt/live/YOURDOMAIN.COM/fullchain.pem",
+        "/etc/letsencrypt/live/YOURDOMAIN.COM/privkey.pem"
+      ],
+      "notes": ["Standalone mode needs port 80 reachable for the requested domain."]
+    },
+    {
+      "name": "Cloudflare DNS",
+      "category": "dns",
+      "status": ["known"],
+      "notes": [
+        "Use DNS-only A records for raw TCP/UDP VPN ports unless the architecture is CDN-fronted HTTP/WebSocket/gRPC.",
+        "Never expose API tokens. Prefer zone-scoped DNS edit tokens."
+      ]
+    },
+    {
+      "name": "VESSL",
+      "category": "ssl-helper",
+      "status": ["community"],
+      "repository": "https://github.com/azavaxhuman/VESSL",
+      "notes": ["Community SSL helper found in azavaxhuman public repos. Review before use."]
+    },
+    {
+      "name": "cf2dns",
+      "category": "cloudflare-ip-tool",
+      "status": ["community"],
+      "repository": "https://github.com/ircfspace/cf2dns",
+      "notes": ["Community project for clean IP discovery. Validate output before using in production DNS."]
+    },
+    {
+      "name": "XrayRefiner",
+      "category": "subscription-normalizer",
+      "status": ["community"],
+      "repository": "https://github.com/ircfspace/XrayRefiner",
+      "notes": ["Community utility found in ircfspace public repos."]
+    },
+    {
+      "name": "Remnawave-AutoSetup",
+      "category": "panel-setup",
+      "status": ["community"],
+      "repository": "https://github.com/AsanFillter/Remnawave-AutoSetup",
+      "notes": ["Community setup script. Review before use."]
+    },
+    {
+      "name": "Backuper",
+      "category": "backup",
+      "status": ["community"],
+      "repository": "https://github.com/ppouria/Backuper",
+      "notes": ["Community backup script. Confirm paths and retention before use."]
+    },
+    {
+      "name": "Abuse-Defender",
+      "category": "firewall-helper",
+      "status": ["community"],
+      "repository": "https://github.com/rezazoom/Abuse-Defender",
+      "notes": ["Community shell script. Firewall changes require explicit approval and rollback."]
+    }
+  ]
+}

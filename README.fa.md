@@ -1,47 +1,49 @@
-# vpn-provider-ops — اسکیل Claude برای اداره‌کردن سرورهای یک ارائه‌دهندهٔ VPN
+# VPNOpsNyx
 
 [English](README.md)
 
-این اسکیل به Claude یاد می‌دهد مثل یک اپراتور باتجربه و محتاط با زیرساخت فروش VPN کار کند:
+**VPNOpsNyx** یک AI Skill برای مدیریت عملیات VPN، پراکسی، پنل، نود، تانل، SSL، DNS و شبکه است؛ برای Claude، Codex، ChatGPT و سایر AI coding agentها.
 
-- **پنل‌ها:** PasarGuard، Marzban، Marzneshin، 3x-ui و Hiddify
-- **سرورها:** نودهای خارج و رله‌های داخل ایران
-- **تونل‌ها:** بک‌هال و DNAT با nftables
-- **DNS:** رکوردهای کلادفلر برای پخش کاربرها بین رله‌ها
-- **فیلترینگ:** تشخیص الگوهای فیلترینگ ایران و راه‌حل هرکدام
+این پروژه خود VPN یا تانل نیست. هدفش این است که هوش مصنوعی‌ها بتوانند با احتیاط و با منبع معتبر روی زیرساخت VPN کار کنند: اول بررسی، بعد برنامه، بعد اجرای تأییدشده، بعد تست واقعی و گزارش.
+
+## پوشش پروژه
+
+- **پنل‌ها:** 3x-ui/Sanaei، PasarGuard، VPanel، Marzban، Marzneshin، Hiddify و ابزارهای مشابه.
+- **Core و پروتکل‌ها:** Xray-core، sing-box، WireGuard، AmneziaWG، Hysteria2، TUIC، Trojan، VMess، VLESS، Shadowsocks، MTProto و Reality/TLS.
+- **تانل‌ها و رله‌ها:** Backhaul، DNAT/nftables، GRE/GRE6/6TO4/SIT/IPIP/Geneve، WireGuard relay، SSH reverse tunnel و Cloudflare DNS.
+- **عملیات:** نصب، SSL، health check، تست مسیر واقعی، مهاجرت نود، capacity، troubleshooting، rollback و گزارش حادثه.
+- **کامیونیتی:** رجیستری GitHubهای معرفی‌شده و repoهای عمومی مرتبط.
 
 ## نصب
 
+### Claude
+
 ```bash
-git clone https://github.com/nyxon-tech/vpnopsnyx ~/.claude/skills/vpn-provider-ops
+git clone https://github.com/nyxon-tech/vpnopsnyx ~/.claude/skills/vpnopsnyx
 ```
 
-بعد یک چت تازه در Claude Code باز کن و مثلاً بنویس:
-- «سرورها را بررسی کن، کانفیگ‌ها وصل هستند؟»
-- «یک پنل PasarGuard تازه راه بینداز»
-- «لوکیشن آلمان کند است»
+### Codex
 
-## درس‌هایی که داخلش هست
+```bash
+git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
+```
 
-- **سلامت:** فقط تست داده معتبر است. «وصل است» در پنل یا active بودن سرویس تونل چیزی را ثابت نمی‌کند.
-- **فیلترینگ:** الگوها و راه تشخیصشان:
-  - در بعضی دیتاسنترها ورودی از خارج فیلتر است؛ اتصال برقرار می‌شود ولی داده رد نمی‌شود.
-  - UDP بعد از چند بسته بسته می‌شود.
-  - IP سرور خارجی بعد از ترافیک سنگین بلاک می‌شود.
-  - هر جریان ورودی از خارج روی سرعت کمی محدود می‌شود.
-- **حالت رله:** کدام حالت (تونل معکوس یا DNAT) در برابر کدام نوع بستن دوام می‌آورد.
-- **هزینهٔ ترافیک:** هیچ‌وقت ترافیک را بین دو رلهٔ ایران رد نکن، چون روی هر دو حساب می‌شود. رلهٔ مشکل‌دار را از DNS همان لوکیشن بردار.
-- **پنل:** ری‌استارت پنل Xray همهٔ نودها را ری‌استارت می‌کند؛ keep_alive نود را خودش خاموش می‌کند؛ جاب پاک‌کردن اینباندها تله دارد.
-- **تونل‌ها:** بافر ۴ مگ رم را منفجر می‌کند؛ کلاینت بعد از ری‌استارت سمت رله خودش وصل نمی‌شود؛ تونل سرور بازنشسته کانال کنترل را می‌دزدد.
-- **مهاجرت:** سرور را بدون دست زدن به رله‌ها عوض کن، با همان توکن تونل.
-- **ربات فروش:** تایم‌اوت، نفرستادن دوبارهٔ درخواست‌های تغییردهنده، و گزارش درست خطا.
+## فایل‌های مهم
 
-## امنیت
+- `SKILL.md`: نقطه شروع اسکیل، قوانین امنیتی، مسیرهای بررسی و glossary فارسی.
+- `docs/install-recipes.md`: دستورهای نصب تأییدشده و نکات preflight.
+- `docs/sources.md`: گزارش اعتبارسنجی لینک‌ها و GitHubهای معرفی‌شده.
+- `registries/`: رجیستری پنل‌ها، coreها، تانل‌ها، ابزارها و کامیونیتی.
+- `references/`: راهنماهای عملیاتی عمیق برای DNS، tunnel، panel، filtering، node lifecycle و incidentها.
+- `templates/fleet-inventory.example.md`: نمونه inventory خصوصی؛ نسخه واقعی را داخل repo نگذار.
 
-- تا تو تأیید نکنی، Claude فقط می‌خواند و چیزی را تغییر نمی‌دهد.
-- توکن، کلید و رمز هیچ‌وقت چاپ نمی‌شود.
-- Claude با رمز وارد سرور نمی‌شود. ساختن ادمین و وارد کردن رمز با خود توست.
-- مشخصات واقعی سرورهایت (IP، دامنه، پورت) را در فایل خصوصی نگه دار، نه در این ریپو. نمونه‌اش در `templates/fleet-inventory.example.md` است.
+## مدل امنیتی
+
+- تا اپراتور تأیید نکند، agent فقط باید بخواند و بررسی کند.
+- secret، token، private key، لینک subscription، رمز پنل و IP inventory واقعی نباید داخل chat یا repo ذخیره شود.
+- هر `curl | bash` یا installer خام باید مثل remote code execution بررسی شود.
+- بعد از تغییر شبکه، status سرویس کافی نیست؛ باید تست داده واقعی انجام شود.
+- هر مورد نامطمئن با `third-party`، `community`، `unverified` یا `deprecated` علامت می‌خورد.
 
 ## مجوز
 

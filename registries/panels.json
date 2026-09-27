@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-09-27",
+  "items": [
+    {
+      "name": "3x-ui",
+      "aliases": ["Sanaei", "x-ui", "3X-UI"],
+      "category": "panel",
+      "status": ["verified", "official"],
+      "repository": "https://github.com/MHSanaei/3x-ui",
+      "docs": "https://docs.sanaei.dev",
+      "install": "bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)",
+      "notes": [
+        "Official README describes it as an Xray-core management panel.",
+        "Installer generates random credentials and access path.",
+        "Use pinned tags for reproducible installs when possible."
+      ]
+    },
+    {
+      "name": "PasarGuard node scripts",
+      "aliases": ["pg-node", "PasarGuard scripts"],
+      "category": "node-installer",
+      "status": ["verified"],
+      "repository": "https://github.com/PasarGuard/scripts",
+      "install": "sudo bash -c \"$(curl -sL https://github.com/PasarGuard/scripts/raw/main/pg-node.sh)\" @ install --name node-eu-1",
+      "notes": [
+        "Script validates node names and fetches shared libraries.",
+        "Review generated environment files and never expose API keys."
+      ]
+    },
+    {
+      "name": "VPanel installer",
+      "aliases": ["vpanel-bash", "VPanel"],
+      "category": "panel-or-bot-installer",
+      "status": ["verified", "third-party"],
+      "repository": "https://github.com/vpaneladmin/vpanel-bash",
+      "install": "wget -O vpanel-installer.sh https://raw.githubusercontent.com/vpaneladmin/vpanel-bash/main/vpanel-installer.sh && chmod +x vpanel-installer.sh && sudo ./vpanel-installer.sh",
+      "notes": [
+        "Installer prompts for Telegram bot and panel credentials.",
+        "Installer downloads an additional zip payload from vpanel.pluslimoo.de.",
+        "Review before production use."
+      ]
+    },
+    {
+      "name": "Marzban",
+      "category": "panel",
+      "status": ["known", "not-reviewed-in-this-pass"],
+      "repository": "https://github.com/Gozargah/Marzban",
+      "notes": ["Listed for routing; inspect upstream docs before using commands."]
+    },
+    {
+      "name": "Marzneshin",
+      "category": "panel",
+      "status": ["known", "not-reviewed-in-this-pass"],
+      "repository": "https://github.com/marzneshin/marzneshin",
+      "notes": ["Listed for routing; inspect upstream docs before using commands."]
+    },
+    {
+      "name": "Hiddify Manager",
+      "category": "panel",
+      "status": ["known", "not-reviewed-in-this-pass"],
+      "repository": "https://github.com/hiddify/hiddify-manager",
+      "notes": ["Listed for routing; inspect upstream docs before using commands."]
+    },
+    {
+      "name": "Whale Panel",
+      "category": "panel",
+      "status": ["community"],
+      "repository": "https://github.com/primeZdev/whale-panel",
+      "notes": ["Community project found in primeZdev public repos."]
+    },
+    {
+      "name": "ov-panel",
+      "category": "openvpn-panel",
+      "status": ["community"],
+      "repository": "https://github.com/primeZdev/ov-panel",
+      "notes": ["Community OpenVPN panel project found in primeZdev public repos."]
+    }
+  ]
+}
