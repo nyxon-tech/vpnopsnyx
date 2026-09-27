@@ -5,8 +5,7 @@ description: >
   cores, subscriptions, SSL, DNS, and network paths for production VPN infrastructure.
   Use when an operator asks about 3x-ui/Sanaei, PasarGuard, VPanel, Marzban, Marzneshin,
   Hiddify, Xray, sing-box, WireGuard, Reality, Backhaul, GRE/6TO4/SIT/IPIP/Geneve,
-  Cloudflare DNS, relay fleets, server optimization, or Persian VPN operations terms
-  such as پنل، نود، تانل، رله، سرور ایران، سرور خارج، کانفیگ، ساب، فیلتر، SSL.
+  Cloudflare DNS, relay fleets, server optimization, or related VPN operations.
 license: MIT
 metadata:
   short-description: AI skill for VPN and network operations
@@ -150,27 +149,12 @@ Any HTTP status usually means bytes flowed through the path. `000` means the pat
 
 ## Reporting Shape
 
-When answering operators, especially in Persian, keep commands and paths unchanged but explain plainly:
+When answering operators, keep commands and paths unchanged and explain plainly:
 
 - status: what is healthy, degraded, or broken;
 - evidence: source links, command output, or data test results;
 - risk: who is affected and what may disconnect users;
 - change: exact old value to new value, with rollback;
 - uncertainty: anything labeled `third-party`, `community`, or `unverified`.
-
-## Persian Glossary
-
-| Persian | Meaning |
-|---|---|
-| پنل | management panel |
-| نود / سرور خارج | exit node / foreign server |
-| رله / سرور ایران | relay / in-country server |
-| تانل / تونل | tunnel |
-| کانفیگ | client config |
-| ساب / اشتراک | subscription link |
-| دایرکت | direct config to the exit node |
-| فیلتر / آی پی بسته شده | filtering or destination-IP block |
-| اس اس ال | TLS certificate / SSL |
-| آپدیت و آپگرید | OS package update and upgrade |
 
 Keep production inventories in private files based on `templates/fleet-inventory.example.md`; never commit filled inventories.
