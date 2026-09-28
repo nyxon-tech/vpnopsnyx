@@ -40,8 +40,16 @@
   "compatibility_guide": "docs/agent-compatibility.md",
   "quality_workflows": [
     ".github/workflows/quality.yml",
-    ".github/workflows/source-review.yml"
+    ".github/workflows/source-review.yml",
+    ".github/workflows/community-review.yml",
+    ".github/workflows/sync-personal-fork.yml"
   ],
+  "distribution": {
+    "type": "git-repository-skill",
+    "release_archives": "https://github.com/nyxon-tech/vpnopsnyx/releases",
+    "official_registry_listing": false,
+    "guide": "docs/distribution.md"
+  },
   "runbooks": {
     "panels": 6,
     "tunnels": 8

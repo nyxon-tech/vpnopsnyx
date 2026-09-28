@@ -59,11 +59,14 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `guides/panels/` - dedicated runbooks for major panels.
 - `guides/tunnels/` - dedicated operational runbooks for major tunnel families.
 - `.github/workflows/` - structure, JSON, link, secret-pattern, and monthly source checks.
+- `.github/workflows/community-review.yml` - weekly read-only Issue and Pull Request summary.
+- `.github/workflows/sync-personal-fork.yml` - safe fast-forward synchronization for the personal fork.
 - `docs/agent-compatibility.md` - Codex, Claude, and generic agent integration.
 - `docs/maintenance.md` - periodic source and registry review procedure.
 - `docs/api-restore-validation.md` - versioned API probes and repeatable restore-drill evidence.
 - `docs/field-observations-2026-09.md` - sanitized operator evidence with explicit limits on generalization.
 - `docs/lab-and-benchmark-program.md` - auditable panel restore/API and datacenter measurement program.
+- `docs/distribution.md` - supported installation, registry status, and release gates.
 - `SECURITY.md` and `.github/` - safe reporting, issue, review, and ownership policy.
 - `CHANGELOG.md` - release history.
 

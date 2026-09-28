@@ -1,0 +1,36 @@
+name: Community Review
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summarize open issues and pull requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          items="$(gh api "repos/${REPOSITORY}/issues?state=open&per_page=100")"
+          issue_count="$(jq '[.[] | select(has("pull_request") | not)] | length' <<<"${items}")"
+          pull_count="$(jq '[.[] | select(has("pull_request"))] | length' <<<"${items}")"
+
+          {
+            echo "## Community review"
+            echo
+            echo "- Open issues: ${issue_count}"
+            echo "- Open pull requests: ${pull_count}"
+            echo
+            echo "### Open items"
+            jq -r '.[] | "- [#\(.number) \(.title)](\(.html_url))"' <<<"${items}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+

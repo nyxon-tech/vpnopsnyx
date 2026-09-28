@@ -15,3 +15,22 @@ external links. A green run proves reachability and structure, not installer saf
 
 Automation must not download and execute installers, modify upstream repositories,
 or create issues automatically. A maintainer decides how to resolve every finding.
+
+## Automated Community Review
+
+`.github/workflows/community-review.yml` runs weekly and writes the current open
+Issue and Pull Request counts to the GitHub Actions job summary. It is read-only and
+does not post comments, merge changes, or close community work.
+
+## Personal Fork Synchronization
+
+`.github/workflows/sync-personal-fork.yml` runs only in
+`Emadhabibnia1385/vpnopsnyx`. It fast-forwards `main` from
+`nyxon-tech/vpnopsnyx`; it never force-pushes or overwrites divergent work. A failed
+fast-forward requires a human to review the fork's unique commits and conflicts.
+
+## Latest Manual Review
+
+On 2026-09-28, the public GitHub API reported no open Issues or Pull Requests. The
+latest Quality and manually dispatched Scheduled Source Review runs both completed
+successfully. This is a point-in-time maintenance result, not a permanent guarantee.

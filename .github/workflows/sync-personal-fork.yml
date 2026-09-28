@@ -1,0 +1,27 @@
+name: Sync Personal Fork
+
+on:
+  schedule:
+    - cron: "41 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.repository == 'Emadhabibnia1385/vpnopsnyx'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Fast-forward from upstream
+        run: |
+          set -euo pipefail
+          git remote add upstream https://github.com/nyxon-tech/vpnopsnyx.git
+          git fetch upstream main
+          git merge --ff-only upstream/main
+          git push origin main
+

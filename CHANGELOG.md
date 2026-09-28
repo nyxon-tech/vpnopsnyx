@@ -2,6 +2,13 @@
 
 All notable changes to VPNOpsNyx are documented here.
 
+## Unreleased
+
+- Added weekly read-only Issue and Pull Request reporting.
+- Added safe fast-forward synchronization for the personal fork.
+- Documented supported GitHub distribution, registry status, and release gates.
+- Recorded the latest maintenance review without claiming unperformed infrastructure tests.
+
 ## [0.6.0] - 2026-09-28
 
 ### Added
