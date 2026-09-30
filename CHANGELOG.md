@@ -4,6 +4,7 @@ All notable changes to VPNOpsNyx are documented here.
 
 ## Unreleased
 
+- Added sanitized operator helper scripts under `scripts/` (real-user traffic per relay, health snapshot, per-node usage, relay data matrix, UDP survival, token-safe Cloudflare DNS, reviewed DNAT with dry-run, BackPack test/persistent links, GRE/SIT tests, domestic mirror selection, safe upgrade, reboot verification, provider test file).
 - Added weekly read-only Issue and Pull Request reporting.
 - Added safe fast-forward synchronization for the personal fork.
 - Documented supported GitHub distribution, registry status, and release gates.

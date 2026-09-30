@@ -94,6 +94,7 @@ Use these labels in plans and docs:
 | Version-specific API and restore evidence | `docs/api-restore-validation.md` |
 | Sanitized operator observations and evidence limits | `docs/field-observations-2026-09.md` |
 | Lab and datacenter evidence program | `docs/lab-and-benchmark-program.md` |
+| Operator helper scripts (real-user check, DNAT, BackPack, Cloudflare, reboots) | `scripts/README.md` |
 
 ## Product Runbook Rule
 
