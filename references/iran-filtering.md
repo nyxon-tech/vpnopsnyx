@@ -22,6 +22,9 @@ datacenters and ISPs, so treat this as a list of hypotheses to test, not as fact
 | Large ping loss (40%) while TCP data is fine, or 0% ping loss with dead TCP | ICMP is handled separately from TCP | Always run a data test; never conclude from ping alone |
 | TLS stalls right after the Client Hello on one relay path only | `tcp_mtu_probing=1` on a lossy link collapsed the MSS to 1024/256/48 bytes | `ss -tin` shows tiny `mss`/`advmss`; set probing to 0 |
 | Plain `http://` to a panel hosted in Iran stalls after ~5 KB, while HTTPS works | Keyword/HTTP inspection of cleartext | Retry the same request over HTTPS or through SOCKS/SSH |
+| xDi links that **relays dial** die across many exits in one night, units stay `active`; links that the **exits dial** survive | Per-destination ICMP filtering from the relay's DC (operator-observed, Oct 2026) | `scripts/node/bpstatus.sh` peer loss 100% and `handshake did not complete`; `scripts/local/bp_matrix.sh` reverse test |
+| Ping and small HTTPS (panel pages, subscriptions) to a foreign host work, but bulk downloads from in-country DCs to it are ~0 | **Bulk throttling** of that destination IP | Download a test file (`scripts/node/nettest.sh`) from 2 relays vs timing the panel URL |
+| An exit downloads at line rate from the internet but sends only a few Mbit to anyone, plus loss to its panel | **Provider caps the exit's upload or network**, not censorship | `curl` a large file on the exit vs from the exit to a foreign server; ping exit↔panel |
 
 ## 2. Pattern details
 
@@ -87,6 +90,9 @@ in-country clients succeed, the relay can no longer host reverse tunnels.
 5. **Foreign gateway hop** through a server the relay can still reach. This costs double traffic on the
    gateway and needs the operator's explicit OK.
 6. **UDP-based tunnels** only after re-measuring that UDP flows survive past a few packets.
+7. **Reverse xDi** (the exit dials the relay over ICMP) when relay-to-exit ICMP or TCP is filtered,
+   including exits whose IP is blacklisted for inbound traffic. One dialed xDi link per exit host;
+   re-verify the next day. See `tunnels.md` §15.
 
 ## 5. Measurement pitfalls
 

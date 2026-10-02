@@ -10,11 +10,15 @@
 # env: NAME ROLE(listen on the exit | dial on the relay) ADDR CARRIER(xdi|pck) IFACE(<=15 chars)
 #      LIP(cidr) PIP [PORTS='"21001","21002"'  relay side: BackPack listens on these and forwards to PIP:port]
 # Leave PORTS empty and use relay DNAT to PIP instead when an old listener still owns the port.
+# REVERSE direction (exit dials relay): run ROLE=listen ADDR=0.0.0.0:PORT on the RELAY and ROLE=dial
+#      ADDR=RELAY_IP:PORT on the EXIT, then DNAT the relay's public port to the exit's tunnel IP. Use it when
+#      the relay->exit ICMP path is filtered; see references/tunnels.md §15 (one dialed xdi link per exit host).
+# BIN=/usr/local/bin/backpack-X  run a second BackPack version side by side (both ends should match).
 # Undo: systemctl disable --now backpack-NAME   (config kept for re-enable)
 set -e
 read -r TOKEN
 [ ${#TOKEN} -ge 32 ] || { echo "no token on stdin"; exit 1; }
-[ -x /usr/local/bin/backpack ] || { echo "backpack binary missing (copy it from a host that runs it and verify sha256)"; exit 1; }
+[ -x ${BIN:-/usr/local/bin/backpack} ] || { echo "backpack binary missing (copy it from a host that runs it and verify sha256)"; exit 1; }
 mkdir -p /etc/backpack; chmod 700 /etc/backpack
 umask 077
 cat > /etc/backpack/$NAME.toml <<EOF
@@ -42,7 +46,7 @@ Description=BackPack L3 link $NAME
 After=network-online.target
 Wants=network-online.target
 [Service]
-ExecStart=/usr/local/bin/backpack -c /etc/backpack/$NAME.toml
+ExecStart=${BIN:-/usr/local/bin/backpack} -c /etc/backpack/$NAME.toml
 Restart=always
 RestartSec=3
 LimitNOFILE=1048576

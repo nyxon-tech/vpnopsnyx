@@ -46,3 +46,27 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     server without config. Lesson: switch the panel first, put an nft bridge on the old IP, then move DNS.
 16. **Reseller hit their data cap and all their users dropped at once.** Their notifications were
     broken, so nobody saw it coming. Lesson: track reseller quota burn yourself and warn days ahead.
+17. **Most forward xDi links died in one night.** Units stayed `active`; peer ping 100%. Links dialed by
+    the exits survived. Fix: rebuild as reverse links. Lesson: prefer the exit-dials-relay direction and
+    re-check every link daily.
+18. **A fresh link was filtered 40 minutes after it went live.** It was reported as fixed after a
+    10-minute check. Lesson: never call a new path stable before the next-day check.
+19. **Two reverse links on one exit, only one worked.** Each passed alone; together the second showed
+    100% loss and "different tunnel's tag" warnings. Fix: one dialed xDi link per exit, other relays via
+    other modes.
+20. **Nodes on a moved server stayed "error".** The node certificates named the old IP and the panel's
+    strict TLS check refused them. Fix: new certificates and an updated stored certificate in the panel.
+21. **A relay went dark for hours: its traffic quota ran out.** Three locations that used only that relay
+    dropped. Lesson: track relay quotas and give every location a second relay.
+22. **A sales bot abroad could not create services.** It called the panel through an in-country relay
+    that drops foreign-initiated flows. Fix: pin the panel name to the panel IP on the bot's server.
+23. **The panel and subscriptions were erratic (1 s to timeout).** One busy relay carried the panel
+    domain. Fix: timed each path, moved the domain to the steady ones and a direct record.
+24. **A location was "unusable" though every unit was up.** Its only relay reached the exit with 50%
+    loss; handshakes took 5–9 s. Fix: a reverse link from another relay; real-user bytes per connection
+    roughly doubled.
+25. **A rebooted exit's node failed to start.** First an inbound port was busy at start time, then the
+    panel-to-node path lost half its packets so `Start` never arrived. The provider's network was the
+    cause; a sibling node with a small user list still connected.
+26. **Adding a location to a 1-core relay slowed two others on it.** Fix: moved a location that had a
+    healthy alternative relay off it instead of removing the new one.

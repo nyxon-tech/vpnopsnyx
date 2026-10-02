@@ -7,8 +7,9 @@
 # Stop early:  systemctl stop nettest
 for p in ${PORT:-18888} 18889 18890 28888; do
   ss -Htan "( sport = :$p )" | grep -q . && continue
-  mkdir -p /srv/nettest && { [ -s /srv/nettest/100MB.bin ] || head -c 100000000 /dev/zero > /srv/nettest/100MB.bin; }
+  # Stop a previous run FIRST: its ExecStopPost deletes /srv/nettest, which would remove a file created before it.
   systemctl stop nettest 2>/dev/null; systemctl reset-failed nettest 2>/dev/null
+  mkdir -p /srv/nettest && { [ -s /srv/nettest/100MB.bin ] || head -c 100000000 /dev/zero > /srv/nettest/100MB.bin; }
   systemd-run --quiet --unit=nettest -p RuntimeMaxSec=259200 -p ExecStopPost="/bin/rm -rf /srv/nettest" \
     /usr/bin/python3 -m http.server $p --bind 0.0.0.0 --directory /srv/nettest
   sleep 1

@@ -18,6 +18,8 @@ between releases.
 11. Certificates behind relays
 12. Rebooted exit with a stopped core
 13. Host-service port collisions
+14. Moving a node to a new server or IP (certificates)
+15. Slow or lossy panel-to-node links
 
 ## 1. Layout and read-only DB access
 
@@ -181,3 +183,35 @@ A field incident showed a tunnel tool's web UI and an Xray inbound racing for th
 same port. After reboot the other service won, Xray exited, and unrelated inbounds in
 the same core disappeared. Stop/disable or reconfigure the conflicting service,
 reserve fixed listener ports, restart the core, and verify every inbound.
+
+## 14. Moving A Node To A New Server Or IP (Certificates)
+
+A node can be moved by copying its compose directory (`/opt/<name>` with `.env`), its data directory
+(`/var/lib/<name>`, including `certs/`) and its service unit, starting it on the new host, then changing
+the node's address in the panel. Field notes (`operator-observed`):
+
+- **Check the target first.** A "new" server already ran another panel's node on the default ports
+  (62050/62051), and one target host ran a different panel whose Xray owned 443, an inbound port of the
+  migrating core. Compare `ss -ltnp` on the target with every inbound port of the node's core and with
+  the node's service/API ports; move the node to free ports when needed. Never stop a service you did not
+  identify; ask the operator.
+- **The certificate names the old IP.** The panel then reports
+  `CERTIFICATE_VERIFY_FAILED ... IP address mismatch`. The panel stores the node's exact certificate
+  (`server_ca`) and verifies with Python's default SSL context, which is strict on Python 3.13+, so a leaf
+  signed by the old self-signed certificate fails and so does a re-issued certificate with the same key.
+  Generate a new pair for the new IP (`scripts/node/node_cert.sh`) and store the new certificate in the
+  panel together with the new address (dashboard, or `scripts/panel/node_edit.sh`).
+- Order that kept users online: start the node on the new host, switch the panel address and certificate
+  (node reconnects, Xray starts there), move the tunnels that carry users, then move direct DNS. Keep the
+  old host running, untouched, until real users are confirmed on the new one.
+- Inventory everything else on the old host (shops, bots, databases, other panels) before cancelling it.
+
+## 15. Slow Or Lossy Panel-To-Node Links
+
+`Start` sends the whole user list to the node. With thousands of users and a lossy panel-to-node path
+(seconds of TLS setup, tens of percent loss) it times out: the node log shows `synced N users on startup`
+or nothing at all, and the panel shows `Request timed out` while basic `GetBaseInfo` calls succeed. Per-node
+`default_timeout` and `internal_timeout` (NodeModify) can be raised, but in the field even 60 seconds
+did not help on a path with 50% loss; the cause was the exit provider's network. Measure the panel-to-node
+path (`ping`, `curl -w '%{time_connect} %{time_appconnect}'`) before blaming the panel, and remember that
+a second node on the same host may still connect if its user list is small.

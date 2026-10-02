@@ -12,6 +12,7 @@
 9. Traffic volume and quotas
 10. Splitting one location across two exits
 11. Relay headroom and exit assignment
+12. Relay quota exhaustion and single-relay dependency
 
 ## 1. The one-line snapshot
 
@@ -110,3 +111,19 @@ If an exit is slow to several independent destinations and also shows packet los
 and high TCP retransmission locally, treat the exit/provider path as the likely
 bottleneck. Preserve timestamped evidence, open a provider ticket, or replace the
 host; moving relays cannot repair a universally degraded exit upstream.
+
+## 12. Relay Quota Exhaustion And Single-Relay Dependency
+
+`operator-observed`. A relay that the provider sells with a monthly traffic quota simply goes dark when
+the quota runs out: no ping and no SSH from anywhere, so it looks like a datacenter outage. Every
+location that depends only on that relay drops at once. After the top-up, tunnel clients that backed off
+for hours may need a restart to reconnect immediately.
+
+- Track each relay's quota burn like any other capacity metric and warn days ahead.
+- List the locations that have exactly one working relay; they are the ones a quota or DC event takes
+  down. Adding a second relay of a *different* path type (for example a reverse xDi link next to a
+  reverse backhaul tunnel) protects against both quota and filtering events.
+- Every xDi link a relay terminates costs CPU. A 4-core relay terminating three busy links reached
+  ~65% CPU at ~260 Mbit; a 1-core relay saturated (0 free download, 60% ping loss) after one more busy
+  location was added, which slowed the other locations on it. Rebalance by moving a location that has a
+  healthy alternative relay, not by removing the newest one.

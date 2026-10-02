@@ -11,6 +11,7 @@
 8. Package mirrors on restricted networks
 9. Controlled package upgrade
 10. Reboot verification
+11. Moving a whole server (several nodes, tunnels and other tenants)
 
 ## 1. First contact with a new server
 
@@ -131,3 +132,22 @@ alone. Then verify failed units, every enabled tunnel/DNAT unit, nftables tables
 `net.ipv4.ip_forward`, containers, core listeners, and a real data test from another
 in-country server. Start with the least risky host; reboot the panel host last when
 its startup is relied upon to resynchronize nodes.
+
+## 11. Moving A Whole Server (Several Nodes, Tunnels And Other Tenants)
+
+`operator-observed` checklist from moving two exits that each hosted nodes of two panels:
+
+1. **Inventory the old server**: every node container with its `.env` ports, its panel and node id;
+   every tunnel client and BackPack link and whether it carries users (`scripts/node/realuse.sh`); every
+   DNS record pointing at the IP in *all* DNS accounts (some zones may sit in accounts you cannot edit);
+   and every non-VPN workload (shops, bots, databases, panels). Ask about the non-VPN ones.
+2. **Inventory the new server**: listeners and containers. A delivered server may already run someone
+   else's node or panel; never stop what you did not identify.
+3. Test the new IP from every in-country relay (ping plus a test file) before moving anything.
+4. Copy the node directories and units, change service ports that collide, start the nodes, issue new
+   node certificates (`pasarguard.md` §14), then switch each node in its own panel.
+5. Move tunnels that carry users only after Xray listens on the new host; move idle ones any time.
+6. Move direct DNS records last. Keep the old server untouched until real users are confirmed on the new
+   one and the operator has checked nothing else depends on it.
+7. When two brands share a server, decide with the operator whether the other brand's nodes move with
+   it or go to that brand's own server.

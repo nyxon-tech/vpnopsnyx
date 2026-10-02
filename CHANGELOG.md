@@ -4,6 +4,8 @@ All notable changes to VPNOpsNyx are documented here.
 
 ## Unreleased
 
+- Added October 2026 field lessons: reverse xDi links (exit dials relay) and their survival, one dialed xDi link per exit, next-day re-verification, moving PasarGuard nodes to a new IP (strict TLS, new certificates), slow panel-to-node links, relay quota outages, panel and bot paths through relays, new filtering signatures, server-migration checklist, incidents 17-26.
+- Added scripts: `node/bpstatus.sh`, `local/bp_matrix.sh`, `panel/node_edit.sh`, `panel/node_status.py`, `node/node_cert.sh`, `local/dns_brand_audit.sh`. `bptest.sh`/`bplink.sh` accept `BIN` for a second BackPack version; fixed `nettest.sh` deleting its own test file when restarted.
 - Added sanitized operator helper scripts under `scripts/` (real-user traffic per relay, health snapshot, per-node usage, relay data matrix, UDP survival, token-safe Cloudflare DNS, reviewed DNAT with dry-run, BackPack test/persistent links, GRE/SIT tests, domestic mirror selection, safe upgrade, reboot verification, provider test file).
 - Added weekly read-only Issue and Pull Request reporting.
 - Added safe fast-forward synchronization for the personal fork.

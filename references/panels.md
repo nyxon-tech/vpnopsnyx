@@ -16,6 +16,7 @@ versions. Check them against the version you install, for example by opening the
 9. Traps that break customers
 10. Bot-side robustness (timeouts and idempotency)
 11. Certificate renewal and origin checks
+12. Panel and subscription domain paths (relays, bots, quotas)
 
 ## 1. Which panel for what
 
@@ -183,3 +184,23 @@ Cloudflare `Full` mode does not validate the origin certificate the way `Full
 certificate is invalid or expired. Check the origin directly with `openssl s_client`
 against the actual origin address/port and compare with Cloudflare's current SSL-mode
 and proxied-port documentation.
+
+## 12. Panel And Subscription Domain Paths (Relays, Bots, Quotas)
+
+`operator-observed`. The panel's domain is often the same name as the subscription links, and is often
+published through an in-country relay (DNAT to the panel host). That path has its own failure modes:
+
+- **A sales bot hosted abroad cannot use an in-country relay to reach the panel.** Relays commonly drop
+  data on flows opened from abroad, so the bot's API calls hang (`Read timed out` after 20 s) and orders
+  fail and refund. Give the bot a direct path: a panel domain that resolves straight to the panel host,
+  or a single `/etc/hosts` line on the bot's server pinning the panel name to the panel IP (the panel's
+  certificate must cover that name). Document the pin; it moves with the bot.
+- **A busy relay makes the panel and subscriptions erratic** (1 s, 17 s, timeout on the same URL) while
+  the panel answers locally in milliseconds. Time the panel URL through each candidate path with
+  `curl --resolve NAME:PORT:IP` and keep only the steady ones in DNS; a direct record to the panel host is
+  usually fastest and carries little traffic.
+- **Small HTTPS can survive where bulk traffic dies.** In-country datacenters throttled bulk transfers
+  to a panel host's IP (download 0 Mbit, ping clean) while panel pages and subscription fetches still
+  worked. Do not infer from a working panel that VPN traffic to the same IP will work.
+- Keep heavy VPN traffic off the panel host's IP. Blacklisting that IP also cuts the operator's own
+  panel access from inside the country.

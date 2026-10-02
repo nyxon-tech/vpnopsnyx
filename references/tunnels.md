@@ -15,6 +15,7 @@
 12. BackPack direct L3 and xDi
 13. GRE, SIT, and IPIP provider testing
 14. DNAT to an L3 tunnel peer
+15. Reverse xDi (exit dials relay) and link survival
 
 ## 1. Backhaul reverse tunnels
 
@@ -251,3 +252,32 @@ https://wiki.nftables.org/wiki-nftables/index.php/Performing_Network_Address_Tra
 Use a dedicated table, validate the complete candidate with `nft -c -f`, preserve a
 ruleset backup, verify forwarding and return routing, and never flush a remote host's
 entire firewall as rollback.
+
+## 15. Reverse xDi (Exit Dials Relay) And Link Survival
+
+`operator-observed`, October 2026, several Iranian datacenters. In xDi the dialing side sends ICMP echo
+requests and the listening side answers with echo replies. The direction matters:
+
+- **Forward** (relay dials exit): needs ICMP from the relay's datacenter to the exit IP. Over one night
+  most forward links in one fleet died together (relay-to-exit ICMP 100% filtered) while their units stayed
+  `active` and logged `handshake did not complete`.
+- **Reverse** (exit dials relay): needs ICMP from the exit to the relay. In the same night every reverse
+  link survived. Reverse also worked for an exit whose IP was blacklisted for inbound traffic from Iran,
+  and for exits that no relay could reach forward.
+
+Build a reverse link by running `ROLE=listen` on the relay and `ROLE=dial` on the exit
+(`scripts/node/bplink.sh`), then DNAT the relay's public location port to the exit's tunnel IP
+(`scripts/relay/dnat.sh`, section 14). Measure candidates in both directions with
+`scripts/local/bp_matrix.sh`.
+
+Traps:
+- **One dialed xDi link per exit host.** An exit that dialed two relays at the same time kept only one
+  working; the other showed 100% peer loss and the log said `xdi echoes from ... carry a different tunnel's
+  tag`. Tests run one at a time both passed, so test the final combination, not each link alone. Use other
+  relays through a different mode (forward link, reverse backhaul, DNAT) for the same exit.
+- **Dead links break live ones.** Old forward links that are still `active` on an exit keep receiving
+  stray echoes and confused the new reverse link. Disable dead links on both ends before building new ones.
+- **A new path can be filtered within an hour.** One reverse link ran at ~250 Mbit and carried users,
+  then the relay-exit pair was blocked ~40 minutes later. Never report a fresh link as stable: re-check
+  the peer ping (`scripts/node/bpstatus.sh`) and real-user bytes (`scripts/node/realuse.sh`) the next day.
+- The relay's CPU grows with every xDi link it terminates; watch it at peak before adding more.

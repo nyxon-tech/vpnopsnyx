@@ -32,6 +32,9 @@ Assume the operator may run a paid VPN/proxy service where one bad command can d
 7. Record the vantage point of every network test. A test run while the operator's
    own VPN, TUN interface, or system proxy is active may measure a foreign egress
    path instead of the customer's in-country path.
+8. Treat a new or rebuilt network path as unproven for 24 hours. Re-check its tunnel
+   health and real-user bytes the next day before reporting it as stable; some paths
+   are filtered within an hour of carrying traffic.
 
 ## Hard Safety Rules
 
@@ -92,9 +95,10 @@ Use these labels in plans and docs:
 | Agent runtime compatibility | `docs/agent-compatibility.md` |
 | Scheduled registry/source maintenance | `docs/maintenance.md` |
 | Version-specific API and restore evidence | `docs/api-restore-validation.md` |
-| Sanitized operator observations and evidence limits | `docs/field-observations-2026-09.md` |
+| Sanitized operator observations and evidence limits | `docs/field-observations-2026-09.md`, `docs/field-observations-2026-10.md` |
 | Lab and datacenter evidence program | `docs/lab-and-benchmark-program.md` |
 | Operator helper scripts (real-user check, DNAT, BackPack, Cloudflare, reboots) | `scripts/README.md` |
+| Reverse xDi links, dead-link cleanup, moving nodes to a new IP | `references/tunnels.md` §15, `references/pasarguard.md` §14–15 |
 
 ## Product Runbook Rule
 

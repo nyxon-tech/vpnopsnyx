@@ -27,6 +27,6 @@ ports        = [${PORTS}]
 accept_udp   = false
 EOF
 systemctl stop bp-$NAME 2>/dev/null || true
-systemd-run --quiet --unit=bp-$NAME -p RuntimeMaxSec=1800 /usr/local/bin/backpack -c /etc/backpack/$NAME.toml
+systemd-run --quiet --unit=bp-$NAME -p RuntimeMaxSec=1800 ${BIN:-/usr/local/bin/backpack} -c /etc/backpack/$NAME.toml
 sleep 2
 echo "$(hostname): bp-$NAME $(systemctl is-active bp-$NAME) $ROLE $CARRIER $LIP -> $PIP (auto-stop 30 min)"
