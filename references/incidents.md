@@ -70,3 +70,7 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     cause; a sibling node with a small user list still connected.
 26. **Adding a location to a 1-core relay slowed two others on it.** Fix: moved a location that had a
     healthy alternative relay off it instead of removing the new one.
+27. **A relay dropped packets after a provider reboot.** Its conntrack limits lived only in `sysctl.d`,
+    which runs before the conntrack module loads, so the table was back at 8192 entries with a 5-day
+    timeout and filled up (`table full, dropping packet`). Fix: higher limits applied immediately, module
+    loaded at boot, sysctl re-applied by the DNAT unit. Lesson: check `nf_conntrack_max` after any reboot.

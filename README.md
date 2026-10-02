@@ -14,6 +14,7 @@ VPNOpsNyx is not a VPN protocol, tunnel implementation, or one-click panel fork.
 - Cores and protocols: Xray-core, sing-box, WireGuard, AmneziaWG, Hysteria2, TUIC, Trojan, VMess, VLESS, Shadowsocks, MTProto, HTTP/SOCKS, and Reality/TLS operations.
 - Tunnels and relays: Backhaul, [BackPack](https://github.com/AminMGMT/BackPack), Rathole, Paqet, FRP, DaggerConnect, DNAT/nftables, GRE/GRE6/6TO4/SIT/IPIP/Geneve, WireGuard relay paths, SSH reverse tunnels, and Cloudflare DNS steering.
 - Operations: health checks, data-path verification, certificate handling, node lifecycle, capacity, incident triage, migration, and rollback.
+- Field-tested operations: real-user traffic per relay, forward and reverse BackPack xDi links, relay DNAT with dry-run, moving PasarGuard nodes to new servers, relay quota and capacity limits, and multi-brand relay separation.
 - Community research: a registry of public GitHub maintainers and repositories relevant to VPN/proxy tooling.
 
 ![VPNOpsNyx layered architecture](assets/vpnopsnyx-architecture.png)
@@ -39,6 +40,7 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 ## Repository Map
 
 - `SKILL.md` - agent entrypoint, safety rules, triage flow, and reference routing.
+- `scripts/` - field-tested operator helpers (see `scripts/README.md`): real-user traffic per relay, tunnel health, forward/reverse xDi test matrix, reviewed DNAT, PasarGuard node edits and certificates, Cloudflare DNS and brand-separation audit.
 - `references/` - detailed operational guides for architecture, panels, tunnels, Cloudflare, incidents, capacity, filtering patterns, and node lifecycle.
 - `docs/install-recipes.md` - verified and third-party install commands, with preflight and verification notes.
 - `docs/sources.md` - source validation log and community profile review.
@@ -65,6 +67,7 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `docs/maintenance.md` - periodic source and registry review procedure.
 - `docs/api-restore-validation.md` - versioned API probes and repeatable restore-drill evidence.
 - `docs/field-observations-2026-09.md` - sanitized operator evidence with explicit limits on generalization.
+- `docs/field-observations-2026-10.md` - October follow-up: reverse xDi survival, one dialed link per exit, next-day re-verification, node moves under strict TLS.
 - `docs/lab-and-benchmark-program.md` - auditable panel restore/API and datacenter measurement program.
 - `docs/distribution.md` - supported installation, registry status, and release gates.
 - `SECURITY.md` and `.github/` - safe reporting, issue, review, and ownership policy.

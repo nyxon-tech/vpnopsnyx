@@ -14,6 +14,7 @@ VPNOpsNyx خودش پروتکل VPN، پیاده‌سازی تونل یا fork �
 - Coreها و پروتکل‌ها: Xray-core، sing-box، WireGuard، AmneziaWG، Hysteria2، TUIC، Trojan، VMess، VLESS، Shadowsocks، MTProto و Reality/TLS.
 - تونل‌ها و رله‌ها: Backhaul، [BackPack](https://github.com/AminMGMT/BackPack)، Rathole، Paqet، FRP، DaggerConnect، DNAT/nftables، GRE، GRE6، 6TO4، SIT، IPIP، Geneve، WireGuard relay و SSH reverse tunnel.
 - عملیات: health check، تست واقعی مسیر داده، SSL، DNS، firewall، lifecycle نود، ظرفیت، incident، migration و rollback.
+- تجربهٔ میدانی: سنجش ترافیک واقعی کاربر به تفکیک رله، تونل BackPack xDi در هر دو جهت، DNAT رله با پیش‌نمایش، انتقال نودهای PasarGuard به سرور تازه، محدودیت حجم و ظرفیت رله‌ها و جدا نگه داشتن رله‌های چند برند.
 - کامیونیتی: فهرست کامل پروفایل‌ها و ریپازیتوری‌های عمومی معرفی‌شده، همراه با لینک مستقیم و وضعیت اعتبارسنجی.
 
 ![معماری لایه‌ای VPNOpsNyx](assets/vpnopsnyx-architecture.png)
@@ -39,6 +40,8 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 ## فایل‌های مهم
 
 - `SKILL.md`: نقطه شروع Agent، قواعد امنیتی و مسیر دسترسی به منابع.
+- `scripts/`: اسکریپت‌های آزموده‌شده در عمل (راهنما: `scripts/README.md`): ترافیک واقعی کاربر به تفکیک رله، سلامت تونل‌ها، تست تونل xDi در هر دو جهت، DNAT با پیش‌نمایش، ویرایش نود و گواهی PasarGuard، DNS کلادفلر و بررسی جدایی برندها.
+- `docs/field-observations-2026-09.md` و `docs/field-observations-2026-10.md`: درس‌های میدانی بی‌نام‌شده، از جمله ماندگاری تونل xDi برعکس و بررسی دوبارهٔ روز بعد.
 - `docs/ecosystem-guide.md`: تفاوت پنل، core، VPN، reverse tunnel، overlay، client و routing data.
 - `docs/install-recipes.md`: دستورهای نصب بررسی‌شده همراه با preflight و verification.
 - `docs/networking-recipes.md`: راهنمای DNS، firewall، IPv4/IPv6، BBR، mirror و hosts file.

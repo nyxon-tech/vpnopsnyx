@@ -37,6 +37,8 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 ## 主要文件
 
 - `SKILL.md`：代理入口、安全规则和参考资料路由。
+- `scripts/`：经实地验证的运维脚本（见 `scripts/README.md`）：按中继统计真实用户流量、隧道健康、双向 xDi 测试矩阵、带预检的 DNAT、PasarGuard 节点与证书修改、Cloudflare DNS 及品牌隔离审计。
+- `docs/field-observations-2026-09.md`、`docs/field-observations-2026-10.md`：脱敏的现场观察及其适用范围。
 - `docs/ecosystem-guide.md`：区分面板、核心、VPN、反向隧道、覆盖网络、客户端和路由数据。
 - `docs/install-recipes.md`：带有预检和验证说明的安装流程。
 - `docs/community-review.md`：社区仓库逐项审查。

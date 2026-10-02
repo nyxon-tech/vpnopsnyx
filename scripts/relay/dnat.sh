@@ -61,11 +61,17 @@ Type=oneshot
 RemainAfterExit=yes
 ExecStartPre=-/usr/sbin/nft delete table ip $TABLE
 ExecStart=/usr/sbin/nft -f $FILE
+# Re-apply conntrack limits here: at boot sysctl.d runs before nf_conntrack is loaded, so the limits in
+# the sysctl file are silently skipped and the kernel default (8192 on a 1 GB host) fills up.
+ExecStartPost=-/usr/sbin/sysctl -q -p /etc/sysctl.d/99-$UNIT.conf
 ExecStop=/usr/sbin/nft delete table ip $TABLE
 [Install]
 WantedBy=multi-user.target
 EOF
-printf "net.ipv4.ip_forward=1\nnet.netfilter.nf_conntrack_max=1048576\nnet.netfilter.nf_conntrack_tcp_timeout_established=10800\n" > /etc/sysctl.d/99-$UNIT.conf
+# conntrack_max sized to RAM (~300 bytes per entry): 64k per GB, at least 65536, at most 1048576.
+CT_MAX=$(awk '/MemTotal/{m=int($2/1048576*65536); if (m<65536) m=65536; if (m>1048576) m=1048576; print m}' /proc/meminfo)
+printf "net.ipv4.ip_forward=1\nnet.netfilter.nf_conntrack_max=%s\nnet.netfilter.nf_conntrack_tcp_timeout_established=10800\n" "$CT_MAX" > /etc/sysctl.d/99-$UNIT.conf
+echo nf_conntrack > /etc/modules-load.d/conntrack.conf
 modprobe nf_conntrack 2>/dev/null || true
 sysctl -q -p /etc/sysctl.d/99-$UNIT.conf
 systemctl daemon-reload

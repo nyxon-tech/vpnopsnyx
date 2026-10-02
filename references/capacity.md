@@ -73,6 +73,14 @@ Every forwarded user flow lives in conntrack. With the default 5-day established
 flows filled a 262k table in about 2 days. Use `nf_conntrack_max = 1048576` and
 `nf_conntrack_tcp_timeout_established = 10800`, and watch `nf_conntrack_count`.
 
+**The limits silently reset after a reboot.** `sysctl.d` runs before the `nf_conntrack` module loads,
+so the conntrack lines are skipped and the kernel default applies: 8192 entries and a 5-day timeout on a
+1 GB relay. One such relay filled its table after a provider reboot (`nf_conntrack: table full, dropping
+packet` in `dmesg`), and every tunnel through it showed 40–60% loss at peak while the units stayed healthy.
+Fix: load the module at boot (`/etc/modules-load.d/conntrack.conf`) and re-apply the sysctl file from the
+DNAT unit (`ExecStartPost`), which `scripts/relay/dnat.sh` now does. Size the table to RAM (~300 bytes per
+entry; `dnat.sh` uses 64k per GB, capped at 1M) and check `nf_conntrack_max` after every relay reboot.
+
 ## 8. Retransmits and loss
 
 `/proc/net/snmp` RetransSegs/OutSegs over a 5 s window: about 1% is normal, 5% or more means trouble

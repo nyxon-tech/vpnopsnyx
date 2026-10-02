@@ -37,6 +37,8 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 ## Основные файлы
 
 - `SKILL.md` — инструкции агента, правила безопасности и маршрутизация к справочным материалам.
+- `scripts/` — проверенные на практике скрипты оператора (см. `scripts/README.md`): реальный трафик пользователей по релеям, состояние туннелей, тест xDi в обоих направлениях, DNAT с предпросмотром, правка нод и сертификатов PasarGuard, DNS Cloudflare и аудит разделения брендов.
+- `docs/field-observations-2026-09.md`, `docs/field-observations-2026-10.md` — обезличенные полевые наблюдения и их ограничения.
 - `docs/ecosystem-guide.md` — различия между панелями, ядрами, VPN, reverse tunnel, overlay, клиентами и routing data.
 - `docs/install-recipes.md` — проверенные инструкции установки с preflight и verification.
 - `docs/community-review.md` — обзор community-репозиториев.
