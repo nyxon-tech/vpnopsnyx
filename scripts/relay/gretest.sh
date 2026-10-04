@@ -10,6 +10,7 @@ LOCAL=$(ip -4 route get 1.1.1.1 | grep -oP 'src \K[0-9.]+')
 echo "$(hostname) local=$LOCAL"
 modprobe ip_gre 2>/dev/null; modprobe sit 2>/dev/null
 for p in ${PEERS:?}; do IFS=: read -r n r i s <<< "$p"
+  [ "$i" -ge 0 ] 2>/dev/null && [ "$i" -le 63 ] || { echo "  $n: index $i out of range 0..63 (172.31.250.(i*4+2) must stay below 255)"; continue; }
   if [ "$s" = a ]; then v4=$((i*4+1)); v6=1; else v4=$((i*4+2)); v6=2; fi
   ip link del gt_$n 2>/dev/null; ip link del st_$n 2>/dev/null
   ip link add gt_$n type gre local $LOCAL remote $r ttl 255 && ip addr add 172.31.250.$v4/30 dev gt_$n && ip link set gt_$n mtu 1400 up

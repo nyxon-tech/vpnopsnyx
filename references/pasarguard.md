@@ -20,6 +20,8 @@ between releases.
 13. Host-service port collisions
 14. Moving a node to a new server or IP (certificates)
 15. Slow or lossy panel-to-node links
+16. The panel and subscription domain behind relays
+17. Failed admin logins and blocking a source
 
 ## 1. Layout and read-only DB access
 
@@ -215,3 +217,31 @@ or nothing at all, and the panel shows `Request timed out` while basic `GetBaseI
 did not help on a path with 50% loss; the cause was the exit provider's network. Measure the panel-to-node
 path (`ping`, `curl -w '%{time_connect} %{time_appconnect}'`) before blaming the panel, and remember that
 a second node on the same host may still connect if its user list is small.
+
+## 16. The Panel And Subscription Domain Behind Relays
+
+`operator-observed`, October 2026. Sales bots, reseller tools and users all reach the panel API through
+one domain (often the subscription domain on the panel port). Which relays that domain points to decides
+whether purchases work:
+
+- **Never put an xDi relay (or any ICMP-carried L3 path) behind the panel domain.** Through such a relay,
+  `GET` requests (status, subscription pages) worked, but request bodies stalled: `POST /api/user` and
+  `PUT /api/user/{name}` arrived after ~16 minutes and were answered `400 Bad Request`. A sales bot's
+  renewals and new orders failed and refunded the customers for the whole hour that relay was in the
+  record. Read the panel access log for 400s with huge durations from the relay's tunnel address.
+- Prefer a reverse TCP tunnel (Backhaul) from the panel host to a steady relay, plus the panel's direct IP.
+  Test with a `POST` (for example a login with a wrong password must return `401` in under a second)
+  through every address in the record, not only a page load.
+- A direct panel IP can time out from some in-country datacenters while it works from others; keep at
+  least one relay path for users there.
+- Bots hosted abroad cannot reach an in-country relay that drops foreign-initiated flows; pin the panel
+  name to the panel IP in the bot server's `/etc/hosts`, or give bots their own name.
+
+## 17. Failed Admin Logins And Blocking A Source
+
+The access log records every `POST /api/admin/token`. `scripts/panel/auth_failures.sh` counts failures and
+successes per source. One source made ~20,000 failed logins per day for four days with no success: a
+reseller integration with an old password or someone guessing passwords. Ask the operator which before
+acting; to block, use `scripts/panel/blocklist.sh` (own nftables table and boot unit, only the listed
+addresses). Never block a relay or `127.0.0.1`: those addresses are shared by every user and bot that
+comes through a relay.

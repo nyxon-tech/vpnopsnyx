@@ -16,6 +16,8 @@
 13. GRE, SIT, and IPIP provider testing
 14. DNAT to an L3 tunnel peer
 15. Reverse xDi (exit dials relay) and link survival
+16. Persistent GRE relay links
+17. When a relay gets a new IP
 
 ## 1. Backhaul reverse tunnels
 
@@ -281,3 +283,47 @@ Traps:
   then the relay-exit pair was blocked ~40 minutes later. Never report a fresh link as stable: re-check
   the peer ping (`scripts/node/bpstatus.sh`) and real-user bytes (`scripts/node/realuse.sh`) the next day.
 - The relay's CPU grows with every xDi link it terminates; watch it at peak before adding more.
+- **Field-confirmed again (October 2026):** four exits that already dialed one relay were each given a
+  second dialed link to another relay. Every second link passed its first throughput test (35–80 Mbit)
+  and was at 0 Mbit a few minutes later, while the original links survived. A short test after adding
+  a second dial proves nothing; the rule holds.
+- **A shared exit has one dial budget for all brands.** An exit that hosts nodes of two brands can still
+  dial only one relay. Decide which brand gets it, and reach the other brand through GRE, a forward link
+  or a reverse backhaul.
+- **Dead links keep burning CPU.** A reverse link whose path had died still used about half a core on
+  the relay, which was already saturated. Disable dead links on both ends as soon as they are confirmed
+  dead (`scripts/node/bpstatus.sh`), not only before building new ones.
+
+## 16. Persistent GRE Relay Links
+
+`operator-observed`, October 2026. Plain GRE (IP protocol 47) between a relay and an exit, with the
+relay's public location port DNAT-ed to the exit's tunnel address (section 14), carried real users well
+on paths where TCP DNAT died and xDi was lossy:
+
+- **No ICMP dependence and almost no CPU.** A 1-core relay that ran 60% CPU on xDi links dropped to about
+  1% after its links moved to GRE; another relay forwarded ~100 Mbit at 0% CPU.
+- **It is a per-datacenter property.** From one datacenter GRE reached every foreign exit (150–540 Mbit);
+  another datacenter of the same country blocked GRE to every exit, and a third blocked it only after
+  its IP was rotated (section 17). Measure each relay with `scripts/relay/gretest.sh` before planning.
+- **No per-exit dial limit.** One exit can hold GRE links to several relays at once, unlike dialed xDi.
+- Build each end with `scripts/relay/greunit.sh` (oneshot unit, MTU 1476). Delete the temporary
+  `gt_*`/`st_*` test links of the same endpoint pair first, or the kernel answers `File exists`.
+- GRE adds no encryption; it carries traffic that is already encrypted end to end.
+- The unit pins both public IPs. When either end's IP changes, update `local`/`remote` on both ends.
+- Verify with real users (`scripts/node/realuse.sh`); a GRE link that passes ping can still be rate
+  limited on purpose, which shows as one exact low speed.
+
+## 17. When A Relay Gets A New IP
+
+`operator-observed`, October 2026, one datacenter that rotated the public IP of two relays three times in
+two days (each change needed a reboot before the new address answered):
+
+- On the new IPs, GRE to every exit carried nothing, ICMP from the relay to exits lost 85–100%, and bulk
+  TCP from the relay to foreign servers stalled at 0 bytes, even over TLS, while small requests worked.
+- Only **reverse xDi** (the exit dials the relay) passed: 100–290 Mbit to most exits. It carried real
+  users for about a day, then every one of those links died in one night when ICMP from abroad to the
+  relay's range was filtered too.
+- Treat a rotated IP as a new relay: re-measure every mode (`gretest.sh`, `bp_matrix.sh` in both
+  directions, direct download), move the DNS records, update GRE units and xDi dial addresses, and
+  re-verify the next day.
+- A relay whose address keeps changing should not be the only relay of any location.

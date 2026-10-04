@@ -73,6 +73,26 @@ Copy or clone this repository into the agent's skill/plugin directory and point 
 - `SECURITY.md` and `.github/` - safe reporting, issue, review, and ownership policy.
 - `CHANGELOG.md` - release history.
 
+## Field Lessons (October 2026)
+
+Sanitized, `operator-observed` lessons from a two-brand fleet with several Iranian relay datacenters:
+
+1. **Persistent GRE relay links.** Plain GRE plus DNAT carried users where TCP DNAT and xDi failed, with
+   almost no CPU and no per-exit link limit; some datacenters block it. `scripts/relay/greunit.sh`,
+   `references/tunnels.md` §16.
+2. **A relay that gets a new IP is a new relay.** On a rotated range GRE and bulk TCP died and only
+   exit-dialed xDi worked, then that died too. Re-measure every mode and never let such a relay be a
+   location's only one. `references/tunnels.md` §17.
+3. **One dialed xDi link per exit, confirmed again.** A second dial passed its first test and died within
+   minutes on four exits. Exits shared by two brands have one dial budget in total. `references/tunnels.md` §15.
+4. **Keep xDi relays out of the panel and subscription domain.** Reads worked but `POST`/`PUT` bodies
+   stalled ~16 minutes, so bot renewals failed. Test a `POST` through every address. `references/pasarguard.md` §16.
+5. **Dead links still burn CPU.** Disable them on both ends as soon as they are confirmed dead.
+6. **Watch failed panel logins and block deliberately.** `scripts/panel/auth_failures.sh`,
+   `scripts/panel/blocklist.sh`, `references/pasarguard.md` §17.
+7. **Audit brand separation on both DNS and relays.** `scripts/local/dns_brand_audit.sh` for records,
+   `scripts/relay/forward_audit.sh` for forwarded ports.
+
 ## Verification Policy
 
 Only commands and links that were checked against public upstream locations are marked `verified`. Third-party installers and community scripts may still be useful, but the agent must treat them as remote code execution and review them before use. Anything not confirmed is labeled `unverified`, `deprecated`, or `third-party`.

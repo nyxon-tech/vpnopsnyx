@@ -99,6 +99,8 @@ Use these labels in plans and docs:
 | Lab and datacenter evidence program | `docs/lab-and-benchmark-program.md` |
 | Operator helper scripts (real-user check, DNAT, BackPack, Cloudflare, reboots) | `scripts/README.md` |
 | Reverse xDi links, dead-link cleanup, moving nodes to a new IP | `references/tunnels.md` §15, `references/pasarguard.md` §14–15 |
+| GRE relay links, a relay whose IP changed | `references/tunnels.md` §16–17 |
+| Panel or subscription domain behind relays, bot orders failing, failed admin logins | `references/pasarguard.md` §16–17 |
 
 ## Product Runbook Rule
 

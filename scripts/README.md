@@ -21,6 +21,8 @@ operator tools.
 | `node/bpstatus.sh` | relay or exit | Every active BackPack link with its role, carrier, peer and packet loss to the peer. A unit can be `active` while the path is dead. |
 | `panel/node_status.py` | PasarGuard panel container | Every node with address, port, status and the panel's last error message (certificate, port-bind, timeout errors). |
 | `local/dns_brand_audit.sh` | operator workstation | Lists A records in one Cloudflare account that point at another brand's relays. |
+| `relay/forward_audit.sh` | relay | Every port the relay forwards (nftables DNAT, Backhaul and BackPack maps) and its target; flags ports of another brand (`FORBID`). |
+| `panel/auth_failures.sh` | panel host | Failed and successful admin logins per source address from the panel access log. |
 
 ## Changes (operator approval required)
 
@@ -37,6 +39,8 @@ operator tools.
 | `local/bp_matrix.sh` | operator workstation | Measures many temporary xDi links, forward or reverse, one at a time, then removes them. |
 | `panel/node_edit.sh` | operator workstation -> panel host | Changes one node's address, port, stored certificate or timeouts through the panel's own API; only that node reconnects. |
 | `node/node_cert.sh` | node host | New self-signed node certificate for a new IP (old pair kept), restarts the node; store the new certificate in the panel. |
+| `relay/greunit.sh` | relay and exit | Persistent GRE link as a oneshot unit (one run per end); pair with `relay/dnat.sh`. |
+| `panel/blocklist.sh` | panel host | Persistent source-IP blocklist in its own nftables table (`ACTION` = `list`, `add` or `del`). |
 
 ## Rules
 

@@ -25,6 +25,9 @@ datacenters and ISPs, so treat this as a list of hypotheses to test, not as fact
 | xDi links that **relays dial** die across many exits in one night, units stay `active`; links that the **exits dial** survive | Per-destination ICMP filtering from the relay's DC (operator-observed, Oct 2026) | `scripts/node/bpstatus.sh` peer loss 100% and `handshake did not complete`; `scripts/local/bp_matrix.sh` reverse test |
 | Ping and small HTTPS (panel pages, subscriptions) to a foreign host work, but bulk downloads from in-country DCs to it are ~0 | **Bulk throttling** of that destination IP | Download a test file (`scripts/node/nettest.sh`) from 2 relays vs timing the panel URL |
 | An exit downloads at line rate from the internet but sends only a few Mbit to anyone, plus loss to its panel | **Provider caps the exit's upload or network**, not censorship | `curl` a large file on the exit vs from the exit to a foreign server; ping exit↔panel |
+| After the provider rotated a relay's IP: GRE to every exit carries nothing, relay-to-exit ICMP 85–100% loss, bulk TCP from the relay to foreign hosts stalls at 0 bytes (even TLS) while small requests work | The new address range is filtered harder than the old one | `scripts/relay/gretest.sh` and a direct download from the relay; reverse xDi (`scripts/local/bp_matrix.sh`) may still pass, see `tunnels.md` §17 |
+| Panel pages and subscriptions load through a relay, but bot orders and renewals fail; the panel log shows `400` on `POST`/`PUT` after ~16 minutes | Request bodies stall on an ICMP-carried (xDi) path | `POST` a login with a wrong password through each address of the panel domain; see `pasarguard.md` §16 |
+| Every relay of one datacenter loses its reverse xDi links in the same night; ping from abroad to that range 50–100% loss | ICMP from abroad to that datacenter is filtered | Ping the relay from several exits; restarting the links does not help |
 
 ## 2. Pattern details
 

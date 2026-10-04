@@ -51,6 +51,24 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
 - `docs/agent-compatibility.md`：Codex、Claude 与其他代理的兼容说明。
 - `CHANGELOG.md`：版本与变更记录。
 
+## 现场经验（2026 年 10 月）
+
+来自一个双品牌、多个伊朗中继机房的运维现场，已脱敏，均为 `operator-observed`：
+
+1. **持久化 GRE 中继链路。** 在 TCP DNAT 和 xDi 都失败的路径上，普通 GRE 加 DNAT 仍能承载用户，几乎不占
+   CPU，且每个出口没有链路数量限制；但部分机房会封锁 GRE。`scripts/relay/greunit.sh`，`references/tunnels.md` §16。
+2. **换了 IP 的中继要当作新中继。** 新网段上 GRE 和大流量 TCP 失效，只有出口主动拨号的 xDi 可用，之后连它也
+   失效。需重新测量所有方式，且不要让这类中继成为某个位置的唯一中继。`references/tunnels.md` §17。
+3. **每个出口只能有一条主动拨号的 xDi 链路（再次确认）。** 四个出口上的第二条链路首测通过，几分钟后失效。
+   两个品牌共用的出口合计也只有一条。`references/tunnels.md` §15。
+4. **不要把 xDi 中继放到面板和订阅域名后面。** 读取正常，但 `POST`/`PUT` 请求体卡住约 16 分钟，导致机器人
+   续费失败。请对域名的每个地址测试一次 `POST`。`references/pasarguard.md` §16。
+5. **失效链路仍然消耗 CPU。** 确认失效后立即在两端停用。
+6. **监控面板登录失败并有依据地封禁。** `scripts/panel/auth_failures.sh`、`scripts/panel/blocklist.sh`、
+   `references/pasarguard.md` §17。
+7. **在 DNS 和中继两侧都检查品牌隔离。** 记录用 `scripts/local/dns_brand_audit.sh`，转发端口用
+   `scripts/relay/forward_audit.sh`。
+
 ## 安全模型
 
 - 未经运维人员明确批准，代理应保持只读。

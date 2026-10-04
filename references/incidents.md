@@ -74,3 +74,22 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     which runs before the conntrack module loads, so the table was back at 8192 entries with a 5-day
     timeout and filled up (`table full, dropping packet`). Fix: higher limits applied immediately, module
     loaded at boot, sysctl re-applied by the DNAT unit. Lesson: check `nf_conntrack_max` after any reboot.
+28. **GRE carried a whole fleet when TCP and xDi did not.** One relay's datacenter passed GRE to every
+    exit; persistent GRE links plus DNAT gave every location a second relay and cut a 1-core relay's CPU
+    from 60% to 1%. Another datacenter blocked GRE entirely. Lesson: measure GRE per relay.
+29. **A relay's IP was rotated three times in two days.** Each time its tunnels died and a location that
+    depended on it went down until someone noticed. On the new range only exit-dialed xDi worked, and a
+    day later that died too. Lesson: a relay with an unstable address must never be a location's only
+    relay; a health check that removes dead relays from DNS would have saved hours.
+30. **Bot renewals failed for an hour after a relay was added to the panel domain.** The relay used an
+    xDi path; reads worked, but `POST`/`PUT` bodies stalled ~16 minutes and returned `400`, so the bot
+    refunded every order. Fix: removed the relay from the panel domain. Lesson: test a `POST`, not a page
+    load, before putting a path behind the panel domain.
+31. **A second dialed xDi link on four exits looked fine, then died.** Each passed its first test and was
+    at 0 Mbit minutes later; the original links survived. Lesson: one dialed xDi link per exit, also on
+    exits shared by two brands.
+32. **A dead reverse link burned half a core on a saturated relay.** Fix: disabled it on both ends.
+    Lesson: remove dead links as soon as they are confirmed dead.
+33. **20,000 failed panel logins per day from one address went unnoticed for four days.** Found while
+    debugging a bot failure. Fix: blocked with a dedicated nftables table after the operator confirmed.
+    Lesson: review `auth_failures.sh` output during routine checks.
