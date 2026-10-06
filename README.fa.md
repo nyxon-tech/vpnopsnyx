@@ -76,6 +76,17 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
    `scripts/panel/blocklist.sh` و `references/pasarguard.md` بخش ۱۷.
 ۷. **جدایی برندها را هم در DNS و هم روی رله‌ها بررسی کنید.** `scripts/local/dns_brand_audit.sh` برای رکوردها و
    `scripts/relay/forward_audit.sh` برای پورت‌های فورواردشده.
+۸. **دامنهٔ ساب را از همهٔ آدرس‌هایش و با دانلود واقعی تست کنید.** IP مستقیم پنل ورود را جواب داد ولی دانلود
+   ۲۰۰ کیلوبایتی از بیشتر دیتاسنترهای داخل ایران گیر کرد. `scripts/relay/panel_path_check.sh` و
+   `references/pasarguard.md` بخش ۱۶.
+۹. **هیچ‌وقت همهٔ رکوردهای یک دامنه را پاک نکنید.** DNSها جواب «وجود ندارد» را تا ۳۰ دقیقه نگه می‌دارند.
+   `references/cloudflare.md`.
+۱۰. **اینباندی که در هیچ گروهی نیست به هیچ کاربری نمی‌رسد.** `scripts/panel/inbound_groups.py`، و ساختن اینباند،
+    هاست و گروه تونل با API در `references/pasarguard.md` بخش ۱۸.
+۱۱. **رنج IP رله‌ها با هم فرق دارد، ترافیک تمام می‌شود، و خروجی ممکن است آپلود محدود داشته باشد.** وقتی رنج تازه
+    در همهٔ تست‌ها شکست خورد رنج دیگری بخواهید؛ وقتی رله فقط از داخل ایران جواب می‌دهد، ترافیکش را چک کنید.
+    `references/tunnels.md` بخش ۱۷ و `references/iran-filtering.md` بخش ۵.
+۱۲. **دو سرویس روی یک پورت ۴۴۳** با روتر SNI در nginx: `references/tunnels.md` بخش ۱۸.
 
 ## وضعیت منابع
 

@@ -93,3 +93,20 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
 33. **20,000 failed panel logins per day from one address went unnoticed for four days.** Found while
     debugging a bot failure. Fix: blocked with a dedicated nftables table after the operator confirmed.
     Lesson: review `auth_failures.sh` output during routine checks.
+34. **Half of the users could not load their subscription.** The subscription domain listed a relay and
+    the panel's direct IP; the direct IP answered small requests but delivered nothing from two of three
+    in-country datacenters. Fix: removed the direct IP. Lesson: test a realistic download through every
+    address (`scripts/relay/panel_path_check.sh`), not only a login.
+35. **A location stayed down 30 minutes after its relay was fixed.** All of its records had been deleted
+    while no relay worked, and resolvers had cached the NXDOMAIN. Lesson: never leave a name empty.
+36. **A tunnel location had zero users for days with every path healthy.** Its inbound was in no group.
+    Fix: added it to the same groups as the other tunnel inbounds (`scripts/panel/inbound_groups.py`).
+37. **The same relay ran out of traffic quota twice in one week.** Each time the locations it served alone
+    went dark until the operator bought more. Lesson: watch relay quotas and keep a second relay per
+    location.
+38. **A new exit could not carry a tunnel at any useful speed.** It downloaded at 680 Mbit but uploaded
+    7–11 Mbit to anyone; every relay measured the same. The cause was the provider's upload cap, which no
+    tunnel can fix.
+39. **One relay rotated through four public IPs in four days.** Two ranges were usable (GRE and downloads
+    fine), two were dead in every mode; another provider's new range was dead for days too. Lesson: when
+    a new range fails every test, ask for a different range.

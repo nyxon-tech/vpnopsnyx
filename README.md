@@ -92,6 +92,16 @@ Sanitized, `operator-observed` lessons from a two-brand fleet with several Irani
    `scripts/panel/blocklist.sh`, `references/pasarguard.md` §17.
 7. **Audit brand separation on both DNS and relays.** `scripts/local/dns_brand_audit.sh` for records,
    `scripts/relay/forward_audit.sh` for forwarded ports.
+8. **Test the subscription domain through every address, with a real download.** A direct panel IP passed
+   logins but stalled 200 KB downloads from most in-country datacenters. `scripts/relay/panel_path_check.sh`,
+   `references/pasarguard.md` §16.
+9. **Never leave a DNS name empty.** Resolvers cache NXDOMAIN for up to 30 minutes. `references/cloudflare.md`.
+10. **An inbound in no group reaches nobody.** `scripts/panel/inbound_groups.py`, and adding a tunnel
+    inbound, host and groups through the API: `references/pasarguard.md` §18.
+11. **Relay IP ranges differ, quotas run out, exits can have upload caps.** Ask for another range when a new
+    one fails every test; check quotas when a relay works only from inside the country.
+    `references/tunnels.md` §17, `references/iran-filtering.md` §5.
+12. **Two services on one port 443** with an nginx SNI router: `references/tunnels.md` §18.
 
 ## Verification Policy
 

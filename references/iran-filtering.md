@@ -105,5 +105,12 @@ in-country clients succeed, the relay can no longer host reverse tunnels.
 - The operator's laptop may reach the internet through their own VPN, which makes it a foreign source.
 - Reboots, provider maintenance, and monthly quota cut-offs look exactly like filtering. Check provider
   panels, `last -x`, and traffic counters before blaming the censor.
+- Test files expire: `scripts/node/nettest.sh` removes itself after 72 hours, and a test against an expired
+  file reads 0 Mbit. Check that the port still listens before blaming the path.
+- A relay that answers on every port from inside the country but not from abroad, and cannot fetch
+  foreign sites, has usually run out of its international traffic quota (seen twice in one week on the
+  same relay). Ask the operator to check the provider panel before changing tunnels.
+- Restarting a tunnel that the operator's own laptop VPN goes through drops the operator's SSH sessions
+  mid-command; know which path your workstation uses.
 - Record the time (UTC and local) of every change of state. The per-node user history in the panel DB
   is often the only precise clock you have for when a block started.

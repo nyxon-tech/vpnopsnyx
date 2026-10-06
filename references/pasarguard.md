@@ -22,6 +22,7 @@ between releases.
 15. Slow or lossy panel-to-node links
 16. The panel and subscription domain behind relays
 17. Failed admin logins and blocking a source
+18. Inbounds without groups, and adding a tunnel inbound through the API
 
 ## 1. Layout and read-only DB access
 
@@ -234,6 +235,10 @@ whether purchases work:
   through every address in the record, not only a page load.
 - A direct panel IP can time out from some in-country datacenters while it works from others; keep at
   least one relay path for users there.
+- Test a realistic download too, not only a login. A direct panel IP answered `POST` logins in 0.3 s but
+  delivered 0 bytes of the 200 KB panel page in 18 s from two of three in-country datacenters (bulk
+  throttling of that foreign IP), so about half of the users got a broken subscription link. Check every
+  address of the record from 2–3 datacenters with `scripts/relay/panel_path_check.sh`.
 - Bots hosted abroad cannot reach an in-country relay that drops foreign-initiated flows; pin the panel
   name to the panel IP in the bot server's `/etc/hosts`, or give bots their own name.
 
@@ -245,3 +250,27 @@ reseller integration with an old password or someone guessing passwords. Ask the
 acting; to block, use `scripts/panel/blocklist.sh` (own nftables table and boot unit, only the listed
 addresses). Never block a relay or `127.0.0.1`: those addresses are shared by every user and bot that
 comes through a relay.
+
+## 18. Inbounds Without Groups, And Adding A Tunnel Inbound Through The API
+
+Users receive an inbound only through their groups. An inbound in no group is in nobody's subscription, even
+with hosts, DNS and working relays: one tunnel location carried zero users for days for exactly this reason
+and filled up within minutes of being added to the same groups as the other tunnel inbounds.
+`scripts/panel/inbound_groups.py` lists every inbound with its groups, user counts and hosts, and flags the
+ones nobody can receive. Group membership decides which customers see a location, so confirm it with the
+operator.
+
+Adding a tunnel inbound to an existing node (verified on a 2026 PasarGuard release; check your version):
+1. `GET /api/core/{id}`, copy the node's working Reality inbound, give it a new tag and the tunnel port, append
+   it, and `PUT /api/core/{id}?restart_nodes=true` with the same fields back. The query parameter is
+   required, and the nodes using that core restart Xray (a few seconds for their users).
+2. Confirm the node is `connected` again and the new port listens on the node (`ss -ltn`).
+3. `GET /api/host/{id}` of the node's existing host, change `remark`, `address` (the relay DNS name),
+   `port` and `inbound_tag`, then `POST /api/host/` (trailing slash; without it the panel answers 307).
+4. `GET /api/group/{id}` and `PUT /api/group/{id}` with `name`, the full `inbound_tags` list plus the new tag,
+   and `is_disabled`, for each group the operator chose.
+5. Test through every relay: a TLS request with the Reality server name to `relay:port` should get the
+   fallback site's answer (for example 404) in about a second, then watch real users with
+   `scripts/node/realuse.sh`.
+The admin token for these calls can be minted inside the panel container as in `scripts/panel/node_edit.sh`;
+some panel versions have no `is_sudo` column, so pick the admin without it.

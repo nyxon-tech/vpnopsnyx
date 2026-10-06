@@ -18,6 +18,7 @@
 15. Reverse xDi (exit dials relay) and link survival
 16. Persistent GRE relay links
 17. When a relay gets a new IP
+18. Sharing port 443 between services (SNI router)
 
 ## 1. Backhaul reverse tunnels
 
@@ -96,6 +97,9 @@ stays green on a dead tunnel; the unit only writes errors to its journal.
    (healthy mux is roughly 1 tunnel connection per 3 users). RAM grows on both sides and stays there.
    Restarting the pair (coordinated) reclaims it. Detect it with users vs tunnel connections per tunnel
    and the RSS of the backhaul processes (`scripts/relay/relay_conns.sh`).
+   High RSS alone is not bloat: one relay tunnel carrying ~10,000 users used 1.7 GB and was back at 0.9 GB
+   two minutes after a coordinated restart, because the memory follows the load. Restart only when the
+   tunnel-connections-per-user ratio is far above normal.
 3. **Stale clients steal the control channel.** A retired server whose client is stopped but still
    *enabled* comes back after a reboot, reconnects with the same token, and takes the relay's control
    channel away from the new server. When you retire a server, always `stop` **and** `disable`.
@@ -327,3 +331,39 @@ two days (each change needed a reboot before the new address answered):
   directions, direct download), move the DNS records, update GRE units and xDi dial addresses, and
   re-verify the next day.
 - A relay whose address keeps changing should not be the only relay of any location.
+- Ranges differ. A later rotation of the same relay landed in a range where GRE passed with 0% loss and
+  130–200 Mbit, while another provider's new range stayed dead in every mode for days. When a new range
+  fails every test, ask the provider for an address from a different range rather than waiting.
+- After a change of IP, search everything that names the old address: GRE `local`/`remote` on both ends,
+  xDi dial addresses on peers, DNS records, allowlists and NAT rules of other services on the same host
+  (rules matching `-d OLD_IP` silently stop matching), and SSH aliases.
+
+## 18. Sharing Port 443 Between Services (SNI Router)
+
+`operator-observed`, October 2026. A relay already used 443 for another service's tunnel, and a webhook
+relay for a messenger bot needed 443 too. nginx `stream` with `ssl_preread` split the port by TLS name
+without touching the existing service:
+
+```nginx
+stream {
+    map_hash_bucket_size 128;
+    map $ssl_preread_server_name $up443 {
+        relay.example.com 127.0.0.1:7443;   # the new HTTPS server (listen 127.0.0.1:7443 ssl proxy_protocol)
+        default           127.0.0.1:4444;   # everything else, unchanged
+    }
+    server { listen 443; listen [::]:443; ssl_preread on; proxy_protocol on; proxy_pass $up443; }
+    # strip the PROXY header again for the old service, which does not expect it
+    server { listen 127.0.0.1:4444 proxy_protocol; proxy_pass 127.0.0.1:4443; }
+}
+```
+
+- Move the old listener from `:443` to `127.0.0.1:4443` first (for Backhaul: `"127.0.0.1:4443=..."`), then
+  start nginx; the switch costs the old service a few seconds.
+- With `proxy_protocol` plus `set_real_ip_from 127.0.0.1; real_ip_header proxy_protocol;` the new server
+  still sees client addresses, so `allow`/`deny` rules keep working.
+- Use `nginx -t && systemctl reload nginx` afterwards; a restart drops both services.
+- **Check the host firewall first.** On that relay an allowlist in the `raw` table dropped every new
+  connection to 443 from unlisted sources, so the webhook provider never reached nginx. To learn the
+  provider's addresses, capture SYNs before any firewall while the operator triggers a webhook:
+  `tcpdump -Q in -ni any 'tcp dst port 443 and tcp[tcpflags] & tcp-syn != 0 and tcp[tcpflags] & tcp-ack == 0'`
+  (print field 5 = source). If nothing arrives at all, the provider rejected the URL before connecting.

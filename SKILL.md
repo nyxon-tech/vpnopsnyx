@@ -100,7 +100,9 @@ Use these labels in plans and docs:
 | Operator helper scripts (real-user check, DNAT, BackPack, Cloudflare, reboots) | `scripts/README.md` |
 | Reverse xDi links, dead-link cleanup, moving nodes to a new IP | `references/tunnels.md` §15, `references/pasarguard.md` §14–15 |
 | GRE relay links, a relay whose IP changed | `references/tunnels.md` §16–17 |
-| Panel or subscription domain behind relays, bot orders failing, failed admin logins | `references/pasarguard.md` §16–17 |
+| Panel or subscription domain behind relays, broken subscription links, bot orders failing, failed admin logins | `references/pasarguard.md` §16–17, `scripts/relay/panel_path_check.sh` |
+| A location with zero users although paths work, adding a tunnel inbound/host/group | `references/pasarguard.md` §18, `scripts/panel/inbound_groups.py` |
+| Two services on one port 443 | `references/tunnels.md` §18 |
 
 ## Product Runbook Rule
 

@@ -63,6 +63,7 @@ cf.sh GET|POST|PUT|PATCH|DELETE PATH [json] raw call
 | A relay is fully down (quota exhausted, provider outage) | Remove it from every name. Check that each name still has at least one IP |
 | New relay | Add it to a single location first, watch its users and data test, then extend |
 | Shift load between relays | Change which names list which relays. You can't weight round-robin, but you can remove a relay from the heaviest names |
+| A name would lose its last IP | Leave one record in place (or point it at a working relay) instead of deleting the last one. An empty name returns NXDOMAIN, and resolvers cache that for the zone's SOA minimum (1800 s on Cloudflare), so users stay broken for up to 30 minutes after you add a record back |
 
 Record every change as `time | name | ip | added/removed | reason`. If the operator doesn't want backups,
 this log is how you undo a change.

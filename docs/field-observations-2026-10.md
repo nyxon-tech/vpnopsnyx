@@ -29,6 +29,14 @@ relay datacenters. Names, addresses, domains and tokens are removed. Everything 
   bot's renewals failed.
 - Dead xDi links still consumed CPU on an already saturated relay.
 - Panel access logs showed one address failing ~20,000 logins a day for days without anyone noticing.
+- A direct panel IP passed login checks but stalled page and subscription downloads from most in-country
+  datacenters; half of the users had broken subscription links.
+- Deleting the last record of a name left users on cached NXDOMAIN for up to 30 minutes after a fix.
+- A tunnel inbound in no group had zero users although every path worked.
+- Relay IP rotations landed in good and bad ranges; one relay's international quota ran out twice in a week.
+- Exits with a provider upload cap (high download, single-digit Mbit upload) could not be helped by any tunnel.
+- One port can serve two services through an SNI router; a host allowlist in the raw table can still hide
+  the new one from its clients.
 
 ## Handling Rule
 

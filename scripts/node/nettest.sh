@@ -5,6 +5,7 @@
 #   ssh EXIT 'bash -s' < scripts/node/nettest.sh
 # Their test:  curl -o /dev/null -w "%{http_code} %{speed_download}\n" http://EXIT_IP:PORT/100MB.bin
 # Stop early:  systemctl stop nettest
+# The file and server disappear after 72 hours: a later "0 Mbit" may only mean the test file expired.
 # Stop a previous run FIRST: it frees its port, and its ExecStopPost deletes /srv/nettest (a file created
 # before the stop would vanish and the new server would answer 404).
 systemctl stop nettest 2>/dev/null; systemctl reset-failed nettest 2>/dev/null

@@ -70,6 +70,16 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
    `scripts/panel/blocklist.sh`, `references/pasarguard.md` §17.
 7. **Проверяйте разделение брендов и в DNS, и на реле.** `scripts/local/dns_brand_audit.sh` для записей,
    `scripts/relay/forward_audit.sh` для пробрасываемых портов.
+8. **Проверяйте домен подписок через каждый адрес и реальной загрузкой.** Прямой IP панели отвечал на вход,
+   но загрузка 200 КБ зависала из большинства дата-центров страны. `scripts/relay/panel_path_check.sh`,
+   `references/pasarguard.md` §16.
+9. **Не оставляйте DNS-имя пустым.** Резолверы кэшируют NXDOMAIN до 30 минут. `references/cloudflare.md`.
+10. **Inbound без группы не получает никто.** `scripts/panel/inbound_groups.py`; добавление туннельного
+    inbound, хоста и групп через API — `references/pasarguard.md` §18.
+11. **Диапазоны IP реле различаются, квоты заканчиваются, у выходов бывает лимит исходящего канала.** Просите
+    другой диапазон, если новый провалил все тесты; проверяйте квоту, если реле работает только изнутри страны.
+    `references/tunnels.md` §17, `references/iran-filtering.md` §5.
+12. **Два сервиса на одном порту 443** через SNI-маршрутизатор nginx: `references/tunnels.md` §18.
 
 ## Безопасность
 

@@ -23,6 +23,8 @@ operator tools.
 | `local/dns_brand_audit.sh` | operator workstation | Lists A records in one Cloudflare account that point at another brand's relays. |
 | `relay/forward_audit.sh` | relay | Every port the relay forwards (nftables DNAT, Backhaul and BackPack maps) and its target; flags ports of another brand (`FORBID`). |
 | `panel/auth_failures.sh` | panel host | Failed and successful admin logins per source address from the panel access log. |
+| `panel/inbound_groups.py` | PasarGuard panel container | Every inbound with its groups, user counts and hosts; flags inbounds no user can receive (no group) or without an enabled host. |
+| `relay/panel_path_check.sh` | in-country probe | GET (~200 KB page) and POST login through every IP of the panel/subscription domain, to catch addresses that pass small requests but stall downloads. |
 
 ## Changes (operator approval required)
 

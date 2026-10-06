@@ -4,6 +4,7 @@ All notable changes to VPNOpsNyx are documented here.
 
 ## Unreleased
 
+- Added: subscription-domain path check with a real download (`relay/panel_path_check.sh`, `pasarguard.md` §16), inbound-to-group audit and adding a tunnel inbound/host/groups through the API (`panel/inbound_groups.py`, `pasarguard.md` §18), SNI router for two services on port 443 (`tunnels.md` §18), IP-range and IP-change checklist (§17), backhaul RSS vs bloat, empty DNS names and NXDOMAIN caching, SSH key login disabled on provider images, test-file expiry and relay quota signatures, incidents 34–39. READMEs list lessons 8–12.
 - Added persistent GRE relay links (`relay/greunit.sh`, `tunnels.md` §16), relay IP rotation behaviour (§17), panel/subscription domain behind relays and failed-login blocking (`pasarguard.md` §16–17), new filtering signatures, incidents 28–33, and October field notes. One dialed xDi link per exit re-confirmed, including exits shared by two brands; dead links burn CPU.
 - Added scripts: `relay/greunit.sh`, `relay/forward_audit.sh`, `panel/auth_failures.sh`, `panel/blocklist.sh`. `relay/gretest.sh` rejects link indexes above 63. READMEs (all languages) list the October field lessons.
 - Added October 2026 field lessons: reverse xDi links (exit dials relay) and their survival, one dialed xDi link per exit, next-day re-verification, moving PasarGuard nodes to a new IP (strict TLS, new certificates), slow panel-to-node links, relay quota outages, panel and bot paths through relays, new filtering signatures, server-migration checklist, incidents 17-26.

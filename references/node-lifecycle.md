@@ -17,6 +17,13 @@
 
 - The operator installs your key (`ssh-copy-id -i key.pub root@IP`). Some clouds force a password change
   at first login, which makes `ssh-copy-id` fail silently. Confirm with `ssh -o BatchMode=yes`.
+- If `ssh -v` shows `Authentications that can continue: password` only, the image disables key login
+  (`PubkeyAuthentication no` in `/etc/ssh/sshd_config`). The operator, logged in on the server, checks
+  `sshd -T | grep -i pubkey` and fixes the line, then `sshd -t && systemctl restart ssh`. Tell them
+  explicitly to `ssh root@IP` first: commands meant for the server were run on the operator's own laptop
+  more than once ("permission denied" on `/etc/ssh`).
+- If the operator pastes a root password in chat, do not use it; ask for the key to be installed and the
+  password to be changed.
 - Refer to the server by IP (or a neutral alias) in your SSH config. Keep role and location labels in the
   private inventory, not in hostnames that other people see.
 - Suggest disabling SSH password authentication once key login works.

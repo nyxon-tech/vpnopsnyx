@@ -68,6 +68,14 @@ git clone https://github.com/nyxon-tech/vpnopsnyx ~/.codex/skills/vpnopsnyx
    `references/pasarguard.md` §17。
 7. **在 DNS 和中继两侧都检查品牌隔离。** 记录用 `scripts/local/dns_brand_audit.sh`，转发端口用
    `scripts/relay/forward_audit.sh`。
+8. **通过每个地址并用真实下载测试订阅域名。** 面板直连 IP 能响应登录，但在国内多数机房下载 200 KB 页面会卡住。
+   `scripts/relay/panel_path_check.sh`，`references/pasarguard.md` §16。
+9. **不要让 DNS 名称没有记录。** 解析器会缓存 NXDOMAIN 最多 30 分钟。`references/cloudflare.md`。
+10. **不属于任何组的 inbound 不会下发给任何用户。** `scripts/panel/inbound_groups.py`；通过 API 添加隧道
+    inbound、主机和组见 `references/pasarguard.md` §18。
+11. **中继的 IP 段各不相同，流量配额会用完，出口可能限制上行。** 新 IP 段所有测试都失败时请换段；中继只在国内可达时
+    先查配额。`references/tunnels.md` §17，`references/iran-filtering.md` §5。
+12. **一个 443 端口承载两个服务**：nginx SNI 路由，见 `references/tunnels.md` §18。
 
 ## 安全模型
 
