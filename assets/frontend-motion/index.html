@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>فرانت‌اند در حرکت</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Lalezar&family=Vazirmatn:wght@400;500;700&display=swap">
+<style>
+/* Layout: one 16:9 stage (1280×720 design units) scaled to fit, controls and scene list underneath.
+   A single night-studio world: each front-end layer owns one color (HTML coral, CSS sky, JS sun). */
+:root {
+  --ink-0: #0E0B1C;
+  --ink: #17132B;
+  --ink-2: #211B3C;
+  --chrome: #2C2550;
+  --line: #3A3164;
+  --paper: #F4EFE6;
+  --muted: #A49CC6;
+  --html: #FF7A59;
+  --css: #5CB8FF;
+  --js: #FFD447;
+  --lav: #B49CFF;
+  --good: #3DDC97;
+  --warn: #FFB547;
+  --bad: #FF5D73;
+  --f-display: "Lalezar", "Vazirmatn", system-ui, sans-serif;
+  --f-body: "Vazirmatn", system-ui, "Segoe UI", Tahoma, sans-serif;
+  --f-mono: "JetBrains Mono", "Vazirmatn", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--ink-0); color: var(--paper); }
+body { margin: 0; font-family: var(--f-body); font-size: 15px; line-height: 1.7; }
+.app { max-width: 1280px; margin-inline: auto; padding-inline: 16px; padding-block: 28px 48px; display: grid; gap: 18px; }
+.top { display: grid; gap: 4px; }
+.top h1 { margin: 0; font: 400 clamp(30px, 5vw, 44px)/1.15 var(--f-display); text-wrap: balance; }
+.top p { margin: 0; color: var(--muted); max-width: 68ch; text-wrap: pretty; }
+
+/* ---------- stage ---------- */
+.stage-wrap { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: var(--ink); box-shadow: 0 0 0 1px var(--line), 0 30px 80px -30px #000; }
+.stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; transform: scale(var(--s, 1)); background: var(--ink); overflow: hidden; color: var(--paper); font-family: var(--f-body); }
+.grid-bg { position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(164, 156, 198, .16) 1px, transparent 1.6px); background-size: 32px 32px; }
+.glow { position: absolute; inset: 0; opacity: 0; background: radial-gradient(640px 420px at 78% 18%, color-mix(in srgb, var(--glow, var(--lav)) 22%, transparent), transparent 70%), radial-gradient(520px 380px at 12% 92%, color-mix(in srgb, var(--glow, var(--lav)) 10%, transparent), transparent 70%); }
+.layer { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.L-intro { opacity: 1; }
+
+/* intro */
+.L-intro { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.intro-eyebrow { font: 600 16px/1 var(--f-mono); letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+.intro-title { font: 400 210px/1.05 var(--f-display); margin-block: 18px 6px; }
+.intro-sub { font-size: 24px; color: var(--muted); }
+.intro-trio { display: flex; gap: 28px; margin-top: 34px; font: 600 18px/1 var(--f-mono); }
+.intro-trio span { display: inline-flex; align-items: center; gap: 10px; }
+.intro-trio i { width: 10px; height: 10px; border-radius: 3px; background: currentColor; }
+.glyph { position: absolute; left: 0; top: 0; font: 600 44px/1 var(--f-mono); white-space: nowrap; direction: ltr; }
+.glyph, .intro-trio, .ov span, .code-body, .chips { font-variant-ligatures: none; }
+
+/* caption */
+.caption { inset: auto; right: 64px; top: 40px; width: 520px; }
+.cap-eyebrow { display: flex; align-items: center; gap: 10px; font: 600 14px/1 var(--f-mono); letter-spacing: .06em; color: var(--cap-c, var(--muted)); }
+.cap-eyebrow::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: currentColor; }
+.cap-title { font: 400 52px/1.15 var(--f-display); margin-top: 12px; }
+.cap-sub { font-size: 17px; line-height: 1.65; color: var(--muted); margin: 4px 0 0; text-wrap: pretty; }
+
+/* browser */
+.browser { position: absolute; top: 64px; left: 64px; width: 600px; height: 592px; border-radius: 14px; background: var(--chrome); box-shadow: 0 0 0 1px var(--line), 0 24px 60px -24px #000; }
+.chrome { height: 40px; display: flex; align-items: center; gap: 14px; padding-inline: 14px; direction: ltr; }
+.dots { display: flex; gap: 7px; }
+.dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
+.dots i:nth-child(1) { background: var(--html); }
+.dots i:nth-child(2) { background: var(--js); }
+.dots i:nth-child(3) { background: var(--good); }
+.url { flex: 1; min-width: 0; height: 24px; border-radius: 8px; background: var(--ink-2); color: var(--muted); font: 12px/24px var(--f-mono); padding-inline: 10px; overflow: hidden; white-space: nowrap; }
+.viewport { position: absolute; left: 1px; right: 1px; top: 40px; bottom: 1px; border-radius: 0 0 13px 13px; overflow: hidden; background: #fff; }
+.ruler { position: absolute; left: 0; right: 0; top: -30px; height: 20px; opacity: 0; border-inline: 2px solid var(--css); }
+.ruler::before { content: ""; position: absolute; left: 0; right: 0; top: 9px; border-top: 2px dashed color-mix(in srgb, var(--css) 70%, transparent); }
+.ruler span { position: absolute; left: 50%; top: -1px; transform: translateX(-50%); padding-inline: 8px; background: var(--ink); color: var(--css); font: 600 13px/20px var(--f-mono); }
+
+/* the demo page inside the browser: every style is a function of the --key variables (0..1) */
+.page { --base: 0; --nav: 0; --link: 0; --h1: 0; --btn: 0; --cards: 0; --card: 0;
+  position: absolute; inset: 0; overflow: hidden; container-type: inline-size; direction: rtl; text-align: right;
+  background: color-mix(in srgb, #F6F1E7 calc(var(--base) * 100%), #FFFFFF);
+  color: #000; padding: calc(8px + var(--base) * 12px);
+  font-family: "Times New Roman", "Vazirmatn", serif; font-size: 16px; line-height: 1.5; }
+.page.k-base { font-family: "Vazirmatn", sans-serif; }
+.m-nav { display: block; padding-bottom: calc(var(--nav) * 12px); border-bottom: 1px solid color-mix(in srgb, rgba(43, 35, 80, .14) calc(var(--nav) * 100%), transparent); }
+.page.k-nav .m-nav, .page.k-nav .m-links { display: flex; gap: 16px; }
+.page.k-nav .m-nav { justify-content: space-between; }
+.m-link { color: color-mix(in srgb, #000 calc(var(--link) * 100%), #0000EE); text-decoration: underline; text-decoration-color: color-mix(in srgb, transparent calc(var(--link) * 100%), currentColor); }
+.m-h1 { margin: .67em 0 .2em; font-size: calc(32px + var(--h1) * 6.4px); font-weight: 700; line-height: 1.25; }
+.page.k-h1 .m-h1 { font-family: "Lalezar", "Vazirmatn", sans-serif; font-weight: 400; }
+.m-p { margin: 0 0 1em; }
+.m-btn { display: inline-block; font: 13.33px/1.4 system-ui, "Vazirmatn", sans-serif;
+  padding: calc(1px + var(--btn) * 8px) calc(6px + var(--btn) * 14px);
+  background: color-mix(in srgb, #FF6B4A calc(var(--btn) * 100%), #EFEFEF);
+  color: color-mix(in srgb, #FFFFFF calc(var(--btn) * 100%), #000);
+  border: 1px solid color-mix(in srgb, #FF6B4A calc(var(--btn) * 100%), #767676);
+  border-radius: calc(3px + var(--btn) * 96px); }
+.m-cards { display: block; margin-top: 16px; }
+.page.k-cards .m-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@container (max-width: 420px) { .page.k-cards .m-cards { grid-template-columns: 1fr; } }
+.m-card { display: block; padding: calc(var(--card) * 12px); background: color-mix(in srgb, #FFFFFF calc(var(--card) * 100%), transparent); }
+.m-ic { --icon: 0; display: inline-block; vertical-align: top; font: 600 14px/24px var(--f-mono); color: #FF6B4A; opacity: var(--icon); width: calc(var(--icon) * 30px); overflow: hidden; white-space: nowrap; }
+
+.ov { position: absolute; border: 2px dashed var(--lav); border-radius: 8px; opacity: 0; background: color-mix(in srgb, var(--lav) 8%, transparent); }
+.ov span { position: absolute; top: -12px; right: 8px; padding: 1px 7px; border-radius: 6px; background: var(--lav); color: var(--ink); font: 600 11px/18px var(--f-mono); direction: ltr; white-space: nowrap; }
+.cursor { position: absolute; left: 0; top: 0; width: 24px; height: 24px; opacity: 0; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .35)); }
+.ripple { position: absolute; left: 0; top: 0; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 3px solid #FF6B4A; opacity: 0; }
+.heart { position: absolute; left: 0; top: 0; color: #FF6B4A; font: 700 18px/1 var(--f-body); opacity: 0; white-space: nowrap; direction: ltr; }
+
+/* code panel */
+.code { position: absolute; right: 64px; top: 206px; width: 520px; height: 452px; border-radius: 14px; background: var(--ink-2); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
+.code-tab { height: 36px; display: flex; align-items: center; gap: 9px; padding-inline: 16px; direction: ltr; border-bottom: 1px solid var(--line); font: 600 13px/1 var(--f-mono); color: var(--paper); }
+.code-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--dot, var(--html)); }
+.code-tab small { margin-left: auto; color: var(--muted); font-weight: 400; }
+.code-body { margin: 0; padding: 10px 14px 10px 0; direction: ltr; text-align: left; font: 14px/18.5px var(--f-mono); white-space: pre; color: var(--paper); }
+.cl { display: flex; direction: ltr; }
+.cl.cur { background: rgba(255, 255, 255, .045); }
+.ln { width: 40px; flex: none; padding-right: 14px; text-align: right; color: #5D5488; }
+.tx { min-width: 0; direction: ltr; unicode-bidi: isolate; }
+.caret { display: inline-block; width: 8px; height: 16px; margin-bottom: -3px; background: var(--dot, var(--html)); }
+.tg, .sel { color: #FF9479; }
+.at, .pr { color: #7CC6FF; }
+.st { color: #A6E39A; unicode-bidi: isolate; direction: ltr; }
+.kw, .ex { color: #C9AEFF; }
+.nu { color: #FFC56B; }
+.fn { color: #FFDC6B; }
+.cm { color: #7A71A3; unicode-bidi: isolate; direction: ltr; }
+.fa { unicode-bidi: isolate; direction: rtl; font-family: "Vazirmatn", sans-serif; font-variant-ligatures: normal; }
+
+.chips { position: absolute; right: 64px; top: 670px; width: 520px; display: flex; gap: 8px; direction: ltr; justify-content: flex-end; }
+.chips span { padding: 5px 11px; border-radius: 99px; border: 1px solid var(--line); background: var(--ink-2); font: 600 12px/1 var(--f-mono); color: var(--paper); opacity: 0; }
+
+/* render pipeline */
+.nodes { position: absolute; top: 236px; left: 70px; width: 1140px; display: flex; }
+.slot { width: 228px; padding-inline: 12px; box-sizing: border-box; }
+.node { --on: 0; height: 156px; box-sizing: border-box; border-radius: 14px; padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 4px;
+  background: color-mix(in srgb, var(--c) calc(var(--on) * 16%), var(--ink-2));
+  box-shadow: 0 0 0 calc(1px + var(--on) * 1px) color-mix(in srgb, var(--c) calc(var(--on) * 100%), var(--line));
+  transform: translateY(calc(var(--on) * -8px)); }
+.n-en { font: 600 14px/1.2 var(--f-mono); color: var(--c); direction: ltr; text-align: right; }
+.node b { font: 400 26px/1.3 var(--f-display); font-weight: 400; }
+.node small { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.track { position: absolute; left: 70px; width: 1140px; top: 424px; height: 2px; background: var(--line); }
+.pulse { position: absolute; top: -7px; left: 0; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 6px rgba(244, 239, 230, .14), 0 0 24px 4px rgba(244, 239, 230, .35); }
+.budget { position: absolute; left: 70px; width: 1140px; top: 470px; }
+.b-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; color: var(--muted); margin-bottom: 10px; }
+.b-head b { font: 600 15px var(--f-mono); color: var(--paper); }
+.bar { position: relative; height: 34px; border-radius: 8px; background: repeating-linear-gradient(-45deg, var(--ink-2) 0 8px, color-mix(in srgb, var(--ink-2) 70%, var(--line)) 8px 16px); box-shadow: inset 0 0 0 1px var(--line); overflow: hidden; }
+.bseg { position: absolute; top: 0; bottom: 0; background: var(--c); width: 0; }
+.ticks { position: relative; height: 26px; font: 12px/26px var(--f-mono); color: var(--muted); }
+.ticks span { position: absolute; top: 0; transform: translateX(50%); white-space: nowrap; }
+.readout { position: absolute; left: 70px; width: 1140px; top: 604px; display: flex; justify-content: space-between; gap: 24px; font-size: 18px; opacity: 0; }
+.readout .ok { color: var(--good); }
+.readout .fx { color: var(--muted); font-family: var(--f-mono); direction: ltr; }
+
+/* web vitals */
+.gauges { position: absolute; top: 228px; left: 0; right: 0; display: flex; justify-content: center; gap: 70px; }
+.gauge { margin: 0; width: 300px; position: relative; text-align: center; }
+.gauge svg { display: block; width: 300px; height: 176px; overflow: visible; }
+.g-read { position: absolute; left: 0; right: 0; top: 104px; display: flex; flex-direction: column; align-items: center; }
+.g-read b { font: 600 34px/1.1 var(--f-mono); font-variant-numeric: tabular-nums; direction: ltr; }
+.g-read small { color: var(--muted); font-size: 13px; }
+.gauge figcaption { margin-top: 12px; display: grid; gap: 2px; }
+.g-en { font: 600 18px/1.2 var(--f-mono); color: var(--paper); }
+.g-fa { font-size: 16px; }
+.g-th { font-size: 13px; color: var(--muted); }
+.badge { justify-self: center; margin-top: 6px; padding: 2px 12px; border-radius: 99px; background: color-mix(in srgb, var(--good) 18%, transparent); color: var(--good); font-size: 13px; font-weight: 700; opacity: 0; }
+.a11y { position: absolute; top: 606px; left: 0; right: 0; margin: 0; padding: 0; list-style: none; display: flex; justify-content: center; gap: 14px; }
+.a11y li { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 99px; background: var(--ink-2); box-shadow: 0 0 0 1px var(--line); font-size: 15px; opacity: 0; }
+.a11y li::before { content: "✓"; color: var(--good); font-weight: 700; }
+
+/* outro */
+.stack { position: absolute; left: 110px; top: 110px; width: 480px; height: 500px; }
+.plane { position: absolute; left: 50%; top: 50%; width: 250px; height: 250px; margin: -125px 0 0 -125px; border-radius: 24px; border: 2px solid var(--c); background: color-mix(in srgb, var(--c) 15%, transparent); display: grid; place-items: center; transform: translateY(var(--y, 0px)) rotateX(58deg) rotateZ(-45deg); }
+.plane span { font: 600 26px/1 var(--f-mono); color: var(--c); }
+.outro-text { position: absolute; right: 80px; top: 196px; width: 560px; }
+.o-title { font: 400 128px/1.05 var(--f-display); }
+.o-eq { margin: 10px 0 0; font: 400 38px/1.4 var(--f-display); }
+.o-sub { margin: 4px 0 0; font-size: 21px; color: var(--muted); }
+.o-note { margin: 30px 0 0; font-size: 15px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+.o-note::before { content: ""; width: 26px; height: 2px; background: var(--line); }
+.c-html { color: var(--html); } .c-css { color: var(--css); } .c-js { color: var(--js); }
+
+/* ---------- controls ---------- */
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding-inline: 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--ink-2); color: var(--paper); font: 500 15px/1 var(--f-body); cursor: pointer; }
+.btn:hover { background: var(--chrome); }
+.btn.primary { background: var(--paper); color: var(--ink); border-color: var(--paper); min-width: 96px; justify-content: center; }
+.btn:focus-visible, .sc:focus-visible, #scrub:focus-visible { outline: 2px solid var(--js); outline-offset: 2px; }
+.btn svg { width: 16px; height: 16px; fill: currentColor; }
+#scrub { flex: 1 1 200px; min-width: 0; accent-color: var(--html); }
+.time { font: 14px/1 var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.scenes { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.sc { position: relative; width: 100%; display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--ink); color: var(--muted); font: 500 14px/1.3 var(--f-body); text-align: right; cursor: pointer; overflow: hidden; }
+.sc:hover { color: var(--paper); }
+.sc[aria-current="true"] { color: var(--paper); border-color: var(--muted); }
+.sc-n { font: 600 12px/1 var(--f-mono); color: var(--muted); }
+.sc-p { position: absolute; right: 0; bottom: 0; height: 3px; width: calc(var(--p, 0) * 100%); background: var(--sc-c, var(--html)); }
+.hint { margin: 0; color: var(--muted); font-size: 14px; }
+kbd { font: 12px var(--f-mono); padding: 1px 6px; border-radius: 5px; border: 1px solid var(--line); background: var(--ink-2); }
+@media (max-width: 600px) { .controls .time { order: 5; } }
+</style>
+</head>
+<body>
+<div class="app" dir="rtl" lang="fa">
+  <header class="top">
+    <h1>فرانت‌اند در حرکت</h1>
+    <p>یک موشن‌گرافیک کوتاه دربارهٔ اینکه صفحهٔ وب چطور از سه لایهٔ HTML، CSS و JavaScript ساخته می‌شود، مرورگر چطور هر فریم را می‌کشد و یک رابط کاربری خوب را با چه معیارهایی می‌سنجیم.</p>
+  </header>
+
+  <div class="stage-wrap" id="wrap">
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="grid-bg"></div>
+      <div class="glow" id="glow"></div>
+
+      <section class="layer L-intro" data-layer="intro">
+        <div class="intro-eyebrow">front-end</div>
+        <div class="intro-title" id="introTitle">فرانت‌اند</div>
+        <div class="intro-sub" id="introSub">هر چیزی که در مرورگر می‌بینید و لمس می‌کنید</div>
+        <div class="intro-trio" id="introTrio" dir="ltr">
+          <span class="c-html"><i></i>HTML</span><span class="c-css"><i></i>CSS</span><span class="c-js"><i></i>JavaScript</span>
+        </div>
+        <span class="glyph c-html">&lt;/&gt;</span>
+        <span class="glyph c-css">{ }</span>
+        <span class="glyph c-js">( ) =&gt;</span>
+      </section>
+
+      <div class="layer caption" data-layer="caption">
+        <div class="cap-eyebrow" id="capEye"></div>
+        <div class="cap-title" id="capTitle"></div>
+        <p class="cap-sub" id="capSub"></p>
+      </div>
+
+      <section class="layer" data-layer="bench">
+        <div class="browser" id="browser">
+          <div class="ruler" id="ruler"><span id="rulerLabel">600px</span></div>
+          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">https://nyx.local/</span></div>
+          <div class="viewport">
+            <div class="page" id="page">
+              <header class="m-nav" id="mNav"><b>نیکس</b> <span class="m-links"><span class="m-link">خانه</span> <span class="m-link">بلاگ</span></span></header>
+              <div class="m-h1" id="mH1">سلام، دنیا!</div>
+              <p class="m-p" id="mP">اولین صفحهٔ وب من</p>
+              <span class="m-btn" id="mBtn">♥ پسندیدم <span id="mCount">0</span></span>
+              <div class="m-cards" id="mCards">
+                <div class="m-card"><i class="m-ic">✎</i>طراحی</div>
+                <div class="m-card"><i class="m-ic">&lt;/&gt;</i>کد</div>
+                <div class="m-card"><i class="m-ic">↗</i>انتشار</div>
+              </div>
+            </div>
+          </div>
+          <div class="ov" id="ovHeader"><span>&lt;Header /&gt;</span></div>
+          <div class="ov" id="ovHero"><span>&lt;Hero /&gt;</span></div>
+          <div class="ov ov-card"><span>&lt;Card /&gt;</span></div>
+          <div class="ov ov-card"><span>&lt;Card /&gt;</span></div>
+          <div class="ov ov-card"><span>&lt;Card /&gt;</span></div>
+          <div class="ripple"></div><div class="ripple"></div><div class="ripple"></div>
+          <div class="heart">♥ +۱</div><div class="heart">♥ +۱</div><div class="heart">♥ +۱</div>
+          <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.3-2.9 1.5-3.9-7.4L4 20z" fill="#FFFFFF" stroke="#17132B" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="code" id="code">
+          <div class="code-tab"><span class="code-dot"></span><span id="codeFile">index.html</span><small id="codeLang">HTML</small></div>
+          <pre class="code-body" id="codeBody"></pre>
+        </div>
+        <div class="chips" id="chips"><span>TypeScript</span><span>React</span><span>Vue</span><span>Svelte</span><span>Vite</span><span>Tailwind</span></div>
+      </section>
+
+      <section class="layer" data-layer="pipe">
+        <div class="nodes">
+          <div class="slot"><div class="node" style="--c: var(--js)"><span class="n-en">JavaScript</span><b>اجرای کد</b><small>پاسخ به رویداد و تغییر DOM</small></div></div>
+          <div class="slot"><div class="node" style="--c: var(--css)"><span class="n-en">Style</span><b>محاسبهٔ استایل</b><small>کدام قاعده به کدام عنصر می‌خورد</small></div></div>
+          <div class="slot"><div class="node" style="--c: var(--lav)"><span class="n-en">Layout</span><b>چیدمان</b><small>اندازه و جای هر جعبه</small></div></div>
+          <div class="slot"><div class="node" style="--c: var(--html)"><span class="n-en">Paint</span><b>نقاشی</b><small>پر کردن پیکسل‌ها</small></div></div>
+          <div class="slot"><div class="node" style="--c: var(--good)"><span class="n-en">Composite</span><b>ترکیب لایه‌ها</b><small>روی هم گذاشتن و نمایش</small></div></div>
+        </div>
+        <div class="track"><i class="pulse" id="pulse"></i></div>
+        <div class="budget">
+          <div class="b-head"><span>بودجهٔ زمانی یک فریم</span><span id="frameNo">فریم ۱</span></div>
+          <div class="bar" id="bar"></div>
+          <div class="ticks" id="ticks"></div>
+        </div>
+        <div class="readout" id="readout">
+          <span class="ok">۱۲٫۷ از ۱۶٫۷ میلی‌ثانیه مصرف شد؛ فریم به‌موقع می‌رسد.</span>
+          <span class="fx">1000ms ÷ 60 = 16.7ms</span>
+        </div>
+      </section>
+
+      <section class="layer" data-layer="vitals">
+        <div class="gauges" id="gauges"></div>
+        <ul class="a11y">
+          <li>کنتراست متن حداقل ۴٫۵ به ۱</li>
+          <li>کار کامل با کیبورد</li>
+          <li>متن جایگزین برای تصویرها</li>
+        </ul>
+      </section>
+
+      <section class="layer" data-layer="outro">
+        <div class="stack">
+          <div class="plane" style="--c: var(--html)"><span>HTML</span></div>
+          <div class="plane" style="--c: var(--css)"><span>CSS</span></div>
+          <div class="plane" style="--c: var(--js)"><span>JS</span></div>
+        </div>
+        <div class="outro-text" id="outroText">
+          <div class="o-title">فرانت‌اند</div>
+          <p class="o-eq"><span class="c-html">ساختار</span> + <span class="c-css">ظاهر</span> + <span class="c-js">رفتار</span></p>
+          <p class="o-sub">= تجربه‌ای که کاربر می‌بیند و لمس می‌کند</p>
+          <p class="o-note">همین موشن‌گرافیک هم فقط با HTML، CSS و JavaScript ساخته شده است.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="play" type="button"><svg viewBox="0 0 16 16" id="playIcon"><path d="M4 2h3v12H4zM9 2h3v12H9z"/></svg><span id="playLabel">توقف</span></button>
+    <button class="btn" id="prev" type="button">صحنهٔ قبل</button>
+    <button class="btn" id="next" type="button">صحنهٔ بعد</button>
+    <input type="range" id="scrub" min="0" max="1" step="0.01" value="0" aria-label="زمان پخش">
+    <span class="time" id="time" dir="ltr">0:00 / 0:00</span>
+  </div>
+  <ol class="scenes" id="scenes" aria-label="صحنه‌ها"></ol>
+  <p class="hint">با کلید <kbd>Space</kbd> پخش را متوقف یا شروع کنید. روی هر صحنه بزنید تا مستقیم به آن بروید.</p>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const lerp = (a, b, p) => a + (b - a) * p;
+  const eo = p => 1 - Math.pow(1 - p, 3);
+  const eio = p => (p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+  const seg = (t, a, b, e = eo) => e(clamp((t - a) / (b - a)));
+  const fa = (n, d = 0) => n.toLocaleString('fa-IR', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+  /* ---------- tiny syntax highlighter ---------- */
+  const FA = [/[؀-ۿ‌]+(?:[ ،]+[؀-ۿ‌]+)*!?/y, 'fa'];
+  const WORD = [/[\w$-]+/y, ''];
+  const RULES = {
+    html: [[/<!--.*?(?:-->|$)/y, 'cm'], [/<\/?[A-Za-z][\w.]*/y, 'tg'], [/\/?>/y, 'tg'], [/[\w-]+(?==)/y, 'at'], [/"[^"]*"/y, 'st'], FA, WORD],
+    css: [[/\/\*.*?(?:\*\/|$)/y, 'cm'], [/@[\w-]+/y, 'kw'], [/#[0-9a-fA-F]{3,8}\b/y, 'nu'], [/[\w-]+(?=\s*:(?!:))/y, 'pr'], [/[\w-]+(?=\()/y, 'fn'], [/[.#]?[A-Za-z][\w-]*(?=[^;{}()]*\{)/y, 'sel'], [/-?\d*\.?\d+(?:px|rem|fr|%|ms|s)?/y, 'nu'], WORD],
+    js: [[/\/\/.*/y, 'cm'], [/'[^']*'|"[^"]*"/y, 'st'], [/\b(?:const|let|var|function|return|if|else|new)\b/y, 'kw'], [/=>/y, 'kw'], [/\d+/y, 'nu'], [/[\w$]+(?=\()/y, 'fn'], [/[\w$]+/y, '']],
+    jsx: [[/\/\/.*/y, 'cm'], [/"[^"]*"/y, 'st'], [/\b(?:function|return|const|export|default)\b/y, 'kw'], [/<\/?[A-Za-z][\w.]*/y, 'tg'], [/\/?>/y, 'tg'], [/[\w-]+(?==)/y, 'at'], [/\{[^{}]*\}/y, 'ex'], [/[\w$]+(?=\()/y, 'fn'], FA, [/[\w$]+/y, '']]
+  };
+  function tokenize(line, rules) {
+    const out = []; let i = 0, plain = '';
+    const flush = () => { if (plain) { out.push(['', plain]); plain = ''; } };
+    outer: while (i < line.length) {
+      for (const [re, cls] of rules) {
+        re.lastIndex = i;
+        const m = re.exec(line);
+        if (m && m[0].length) { flush(); out.push([cls, m[0]]); i += m[0].length; continue outer; }
+      }
+      plain += line[i++];
+    }
+    flush();
+    return out;
+  }
+  function makeCode(file, lang, label, color, lines) {
+    const toks = lines.map(l => tokenize(l[0], RULES[lang]));
+    const cum = []; let c = 0;
+    lines.forEach(l => { c += l[0].length + 1; cum.push(c); });
+    return { file, label, color, lines, toks, cum, total: c - 1 };
+  }
+
+  const CODE = {
+    html: makeCode('index.html', 'html', 'HTML', 'var(--html)', [
+      ['<header>'], ['  <b>نیکس</b>'], ['  <nav>'], ['    <a href="/">خانه</a>'], ['    <a href="/blog">بلاگ</a>'], ['  </nav>'], ['</header>', 'nav'],
+      ['<h1>سلام، دنیا!</h1>', 'h1'], ['<p>اولین صفحهٔ وب من</p>', 'p'], ['<button>♥ پسندیدم <span>0</span></button>', 'btn'],
+      ['<section class="cards">'], ['  <article>طراحی</article>'], ['  <article>کد</article>'], ['  <article>انتشار</article>'], ['</section>', 'cards']
+    ]),
+    css: makeCode('style.css', 'css', 'CSS', 'var(--css)', [
+      ['body {'], ['  font-family: Vazirmatn;'], ['  background: #F6F1E7;'], ['  padding: 20px;'], ['}', 'base'],
+      ['header, nav { display: flex; gap: 16px; }'], ['header { justify-content: space-between; }', 'nav'],
+      ['a { color: inherit; text-decoration: none; }', 'link'], ['h1 { font: 2.4rem Lalezar; }', 'h1'],
+      ['button {'], ['  background: #FF6B4A;'], ['  color: white; border: 0;'], ['  border-radius: 99px;'], ['}', 'btn'],
+      ['.cards {'], ['  display: grid;'], ['  grid-template-columns: repeat(3, 1fr);'], ['  gap: 12px;'], ['}', 'cards'],
+      ['article { padding: 12px; background: #fff; }', 'card']
+    ]),
+    js: makeCode('app.js', 'js', 'JavaScript', 'var(--js)', [
+      ["const btn = document.querySelector('button');"], ["const out = btn.querySelector('span');"], ['let likes = 0;'], [''],
+      ["btn.addEventListener('click', () => {"], ['  likes++;'], ["  out.textContent = likes.toLocaleString('fa');"], ['});', 'js']
+    ]),
+    jsx: makeCode('Card.jsx', 'jsx', 'Component', 'var(--lav)', [
+      ['function Card({ title, icon }) {'], ['  return ('], ['    <article className="card">'], ['      <i>{icon}</i>'], ['      <h3>{title}</h3>'], ['    </article>'], ['  );'], ['}'], [''],
+      ['<Card title="طراحی" icon="✎" />', 'i0'], ['<Card title="کد" icon="</>" />', 'i1'], ['<Card title="انتشار" icon="↗" />', 'i2']
+    ]),
+    resp: makeCode('style.css', 'css', 'CSS', 'var(--css)', [
+      ['/* همان صفحه، هر عرضی */'], ['body {'], ['  container-type: inline-size;'], ['}'], [''],
+      ['@container (max-width: 420px) {'], ['  .cards {'], ['    grid-template-columns: 1fr;'], ['  }'], ['}', 'resp']
+    ])
+  };
+
+  /* ---------- stage references ---------- */
+  const stage = $('#stage'), wrap = $('#wrap');
+  const layers = Object.fromEntries($$('[data-layer]', stage).map(el => [el.dataset.layer, el]));
+  const page = $('#page'), browser = $('#browser');
+  const els = { nav: $('#mNav'), h1: $('#mH1'), p: $('#mP'), btn: $('#mBtn'), cards: $('#mCards') };
+  const cards = $$('.m-card', page), icons = $$('.m-ic', page);
+  const ovHeader = $('#ovHeader'), ovHero = $('#ovHero'), ovCards = $$('.ov-card', browser);
+  const ripples = $$('.ripple', browser), hearts = $$('.heart', browser), cursor = $('#cursor');
+  const codeEl = $('#code'), codeBody = $('#codeBody');
+  const chipEls = $$('#chips span');
+  const glyphs = $$('.glyph', stage);
+
+  /* pipeline: budget segments + ticks */
+  const MS = [4.2, 1.8, 2.6, 3.0, 1.1], BUDGET = 1000 / 60, BAR_W = 1140, K = BAR_W / BUDGET;
+  const segColors = ['var(--js)', 'var(--css)', 'var(--lav)', 'var(--html)', 'var(--good)'];
+  const bar = $('#bar');
+  const bsegs = MS.map((ms, i) => {
+    const s = document.createElement('span');
+    s.className = 'bseg';
+    s.style.setProperty('--c', segColors[i]);
+    s.style.right = MS.slice(0, i).reduce((a, b) => a + b, 0) * K + 'px';
+    bar.appendChild(s);
+    return s;
+  });
+  [[0, '۰'], [4, '۴'], [8, '۸'], [12, '۱۲'], [BUDGET, '۱۶٫۷ میلی‌ثانیه']].forEach(([ms, label]) => {
+    const s = document.createElement('span');
+    s.textContent = label;
+    s.style.right = ms * K + 'px';
+    if (ms === 0) s.style.transform = 'none';
+    if (ms === BUDGET) s.style.transform = 'translateX(100%)';
+    $('#ticks').appendChild(s);
+  });
+  const nodes = $$('.node', stage), pulse = $('#pulse');
+
+  /* web vitals gauges */
+  const G = [
+    { en: 'LCP', fa: 'نمایش بزرگ‌ترین محتوا', max: 5, zones: [2.5, 4], v: 1.9, dec: 1, unit: 'ثانیه', th: 'خوب: ۲٫۵ ثانیه یا کمتر', fmt: v => v.toFixed(1) + 's' },
+    { en: 'INP', fa: 'سرعت پاسخ به تعامل', max: 600, zones: [200, 500], v: 120, dec: 0, unit: 'میلی‌ثانیه', th: 'خوب: ۲۰۰ میلی‌ثانیه یا کمتر', fmt: v => Math.round(v) + 'ms' },
+    { en: 'CLS', fa: 'پایداری چیدمان', max: .3, zones: [.1, .25], v: .04, dec: 2, unit: 'امتیاز جابه‌جایی', th: 'خوب: ۰٫۱ یا کمتر', fmt: v => v.toFixed(2) }
+  ];
+  const CX = 150, CY = 150, R = 120;
+  const pt = f => [CX + R * Math.cos(Math.PI * f), CY - R * Math.sin(Math.PI * f)];
+  const arc = (f0, f1) => { const [x0, y0] = pt(f0), [x1, y1] = pt(f1); return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 0 0 ${x1.toFixed(2)} ${y1.toFixed(2)}`; };
+  const gaugeEls = G.map(g => {
+    const f1 = g.zones[0] / g.max, f2 = g.zones[1] / g.max;
+    const fig = document.createElement('figure');
+    fig.className = 'gauge';
+    const lbl = (f, txt) => { const [x, y] = [CX + (R + 26) * Math.cos(Math.PI * f), CY - (R + 26) * Math.sin(Math.PI * f)]; return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" fill="var(--muted)" font-size="12" font-family="var(--f-mono)" text-anchor="middle" dominant-baseline="middle">${txt}</text>`; };
+    fig.innerHTML = `<svg viewBox="0 0 300 176">
+      <path d="${arc(0, f1)}" stroke="var(--good)" stroke-opacity=".22" stroke-width="18" fill="none"/>
+      <path d="${arc(f1, f2)}" stroke="var(--warn)" stroke-opacity=".22" stroke-width="18" fill="none"/>
+      <path d="${arc(f2, 1)}" stroke="var(--bad)" stroke-opacity=".22" stroke-width="18" fill="none"/>
+      <path class="g-val" d="" stroke="var(--good)" stroke-width="18" stroke-linecap="round" fill="none"/>
+      ${lbl(f1, g.zones[0])}${lbl(f2, g.zones[1])}
+    </svg>
+    <div class="g-read"><b>0</b><small>${g.unit}</small></div>
+    <figcaption><span class="g-en">${g.en}</span><span class="g-fa">${g.fa}</span><span class="g-th">${g.th}</span><span class="badge">خوب</span></figcaption>`;
+    $('#gauges').appendChild(fig);
+    return { val: $('.g-val', fig), num: $('.g-read b', fig), badge: $('.badge', fig) };
+  });
+  const a11yItems = $$('.a11y li', stage);
+  const planes = $$('.plane', stage);
+
+  /* ---------- bench (browser + code) state ---------- */
+  const KEYS_R = ['nav', 'h1', 'p', 'btn', 'cards'];
+  const KEYS_C = ['base', 'nav', 'link', 'h1', 'btn', 'cards', 'card'];
+  const ones = keys => Object.fromEntries(keys.map(k => [k, 1]));
+  const zeros = keys => Object.fromEntries(keys.map(k => [k, 0]));
+  const bench = o => Object.assign({ r: ones(KEYS_R), c: ones(KEYS_C), icons: [0, 0, 0], likes: 0, clicks: [], t: 0, cursor: null, width: 600, ruler: 0, ov: null, chips: 0 }, o);
+
+  function rel(el) {
+    const s = stage.getBoundingClientRect().width / 1280 || 1;
+    const r = el.getBoundingClientRect(), b = browser.getBoundingClientRect();
+    return { x: (r.left - b.left) / s, y: (r.top - b.top) / s, w: r.width / s, h: r.height / s };
+  }
+  function place(el, box, pad = 6) {
+    el.style.left = box.x - pad + 'px'; el.style.top = box.y - pad + 'px';
+    el.style.width = box.w + pad * 2 + 'px'; el.style.height = box.h + pad * 2 + 'px';
+  }
+
+  function applyBench(s) {
+    browser.style.width = s.width + 'px';
+    browser.style.left = 64 + (600 - s.width) / 2 + 'px';
+    $('#ruler').style.opacity = s.ruler;
+    $('#rulerLabel').textContent = Math.round(s.width) + 'px';
+
+    for (const k of KEYS_R) {
+      const r = s.r[k], el = els[k];
+      el.hidden = r <= 0;
+      el.style.opacity = r;
+      el.style.transform = r < 1 ? `translateY(${((1 - r) * 10).toFixed(2)}px)` : '';
+    }
+    for (const k of KEYS_C) {
+      page.style.setProperty('--' + k, s.c[k].toFixed(3));
+      page.classList.toggle('k-' + k, s.c[k] >= .5);
+    }
+    icons.forEach((ic, i) => ic.style.setProperty('--icon', s.icons[i].toFixed(3)));
+    $('#mCount').textContent = s.likes ? fa(s.likes) : '0';
+
+    const press = s.clicks.reduce((m, c) => Math.max(m, s.t >= c ? 1 - clamp((s.t - c) / .18) : 0), 0);
+    els.btn.style.transform = press ? `scale(${(1 - press * .07).toFixed(3)})` : (els.btn.style.transform || '');
+
+    const needLayout = s.cursor || s.ov;
+    const bb = needLayout ? rel(els.btn) : null;
+    if (s.cursor) {
+      const tx = bb.x + bb.w * .55, ty = bb.y + bb.h * .55;
+      const sx = s.width * .86, sy = 520;
+      const p = s.cursor.p;
+      const arcY = Math.sin(p * Math.PI) * -40;
+      cursor.style.transform = `translate(${lerp(sx, tx, p).toFixed(1)}px, ${(lerp(sy, ty, p) + arcY).toFixed(1)}px) scale(${(1 - press * .12).toFixed(3)})`;
+      cursor.style.opacity = s.cursor.op;
+    } else cursor.style.opacity = 0;
+
+    s.clicks.forEach((c, i) => {
+      const a = (s.t - c) / .55, h = (s.t - c) / 1.1;
+      const rp = ripples[i], ht = hearts[i];
+      if (bb && a >= 0 && a <= 1) {
+        rp.style.opacity = (1 - a) * .7;
+        rp.style.transform = `translate(${(bb.x + bb.w / 2).toFixed(1)}px, ${(bb.y + bb.h / 2).toFixed(1)}px) scale(${(.4 + eo(a) * 1.8).toFixed(3)})`;
+      } else rp.style.opacity = 0;
+      if (bb && h >= 0 && h <= 1) {
+        ht.style.opacity = h < .2 ? h / .2 : 1 - (h - .2) / .8;
+        ht.style.transform = `translate(${(bb.x - 58 - i * 6).toFixed(1)}px, ${(bb.y + 8 - eo(h) * 40).toFixed(1)}px)`;
+      } else ht.style.opacity = 0;
+    });
+    for (let i = s.clicks.length; i < 3; i++) { ripples[i].style.opacity = 0; hearts[i].style.opacity = 0; }
+
+    if (s.ov) {
+      const h = rel(els.nav), a = rel(els.h1), b = bb;
+      place(ovHeader, h); ovHeader.style.opacity = s.ov.header;
+      place(ovHero, { x: Math.min(a.x, b.x), y: a.y, w: Math.max(a.x + a.w, b.x + b.w) - Math.min(a.x, b.x), h: b.y + b.h - a.y }, 8);
+      ovHero.style.opacity = s.ov.hero;
+      cards.forEach((c, i) => { place(ovCards[i], rel(c), 4); ovCards[i].style.opacity = s.ov.cards[i]; });
+    } else [ovHeader, ovHero, ...ovCards].forEach(o => (o.style.opacity = 0));
+
+    chipEls.forEach((c, i) => {
+      const p = typeof s.chips === 'number' ? 0 : s.chips[i];
+      c.style.opacity = p;
+      c.style.transform = `translateY(${((1 - p) * 14).toFixed(1)}px)`;
+    });
+  }
+
+  let lastCode = null, lastCodeKey = '';
+  function renderCode(code, n, t, fadeOut) {
+    const caretOn = Math.floor(t * 2.2) % 2 === 0 || n < code.total;
+    const key = n + ':' + caretOn;
+    codeBody.style.opacity = (1 - fadeOut).toFixed(3);
+    if (code === lastCode && key === lastCodeKey) return;
+    lastCode = code; lastCodeKey = key;
+    let cur = code.lines.length - 1;
+    for (let i = 0; i < code.lines.length; i++) if (n < code.cum[i]) { cur = i; break; }
+    let html = '';
+    for (let i = 0; i < code.lines.length; i++) {
+      const start = i === 0 ? 0 : code.cum[i - 1];
+      if (n < start) break;
+      const len = code.lines[i][0].length;
+      let left = Math.min(n - start, len), body = '';
+      for (const [cls, txt] of code.toks[i]) {
+        if (left <= 0) break;
+        const part = txt.slice(0, left);
+        left -= part.length;
+        body += cls ? `<span class="${cls}">${esc(part)}</span>` : esc(part);
+      }
+      const isCur = i === cur;
+      if (isCur && caretOn) body += '<span class="caret"></span>';
+      html += `<div class="cl${isCur ? ' cur' : ''}"><span class="ln">${i + 1}</span><span class="tx">${body || ' '}</span></div>`;
+    }
+    codeBody.innerHTML = html;
+  }
+
+  /* ---------- scenes ---------- */
+  const SCENES = [
+    { id: 'intro', label: 'مقدمه', d: 5, color: 'var(--lav)', layers: ['intro'], rest: 3,
+      update(t) {
+        $('#introTitle').style.transform = `scale(${lerp(1.06, 1, seg(t, 0, 1.4)).toFixed(4)})`;
+        $('#introSub').style.opacity = seg(t, .3, 1.2);
+        const trio = $('#introTrio');
+        trio.style.opacity = seg(t, 1.2, 2.1);
+        trio.style.transform = `translateY(${((1 - seg(t, 1.2, 2.1)) * 12).toFixed(1)}px)`;
+        glyphs.forEach((g, i) => {
+          const a = i * 2.094 + 0.6 + t * .28;
+          const x = 640 + Math.cos(a) * 480, y = 360 + Math.sin(a) * 250;
+          g.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%) rotate(${(Math.sin(t + i) * 8).toFixed(2)}deg)`;
+          g.style.opacity = (.35 + .65 * seg(t, 0, 1)).toFixed(3);
+        });
+      } },
+    { id: 'html', label: 'HTML', d: 9, color: 'var(--html)', layers: ['caption', 'bench'], rest: 8,
+      cap: ['لایهٔ اول · HTML', 'ساختار', 'HTML می‌گوید چه چیزی روی صفحه هست: عنوان، متن، دکمه و فهرست. مرورگر بدون هیچ استایلی هم آن را نشان می‌دهد.'],
+      code: CODE.html, type: [.5, 6.5],
+      update(t) {
+        const r = Object.fromEntries(KEYS_R.map(k => [k, this.key(k, t, .45)]));
+        return bench({ r, c: zeros(KEYS_C) });
+      } },
+    { id: 'css', label: 'CSS', d: 9.5, color: 'var(--css)', layers: ['caption', 'bench'], rest: 9,
+      cap: ['لایهٔ دوم · CSS', 'ظاهر', 'CSS فونت، رنگ، فاصله و چیدمان را تعیین می‌کند. همان HTML، با چند قاعده شکل تازه‌ای می‌گیرد.'],
+      code: CODE.css, type: [.4, 7.2],
+      update(t) {
+        const c = Object.fromEntries(KEYS_C.map(k => [k, this.key(k, t, .7, eio)]));
+        return bench({ c });
+      } },
+    { id: 'js', label: 'JavaScript', d: 9, color: 'var(--js)', layers: ['caption', 'bench'], rest: 8.2,
+      cap: ['لایهٔ سوم · JavaScript', 'رفتار', 'JavaScript به کلیک و تایپ کاربر پاسخ می‌دهد و صفحه را بدون بارگذاری دوباره به‌روز می‌کند.'],
+      code: CODE.js, type: [.4, 3.8], clicks: [4.9, 5.75, 6.6],
+      update(t) {
+        const likes = this.clicks.filter(c => t >= c).length;
+        const p = seg(t, 4.0, 4.75, eio);
+        const op = seg(t, 3.9, 4.2) * (1 - seg(t, 7.8, 8.4));
+        return bench({ likes, clicks: this.clicks, t, cursor: op > 0 ? { p, op } : null });
+      } },
+    { id: 'pipe', label: 'مسیر رندر', d: 9, color: 'var(--good)', layers: ['caption', 'pipe'], rest: 6,
+      cap: ['زیر کاپوت مرورگر', 'مسیر رندر', 'در نمایشگر ۶۰ هرتز، مرورگر برای ساختن هر فریم فقط ۱۶٫۷ میلی‌ثانیه وقت دارد.'],
+      frames: [[.8, 5], [5.4, 6.9], [7.1, 8.6]],
+      update(t) {
+        let fi = 0;
+        this.frames.forEach(([a], i) => { if (t >= a) fi = i; });
+        const [a, b] = this.frames[fi];
+        const u = clamp((t - a) / (b - a));
+        const uu = fi === 0 ? eio(u) : u;
+        pulse.style.left = (BAR_W - uu * BAR_W).toFixed(1) + 'px';
+        pulse.style.opacity = t < a ? seg(t, .3, .8) : (u >= 1 ? 1 - seg(t, b, b + .2) : 1);
+        nodes.forEach((n, i) => {
+          const x = uu * 5 - i;
+          const active = clamp(1 - Math.abs(x - .5) * 1.6);
+          const done = x >= 1 ? .3 : 0;
+          n.style.setProperty('--on', Math.max(active, done).toFixed(3));
+        });
+        bsegs.forEach((s, i) => { s.style.width = (MS[i] * K * clamp(uu * 5 - i)).toFixed(1) + 'px'; });
+        $('#frameNo').textContent = 'فریم ' + fa(fi + 1);
+        const ro = $('#readout');
+        ro.style.opacity = seg(t, 5, 5.6);
+        ro.style.transform = `translateY(${((1 - seg(t, 5, 5.6)) * 10).toFixed(1)}px)`;
+      } },
+    { id: 'comp', label: 'کامپوننت‌ها', d: 9, color: 'var(--lav)', layers: ['caption', 'bench'], rest: 8.4,
+      cap: ['معماری', 'کامپوننت‌ها', 'رابط کاربری از قطعه‌های کوچک و مستقل ساخته می‌شود. یک کارت را یک بار می‌نویسید و هر جا لازم شد دوباره به کار می‌برید.'],
+      code: CODE.jsx, type: [.5, 5.6],
+      update(t) {
+        const ov = { header: seg(t, .5, .9), hero: seg(t, 1, 1.4), cards: [0, 1, 2].map(i => seg(t, 1.5 + i * .25, 1.9 + i * .25)) };
+        const icons = ['i0', 'i1', 'i2'].map(k => this.key(k, t, .5));
+        const chips = chipEls.map((_, i) => seg(t, 5.9 + i * .18, 6.4 + i * .18));
+        return bench({ likes: 3, ov, icons, chips });
+      } },
+    { id: 'resp', label: 'واکنش‌گرا', d: 8, color: 'var(--css)', layers: ['caption', 'bench'], rest: 7.5,
+      cap: ['یک کد، همهٔ صفحه‌ها', 'واکنش‌گرا', 'وقتی عرض صفحه کم می‌شود، چیدمان خودش را تطبیق می‌دهد؛ از مانیتور دسکتاپ تا گوشی.'],
+      code: CODE.resp, type: [.4, 2.9],
+      update(t) {
+        const w = lerp(600, 360, seg(t, 3.3, 5.6, eio));
+        return bench({ likes: 3, icons: [1, 1, 1], width: w, ruler: seg(t, 3, 3.4) * (1 - seg(t, 7.5, 8)) });
+      } },
+    { id: 'vitals', label: 'کیفیت', d: 8, color: 'var(--good)', layers: ['caption', 'vitals'], rest: 7.5,
+      cap: ['تجربهٔ واقعی کاربر', 'سرعت و دسترس‌پذیری', 'Core Web Vitals سه عدد ساده است: صفحه چقدر زود دیده می‌شود، چقدر سریع جواب می‌دهد و چقدر سر جایش می‌ماند.'],
+      update(t) {
+        G.forEach((g, i) => {
+          const p = seg(t, .7 + i * .45, 2.6 + i * .45, eio);
+          const v = g.v * p, f = clamp(v / g.max);
+          const e = gaugeEls[i];
+          e.val.setAttribute('d', f > .002 ? arc(0, f) : '');
+          e.num.textContent = g.fmt(v);
+          e.badge.style.opacity = seg(t, 2.6 + i * .45, 3 + i * .45);
+        });
+        a11yItems.forEach((li, i) => {
+          const p = seg(t, 4.4 + i * .35, 4.9 + i * .35);
+          li.style.opacity = p;
+          li.style.transform = `translateY(${((1 - p) * 12).toFixed(1)}px)`;
+        });
+      } },
+    { id: 'outro', label: 'جمع‌بندی', d: 7, color: 'var(--js)', layers: ['outro'], rest: 6,
+      update(t) {
+        planes.forEach((pl, i) => {
+          const rise = seg(t, .1 + i * .25, .9 + i * .25);
+          const join = seg(t, 1.6, 3.2, eio);
+          const spread = 110, tight = 34;
+          const y = (1 - i) * lerp(spread, tight, join) + (1 - rise) * 80;
+          pl.style.setProperty('--y', y.toFixed(1) + 'px');
+          pl.style.opacity = rise;
+        });
+        const tx = $('#outroText');
+        tx.style.opacity = seg(t, 1.2, 2.4);
+        tx.style.transform = `translateX(${((1 - seg(t, 1.2, 2.4)) * -24).toFixed(1)}px)`;
+      } }
+  ];
+
+  let acc = 0;
+  SCENES.forEach(s => {
+    s.start = acc; acc += s.d;
+    if (s.code) {
+      const [a, b] = s.type, times = {};
+      s.code.lines.forEach((l, i) => { if (l[1]) times[l[1]] = a + (s.code.cum[i] / s.code.total) * (b - a); });
+      s.times = times;
+    }
+    s.key = function (k, t, dur, e = eo) { const kt = this.times[k]; return kt == null ? 0 : seg(t, kt, kt + dur, e); };
+  });
+  const TOTAL = acc;
+
+  /* ---------- render ---------- */
+  let current = -1;
+  function sceneAt(T) {
+    for (let i = SCENES.length - 1; i >= 0; i--) if (T >= SCENES[i].start) return i;
+    return 0;
+  }
+  function render(T) {
+    const i = sceneAt(T), s = SCENES[i], t = T - s.start, d = s.d;
+    const prev = SCENES[i - 1], next = SCENES[i + 1];
+    if (i !== current) {
+      current = i;
+      if (s.cap) {
+        $('#capEye').textContent = s.cap[0];
+        $('#capTitle').textContent = s.cap[1];
+        $('#capSub').textContent = s.cap[2];
+        layers.caption.style.setProperty('--cap-c', s.color);
+      }
+      stage.style.setProperty('--glow', s.color);
+      if (s.code) {
+        $('#codeFile').textContent = s.code.file;
+        $('#codeLang').textContent = s.code.label;
+        codeEl.style.setProperty('--dot', s.code.color);
+      }
+      sceneBtns.forEach((b, j) => b.setAttribute('aria-current', j === i ? 'true' : 'false'));
+    }
+    for (const [name, el] of Object.entries(layers)) {
+      if (!s.layers.includes(name)) { el.style.opacity = 0; continue; }
+      const inOp = prev && prev.layers.includes(name) && name !== 'caption' ? 1 : seg(t, 0, .5);
+      const outOp = next && next.layers.includes(name) && name !== 'caption' ? 1 : 1 - seg(t, d - .45, d);
+      el.style.opacity = Math.min(inOp, outOp).toFixed(3);
+    }
+    const capIn = seg(t, .1, .7);
+    layers.caption.style.transform = `translateY(${((1 - capIn) * 14).toFixed(1)}px)`;
+    $('#glow').style.opacity = (Math.min(seg(t, 0, .8), 1 - seg(t, d - .6, d)) * .9).toFixed(3);
+
+    const out = s.update(t, d);
+    if (out) applyBench(out);
+    if (s.code) {
+      const [a, b] = s.type;
+      const n = Math.floor(clamp((t - a) / (b - a)) * s.code.total);
+      renderCode(s.code, n, t, next && next.code ? seg(t, d - .35, d) : 0);
+    }
+
+    // controls
+    if (!scrubbing) scrub.value = T.toFixed(2);
+    timeEl.textContent = `${fmt(T)} / ${fmt(TOTAL)}`;
+    sceneBtns.forEach((b, j) => {
+      const sc = SCENES[j];
+      b.style.setProperty('--p', j < i ? 1 : j > i ? 0 : clamp((T - sc.start) / sc.d).toFixed(3));
+    });
+  }
+  const fmt = x => { const m = Math.floor(x / 60), sec = Math.floor(x % 60); return `${m}:${String(sec).padStart(2, '0')}`; };
+
+  /* ---------- controls ---------- */
+  const scrub = $('#scrub'), timeEl = $('#time'), playBtn = $('#play');
+  scrub.max = TOTAL.toFixed(2);
+  let scrubbing = false;
+  const sceneList = $('#scenes');
+  const sceneBtns = SCENES.map((s, i) => {
+    const li = document.createElement('li');
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sc';
+    b.style.setProperty('--sc-c', s.color);
+    b.innerHTML = `<span class="sc-n">${fa(i + 1)}</span><span>${s.label}</span><i class="sc-p"></i>`;
+    b.addEventListener('click', () => go(i));
+    li.appendChild(b);
+    sceneList.appendChild(li);
+    return b;
+  });
+
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let T = reduce ? SCENES[0].rest : 0, playing = !reduce, last = null, dirty = true;
+
+  function go(i) {
+    const s = SCENES[(i + SCENES.length) % SCENES.length];
+    T = playing ? s.start : s.start + s.rest;
+    dirty = true;
+  }
+  function setPlaying(p) {
+    playing = p;
+    last = null;
+    $('#playLabel').textContent = p ? 'توقف' : 'پخش';
+    $('#playIcon').innerHTML = p ? '<path d="M4 2h3v12H4zM9 2h3v12H9z"/>' : '<path d="M13 2v12L3 8z"/>';
+  }
+  playBtn.addEventListener('click', () => setPlaying(!playing));
+  $('#prev').addEventListener('click', () => go(sceneAt(T) - 1));
+  $('#next').addEventListener('click', () => go(sceneAt(T) + 1));
+  scrub.addEventListener('input', () => { scrubbing = true; T = parseFloat(scrub.value); dirty = true; });
+  scrub.addEventListener('change', () => { scrubbing = false; });
+  document.addEventListener('keydown', e => {
+    if (e.code === 'Space' && !/^(BUTTON|INPUT)$/.test(e.target.tagName)) { e.preventDefault(); setPlaying(!playing); }
+  });
+  setPlaying(playing);
+
+  function fit() { stage.style.setProperty('--s', (wrap.clientWidth / 1280).toFixed(5)); dirty = true; }
+  new ResizeObserver(fit).observe(wrap);
+  fit();
+
+  function loop(now) {
+    if (playing) {
+      if (last != null) T += Math.min(.1, (now - last) / 1000);
+      if (T >= TOTAL) T = 0;
+      dirty = true;
+    }
+    last = now;
+    if (dirty) { render(T); dirty = false; }
+    requestAnimationFrame(loop);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { dirty = true; });
+  render(T);
+  requestAnimationFrame(loop);
+
+  // hook for frame-accurate video export (see render.mjs)
+  window.__motion = { total: TOTAL, scenes: SCENES.map(s => ({ id: s.id, start: s.start, d: s.d })), seek(x) { setPlaying(false); T = x; render(T); dirty = false; } };
+})();
+</script>
+</body>
+</html>
