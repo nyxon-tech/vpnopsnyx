@@ -191,6 +191,12 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     ports and missed the others. Lesson: scan every node container for `Code: Unavailable`
     (`docker logs --since 3m`), and consider a panel-side watchdog that re-saves nodes whose stream fails.
 
+64. **Constant disconnects on one exit that every synthetic test called healthy.** Ping, bulk TCP and the
+    panel were clean. Per-relay `ss -ti` on the exit showed one relay's users with 5x the retransmission
+    and connections moving a tenth of the data. Moving that relay's port from DNAT to an exit-dialed stealth
+    BackPack tunnel fixed it. Lesson: judge a relay-exit pair by its real user sockets, not by ping or
+    `nc` throughput.
+
 Provider tickets: give a short table of measurements with time and time zone, compare the failing
 destinations with a working baseline (1.1.1.1, domestic datacenters), state what changed (for example a
 new IP), and ask for a concrete fix (re-routing, another IP range, removing a bandwidth limit, moving off

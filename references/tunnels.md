@@ -19,6 +19,7 @@
 16. Persistent GRE relay links
 17. When a relay gets a new IP
 18. Sharing port 443 between services (SNI router)
+19. Spotting a throttled relay-exit pair, and a stealth BackPack cutover
 
 ## 1. Backhaul reverse tunnels
 
@@ -397,3 +398,40 @@ stream {
   provider's addresses, capture SYNs before any firewall while the operator triggers a webhook:
   `tcpdump -Q in -ni any 'tcp dst port 443 and tcp[tcpflags] & tcp-syn != 0 and tcp[tcpflags] & tcp-ack == 0'`
   (print field 5 = source). If nothing arrives at all, the provider rejected the URL before connecting.
+
+## 19. Spotting A Throttled Relay-Exit Pair, And A Stealth BackPack Cutover
+
+`operator-observed`, October 2026. Users of one exit reported constant disconnects. The exit was idle,
+the panel showed no errors, there were no core restarts, ping from both relays had 0% loss over 100
+packets, and a 40 MB bulk test from the exit reached each relay at ~330 Mbit. Raw tests pointed nowhere.
+
+The exit's own sockets showed it. Split live user connections on the exit by relay source address:
+
+```bash
+for r in RELAY1 RELAY2; do ss -tin state established "( sport = :PORT )" dst $r \
+  | grep -oE "bytes_sent:[0-9]+|bytes_retrans:[0-9]+" \
+  | awk -F: -v r=$r '/sent/{s+=$2} /retrans/{b+=$2} END{printf "%s retrans=%.2f%%\n", r, 100*b/(s+1)}'; done
+```
+
+One relay's users had 5x the retransmission (1.55% vs 0.33%) and moved 0.15 MB per connection against
+1.2 MB on the other relay: connections dying early. In-country filtering was hurting user flows on that
+pair while synthetic tests passed.
+
+Fix without adding a foreign hop: move that relay's port from kernel DNAT to a BackPack `stealth` port
+tunnel dialed by the exit (`[server]` on the relay with `ports = ["PORT=127.0.0.1:PORT"]`, `[client]` on
+the exit). The order that dropped nobody:
+
+1. Bring the tunnel up with a spare port (`"2PORT=127.0.0.1:PORT"`) and check it from two other in-country
+   datacenters; add a second spare port mapped to a local `nc` sender on the exit for a bulk test.
+2. Set the real port in `ports` and restart the server. The DNAT rule still catches new flows, so users
+   are not affected yet.
+3. Delete the DNAT and masquerade rules for that port and reload. New flows land on the tunnel, and
+   conntrack keeps existing flows on the old path until they close. Do not flush conntrack.
+
+Result: about 550 users moved over in minutes with no visible drop. Their retransmission went to ~0, and
+the tunnel used 9% of one core and 170 MB RAM with 8 MB socket buffers.
+
+When installing the tunnel binary on a new exit, a copy through a slow operator link timed out. Fetching
+the same release from the project's release page on the exit, and installing it only if its SHA-256
+matches the binary already running in the fleet, was faster and just as safe.
+
