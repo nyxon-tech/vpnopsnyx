@@ -26,7 +26,7 @@ if [ $# -ge 5 ]; then cert=$(ssh -o ConnectTimeout=15 "$4" "cat '$5'"); fi
   printf 'ARGS = ["%s", "%s", "%s", "%s"]\n' "$nid" "$addr" "$port" "$(printf %s "$cert" | base64 | tr -d '\n')"
   printf 'TIMEOUTS = [%s, %s]\n' "${DEFAULT_TIMEOUT:-0}" "${INTERNAL_TIMEOUT:-0}"
   cat <<'PY'
-import asyncio, os, base64, json, ssl, urllib.request, urllib.error
+import asyncio, os, base64, inspect, json, ssl, urllib.request, urllib.error
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine
 from app.utils.jwt import create_admin_token
@@ -41,9 +41,13 @@ async def main():
     async with e.connect() as c:
         cols = [r[0] for r in (await c.execute(text("select column_name from information_schema.columns where table_name='admins'"))).all()]
         cond = "is_sudo" if "is_sudo" in cols else "1=1"
-        aid, uname = (await c.execute(text(f"select id, username from admins where {cond} order by id limit 1"))).one()
+        aid, uname, hp = (await c.execute(text(f"select id, username, hashed_password from admins where {cond} order by id limit 1"))).one()
     await e.dispose()
-    tok = await create_admin_token(aid, uname)
+    # PasarGuard 5.5+ binds admin tokens to the password hash; older versions take (id, username) only.
+    if "hashed_password" in inspect.signature(create_admin_token).parameters:
+        tok = await create_admin_token(aid, uname, hp)
+    else:
+        tok = await create_admin_token(aid, uname)
     req = urllib.request.Request(f"https://127.0.0.1:{os.environ.get('UVICORN_PORT', '8000')}/api/node/{nid}",
         data=json.dumps(body).encode(), method="PUT",
         headers={"Authorization": f"Bearer {tok}", "Content-Type": "application/json"})
