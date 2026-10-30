@@ -197,6 +197,18 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     BackPack tunnel fixed it. Lesson: judge a relay-exit pair by its real user sockets, not by ping or
     `nc` throughput.
 
+65. **Every direct config died at once, with every server healthy.** The direct names lived in a separate
+    domain whose registration had lapsed; the registrar put it on `clientHold` and removed its nameservers,
+    so the names stopped resolving everywhere. Exit ports, nodes and the panel were fine, and the direct
+    ports simply had no connections. Moving the hosts to new names in a live domain restored them. Lesson:
+    when every config under one domain fails together, run `dig @1.1.1.1` and `whois` before touching
+    servers, and track the expiry date of every domain the subscription uses.
+66. **Panel API scripts broke after a panel upgrade.** After PasarGuard 5.5, `create_admin_token` rejects
+    database admins without the password hash (`Database admin tokens require a password hash`), so
+    every helper that mints a token inside the container failed. Lesson: pass `hashed_password` from the
+    `admins` row (see `scripts/panel/node_edit.sh`), and re-run one read-only API call after any panel
+    upgrade before relying on the helpers.
+
 Provider tickets: give a short table of measurements with time and time zone, compare the failing
 destinations with a working baseline (1.1.1.1, domestic datacenters), state what changed (for example a
 new IP), and ask for a concrete fix (re-routing, another IP range, removing a bandwidth limit, moving off
