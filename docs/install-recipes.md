@@ -268,3 +268,37 @@ network tuning. Inspect the script and pin the binary release. The user's prose
 about versions 4.2.1 through 4.2.3 and transports named Quantum+/DC could not be
 matched to the reviewed public release metadata, so those claims remain
 `unverified` and must not drive automated upgrades.
+
+## WatTunnel
+
+Status: `verified-source`, `third-party`, `community`, `high-impact`
+
+Source:
+
+- Repository: https://github.com/JohnWatsoon/WatTunnel
+- Installer: https://raw.githubusercontent.com/JohnWatsoon/WatTunnel/main/install.sh
+- License MIT; latest reviewed release v3.1.1.
+
+Encrypted TCP/UDP anti-censorship tunnel (one Go binary `wattun` + `wattun-manager`),
+configured from a `wat1:` token. Carriers: ICMP, UDP, TCP, TLS, WS, WSS, H2, H2C,
+gRPC, Cloudflare-ECH, and reverse mode, with carrier bonding and DPI-evasion options
+(fake-SNI, tcp-mimic, udp-dns, hdr-mask, shape, tls-frag, ech ladder, pool-rotate).
+ChaCha20-Poly1305 with per-session X25519; it encrypts only the Iran↔Kharej leg, so
+run an end-to-end protocol inside. See `guides/tunnels/wattunnel.md` for the runbook.
+
+Documented one-liner, run as root (systemd, linux amd64/arm64) on both servers:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/JohnWatsoon/WatTunnel/main/install.sh)
+```
+
+The reviewed installer verifies `SHA256SUMS.sig` against an RSA key embedded in the
+script, sets `setcap cap_net_raw,cap_net_admin,cap_net_bind_service` on the binary, and
+writes a hardened `wattun@.service`. But it runs the `main` branch as root with no
+pinned commit, can silently skip verification (`WAT_SKIP_CHECKSUM`, missing `openssl`),
+has unsigned paths (local `dist/`, `build.sh` source build, manager from raw `main`),
+runs the downloaded binary as root before full trust on those paths, and the tunnel
+service runs as root. Prefer a pinned release, verify the signature yourself, review the
+generated unit, and keep the `metrics` endpoint on `127.0.0.1`. The `wat1:` token
+contains the key — treat it as a secret, never print or commit it. Vendor performance
+claims are `unverified`.

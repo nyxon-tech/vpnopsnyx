@@ -13,3 +13,4 @@ path, verification through the transported application, and a timed rollback.
 | FRP | [FRP](frp.md) | https://github.com/fatedier/frp |
 | DaggerConnect | [DaggerConnect](daggerconnect.md) | https://github.com/itsFLoKi/DaggerConnect |
 | BackPack | [BackPack](backpack.md) | https://github.com/AminMGMT/BackPack |
+| WatTunnel | [WatTunnel](wattunnel.md) | https://github.com/JohnWatsoon/WatTunnel |

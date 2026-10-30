@@ -123,6 +123,23 @@
         "The installer downloads architecture-specific releases and verifies published SHA-256 checksums.",
         "Tokens, setup links, panel credentials, recovery codes, API tokens, and backup archives are secrets."
       ]
+    },
+    {
+      "name": "WatTunnel",
+      "category": "encrypted-tcp-udp-anti-censorship-tunnel",
+      "status": ["verified-source", "third-party", "community", "high-impact"],
+      "repository": "https://github.com/JohnWatsoon/WatTunnel",
+      "installer": "https://raw.githubusercontent.com/JohnWatsoon/WatTunnel/main/install.sh",
+      "license": "MIT",
+      "reviewed_release": "v3.1.1",
+      "contact": ["https://t.me/WatxDev", "https://t.me/watxox"],
+      "transports": ["ICMP", "UDP", "TCP", "TLS", "WS", "WSS", "H2", "H2C", "gRPC", "Cloudflare-ECH", "reverse"],
+      "features": ["carrier bonding", "fake-SNI desync", "tcp-mimic", "udp-dns", "hdr-mask", "shape padding/jitter", "tls-frag", "ech ladder", "pool-rotate", "ChaCha20-Poly1305 + per-session X25519"],
+      "notes": [
+        "Single Go binary wattun + wattun-manager; Kharej generates a wat1: token pasted into Iran; config at /etc/wattun/<name>.yml, unit wattun@<name>.service.",
+        "Installer verifies SHA256SUMS.sig with an embedded RSA key but runs the main branch as root unpinned, can silently skip verification (WAT_SKIP_CHECKSUM/missing openssl), and has unsigned paths (local dist, source build.sh, manager from raw main); service runs as root with setcap cap_net_raw/admin/bind_service.",
+        "Encrypts only the Iran<->Kharej leg - run an E2E protocol (VLESS+Reality/TLS/WireGuard) inside. The wat1: token contains the key and is a secret; never print or commit it. Vendor performance claims are unverified."
+      ]
     }
   ]
 }
