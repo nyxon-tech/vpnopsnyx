@@ -41,8 +41,9 @@ operator tools.
 | `local/bp_matrix.sh` | operator workstation | Measures many temporary xDi links, forward or reverse, one at a time, then removes them. |
 | `panel/node_edit.sh` | operator workstation -> panel host | Changes one node's address, port, stored certificate or timeouts through the panel's own API; only that node reconnects. |
 | `node/node_cert.sh` | node host | New self-signed node certificate for a new IP (old pair kept), restarts the node; store the new certificate in the panel. |
-| `rela| `panel/scheduled_panel_update.sh` | panel host | Updates only the panel container: database dump, pull, recreate, health check (HTTP plus same number of connected nodes), automatic image rollback. MySQL or PostgreSQL; run now or from a one-shot timer. |
-y/greunit.sh` | relay and exit | Persistent GRE link as a oneshot unit (one run per end); pair with `relay/dnat.sh`. |
+| `relay/greunit.sh` | relay and exit | Persistent GRE link as a oneshot unit (one run per end); pair with `relay/dnat.sh`. |
+| `panel/scheduled_panel_update.sh` | panel host | Updates only the panel container: database dump, pull, recreate, health check (HTTP plus same number of connected nodes), automatic image rollback. MySQL or PostgreSQL; run now or from a one-shot timer. |
+| `node/host_tune.sh` | exit or relay | Audits (default) or applies (`APPLY=1`) BBR+fq, conntrack limits with early module load, and RPS/RFS on single-queue NICs. Nothing restarts; every file it writes is new and removable. |
 | `panel/blocklist.sh` | panel host | Persistent source-IP blocklist in its own nftables table (`ACTION` = `list`, `add` or `del`). |
 | `relay/bot_panel_proxy.sh` | in-country server | Password-protected HTTP(S) proxy, open only to the bot's IP, so a sales bot abroad can reach panels hosted in the country (`ACTION` = install, allow, rotate, status, remove). |
 

@@ -13,6 +13,7 @@
 10. Splitting one location across two exits
 11. Relay headroom and exit assignment
 12. Relay quota exhaustion and single-relay dependency
+13. Host tuning baseline: BBR, conntrack on every exit, RPS, and reading the survey
 
 ## 1. The one-line snapshot
 
@@ -146,3 +147,36 @@ for hours may need a restart to reconnect immediately.
   ~65% CPU at ~260 Mbit; a 1-core relay saturated (0 free download, 60% ping loss) after one more busy
   location was added, which slowed the other locations on it. Rebalance by moving a location that has a
   healthy alternative relay, not by removing the newest one.
+
+## 13. Host Tuning Baseline: BBR, Conntrack On Every Exit, RPS, And Reading The Survey
+
+`operator-observed`, November 2026. Bad ping on a fleet whose services were all "connected" came from the
+hosts, not the tunnels. `scripts/node/host_tune.sh` audits all three items (read-only by default) and
+applies the missing ones without restarting anything.
+
+- **BBR + fq** on every exit and relay (`/etc/sysctl.d/98-bbr.conf` plus `tcp_bbr` in
+  `/etc/modules-load.d/`). A host that was rebuilt or rebooted can fall back to `cubic`; compare
+  `sysctl net.ipv4.tcp_congestion_control` fleet-wide after any reboot.
+- **conntrack on exits too, not only on DNAT relays (§7).** An exit with the 5-day established timeout and a
+  65k table reached 85% and logged `table full, dropping packet`; new connections were dropped while every
+  unit looked healthy. Set `nf_conntrack_max` to at least 262144 and the established timeout to ~7200 s.
+  **A sysctl file is not proof**: one host had a 3-hour timeout in a file and the 5-day default live,
+  because `nf_conntrack` loaded after `sysctl` ran. Load the module early
+  (`/etc/modules-load.d/nf_conntrack.conf`) and always compare the live value with the file.
+- **Single-queue NICs on multi-core hosts.** A 2-core exit showed 34–50% system CPU, ~60k context
+  switches per second and all softirq on core 0. `rps_cpus` set to all cores plus
+  `net.core.rps_sock_flow_entries` (RFS) spreads it. Use a oneshot unit; the script must end with
+  `exit 0`, or the unit fails when the last loop iteration skips a device.
+- **Reading the survey.** Judge a host by `idle`, `steal` and the CPU pressure (PSI `some avg60`), not by
+  Mbit alone: a 4-core host at 100 Mbit with 48–50% steal and 35% pressure was worse off than an 8-core host
+  at 360 Mbit. Steal above ~15% means the provider is overselling the host: moving load or changing
+  provider helps, a resize does not. A relay can also be the bottleneck: one in-country relay sat at 41%
+  pressure with 18% steal.
+- **Upgrade order that follows from this:** (1) 2-core exits that carry real users (resize to 4 cores);
+  (2) hosts with steal >40% (change provider or host); (3) the busiest exit (more cores, or change the
+  relay weights so an idle sibling exit takes more of the share); (4) relays with pressure above ~35%.
+  Idle exits (idle 85%+) are capacity you already pay for: shift DNAT weights to them before buying.
+- **A low reading needs a reason.** One exit suddenly showed 5 Mbit and 60 established connections while
+  its siblings were busy. Do not call that "no users" until the relay-to-exit link, the DNS names that
+  carry the location and the panel's node status have been checked (this one was still unexplained when
+  the note was written).

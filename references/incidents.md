@@ -267,6 +267,44 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     `grep -v -i -E 'token|key|secret|pass'`. (f) A background job started as `a && b && c &` backgrounds the
     whole chain, so a file written from stdin ended up empty; install the file in one command and start
     the job in the next (preferably `systemd-run --unit=...`).
+74. **A sysctl file said 3 hours; the kernel said 5 days, and an exit dropped connections.** On one exit the
+    conntrack timeout was defined in a file, but the live value was the 5-day default, because `nf_conntrack`
+    loaded after `sysctl` ran at boot. A 2-core exit with a 65k table reached 85% and the kernel log held
+    `nf_conntrack: table full, dropping packet`; units, ping and node status all looked healthy while new
+    connections were dropped. Lesson: audit the **live** values (`sysctl net.netfilter.nf_conntrack_max`,
+    `..._tcp_timeout_established`) on every exit, not the files; load the module early
+    (`/etc/modules-load.d/nf_conntrack.conf`); set ~7200 s and a table of at least 262144. Fleet-wide this took
+    twelve hosts and no restarts (`scripts/node/host_tune.sh`; `capacity.md` §13).
+75. **Half of all tests failed for one location, and the cause was one dead DNS member.** The location's
+    round-robin name had a relay address that no longer answered from the test vantage point; every other
+    record worked, so roughly every second connection stalled while each server looked healthy. Lesson:
+    test every A record of a name separately (`dig +short NAME` then one probe per address) before blaming
+    the exit; remove the dead member only after the others pass a real-data test, and never remove the
+    last record of a name. Add the relay back only after it passes from an in-country probe and a mobile
+    network.
+76. **Mobile subscribers could not connect while fixed-line users could.** Users of two large mobile
+    carriers reported that the game and VPN names timed out; a probe from a fixed line passed. From a phone
+    hotspot the relay's old address timed out on every port while the same relay's neighbouring address
+    answered. Lesson: when the complaint is limited to certain carriers, probe from a phone hotspot of each
+    carrier, not only from servers. The fix was a provider ticket (concrete measurements, a working
+    baseline, a request for a new address); until then a temporary forward through a second in-country
+    relay carried the traffic. Remove temporary forwards afterwards and check that nothing still depends
+    on them.
+77. **A relay got a new address and the old one was in more places than anyone remembered.** The same
+    server, new IP. References were found in: every exit's tunnel client (Backhaul and BackPack files), the
+    relay's own web proxy listener and trusted-sources list, another relay's DNAT lines and its helper
+    script, fail2ban whitelists, ~20 DNS records, the SSH alias and the operator's local scripts. Method that
+    worked: (1) check the new address from the operator's network and a phone hotspot, (2) back up, (3) update
+    the relay's own listeners and allowlists first, (4) re-point each exit client one at a time and wait
+    for the tunnel to re-establish before the next, (5) move DNS last, one name at a time, adding the new
+    record before deleting the old one, (6) prove each UDP/WireGuard path by sending three UDP packets
+    to each relay port and counting them on the exit with `tcpdump udp dst port 51820`, (7) grep for the
+    old address everywhere. See `node-lifecycle.md` §15.
+78. **Secrets reached the session log twice in one night.** A `grep` over an access-control file printed the
+    node-agent token in the same file; a root password was pasted into chat. Lesson: filter any config read
+    with `grep -v -i -E 'token|key|secret|pass'`; treat a pasted password as burned (do not use it, tell
+    the owner to rotate it) and ask the owner to install an SSH key instead; rotate a token that was
+    printed.
 
 Provider tickets: give a short table of measurements with time and time zone, compare the failing
 destinations with a working baseline (1.1.1.1, domestic datacenters), state what changed (for example a

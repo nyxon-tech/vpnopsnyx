@@ -15,6 +15,7 @@
 12. Moving one location's relay path to another exit
 13. A server that was rebuilt, migrated or resized
 14. Removing a whole location (every trace)
+15. A relay received a new IP address
 
 ## 1. First contact with a new server
 
@@ -238,4 +239,27 @@ this order and finish with a search for the old address everywhere:
 5. **Workstation:** SSH alias, `known_hosts`, inventory and audit scripts (the exit list in the fleet check).
 6. **Verify:** a fleet check shows no error row for the location, `nft list ruleset | grep OLDIP` is empty
    on every relay, no failed units, and real-user bytes on the other locations are unchanged.
+
+## 15. A Relay Received A New IP Address
+
+`operator-observed`, November 2026. The provider changed a relay's public IP (same server) after mobile
+carriers could no longer reach the old one. The old address was referenced in eight kinds of place; use this
+as the checklist and finish with a search for the old address:
+
+1. **Prove the new address first:** SSH and the service ports from the operator's network, and one service
+   port from a phone hotspot. Confirm the server is the same one (host key, uptime, running units).
+2. **The relay itself:** web or proxy listeners bound to the address, trusted-sources / allowlist files
+   (restart the service that reads them only at start), fail2ban `ignoreip`, anything with the address in
+   its configuration. Back up each file as `FILE.bak-DATE`.
+3. **Exits:** tunnel clients that dial the relay (Backhaul `remote_addr`, BackPack peer, xDi targets).
+   Change one exit at a time and wait for the link to come back before the next.
+4. **Other relays:** DNAT lines and masquerade lines that point at the address, the persisted nft file and
+   the running table, and helper scripts that name it.
+5. **DNS:** records that point at the relay (list them into a backup file first). For each name add the
+   new record, confirm it, then delete the old one; never leave a name without an address.
+6. **Operator side:** SSH alias, inventory, audit scripts, the skill or notes that name the address.
+7. **Verify with data:** three UDP packets to each WireGuard relay port counted on the exit; a TLS
+   handshake through each TCP port; the service's own status ping from an in-country probe; the fleet check.
+8. **Late finds:** `grep -R OLDIP /etc` on the relay and the exits, `nft list ruleset | grep OLDIP`, and
+   the DNS listing again.
 
