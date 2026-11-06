@@ -208,6 +208,65 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     every helper that mints a token inside the container failed. Lesson: pass `hashed_password` from the
     `admins` row (see `scripts/panel/node_edit.sh`), and re-run one read-only API call after any panel
     upgrade before relying on the helpers.
+67. **After a relay reboot one ICMP-carried tunnel never came back.** The relay ran a source-IP allowlist
+    (customer-IP enforcement) that dropped ICMP echo requests from addresses not on its lists, in the
+    `raw` table before any tunnel accept rule. The exit that dialed the tunnel had been admitted only by a
+    runtime "learned" set, which is empty after a boot; the exit's handshake log said `did not answer in 6
+    attempts` while a packet capture on the relay showed its echoes arriving. Adding the address to the
+    live set was undone minutes later, because the service rebuilds its sets from the configuration it read
+    at start. Fix: add the exit to the persistent trusted-sources setting **and restart the service** so it
+    re-reads it. Lesson: after any relay reboot test every tunnel with a flood ping, not only unit status;
+    any allowlist, ICMP rate limit or "learned" set on a relay also applies to tunnel carriers, so every
+    exit that dials the relay must be in the persistent list.
+68. **A relay went dark on every port, SSH included, from every vantage point.** An earlier reading of
+    "down" on this host had been wrong (its own firewall drops ping and brute-force load made SSH banner
+    exchanges time out; data ports still answered), so this time the evidence was stronger: TCP data ports
+    from an in-country server, SSH from two other servers and the neighbouring address all failed, while
+    its tunnels' far ends showed no traffic. It was the monthly traffic quota again (cf. 21, 37): the
+    provider suspended it, and it came back minutes after the operator bought more. Lesson: when a host is
+    unreachable on **all** ports from **all** vantage points, look at the provider panel's quota and billing
+    first, before debugging routes; and judge "down" by data ports from an in-country server plus the
+    tunnel far ends, never by ping or one SSH banner.
+69. **A panel had been stopped for days and nobody noticed.** Its container showed `Exited (137)` since a
+    graceful stop; nodes kept serving, so no alarm fired. `restart: always` does not restart a container
+    that was stopped by hand, **but a reboot of the Docker daemon starts it again**, so a routine reboot
+    would have revived a panel the operator might have stopped on purpose. Lesson: include `docker ps -a`
+    (Exited panel or database containers) in every audit; before a scheduled reboot, either ask whether the
+    stopped container should come back or pin the current state with
+    `docker update --restart=unless-stopped CONTAINER`, and restore `always` when it is started again.
+70. **An upgrade left the bootloader package half-configured.** On a server cloned from a template the
+    bootloader's debconf setting named a disk that does not exist on this virtual machine, so the package
+    failed in `dpkg` (`/dev/vda does not exist`) while everything else upgraded. Rebooting in that state is
+    a gamble. Fix: `debconf-set-selections` with the real disk (`lsblk`), then `dpkg --configure -a`;
+    confirm that `/boot` has the new kernel and `dpkg --audit` is empty. Lesson: finish every upgrade with
+    `dpkg --audit`, and for cloned images compare the bootloader device with `lsblk` **before** the first
+    upgrade (`scripts/node/apt_upgrade_safe.sh` now prints a warning).
+71. **A relay lost its SSH listener after an OpenSSH upgrade, and it was the jump host for others.** The
+    daemon uses a custom port; after the upgrade nothing listened on it until someone restarted it from
+    the provider console, and every server reached through that jump was unreachable meanwhile. The cause
+    was not isolated (a socket-activation drop-in with the custom port existed). Lesson: before upgrading
+    `openssh-server` on a host that is anyone's only jump, set up a second jump path and provider-console
+    access, take the `ss -tlnp` listener list before and after (the upgrade script prints both), and never
+    reboot or upgrade a second relay while the first one's SSH is unconfirmed.
+72. **A scheduled panel upgrade went through unattended.** A one-shot timer on the panel host (04:00 local,
+    configured in UTC) took a database dump, pulled the new image, recreated only the panel service, then
+    waited for the container, the HTTP port and **the same number of connected nodes as before** before
+    declaring success; otherwise it re-tagged the old image and recreated the container. All nodes were
+    connected 75 s later. Lesson: unattended panel upgrades are acceptable with a dump, a real health check
+    (node count, not just "container up") and an image rollback; `scripts/panel/scheduled_panel_update.sh`
+    does this. A rollback cannot undo a schema migration, so keep the dump until the next day.
+73. **Small traps in the operator's own toolbox.** (a) A laptop running a full-tunnel VPN reached an
+    in-country service from a foreign source address, while users inside the country connected fine; the
+    service was healthy, the test path was wrong. Check `route -n get ADDRESS` before blaming a server, and
+    test from an in-country server. (b) A local TUN/VPN makes `nc -z` report "open" for any address, so
+    read a real protocol banner instead. (c) macOS has no `timeout`; run remote probes under `ssh -o
+    ConnectTimeout` or use `bash -c` on the server. (d) `nft -c -f /dev/null` fails with "Not a regular
+    file", so a "validate before replacing" step written that way aborts after the runtime change and
+    leaves the persisted file stale; validate the real candidate file (`nft -c -f candidate`). (e) Reading
+    a tunnel's configuration with `cat` printed its shared secret into the session log; show configs with
+    `grep -v -i -E 'token|key|secret|pass'`. (f) A background job started as `a && b && c &` backgrounds the
+    whole chain, so a file written from stdin ended up empty; install the file in one command and start
+    the job in the next (preferably `systemd-run --unit=...`).
 
 Provider tickets: give a short table of measurements with time and time zone, compare the failing
 destinations with a working baseline (1.1.1.1, domestic datacenters), state what changed (for example a
