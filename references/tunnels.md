@@ -288,6 +288,14 @@ Traps:
   then the relay-exit pair was blocked ~40 minutes later. Never report a fresh link as stable: re-check
   the peer ping (`scripts/node/bpstatus.sh`) and real-user bytes (`scripts/node/realuse.sh`) the next day.
 - The relay's CPU grows with every xDi link it terminates; watch it at peak before adding more.
+- **A source-IP allowlist, ICMP rate limit or "learned" set on the relay applies to the tunnel carrier
+  too.** An ICMP-carried link that dials the relay is dropped when the exit is not on the relay's
+  persistent trusted list; a dynamically learned entry disappears at the next boot, and a live `ipset add`
+  is overwritten when the service re-applies its lists from the configuration it read at start (restart the
+  service after editing it). Diagnosis: the exit logs `handshake did not complete` while a capture on the
+  relay (`tcpdump -ni any icmp and host EXIT`) shows the echo requests arriving and the relay's counters
+  for the drop rule rising. After every relay reboot run a flood ping (`ping -f -s 1200 -c 300`) to each
+  tunnel peer; 0% loss is the test, not the unit state.
 - **Field-confirmed again (October 2026):** four exits that already dialed one relay were each given a
   second dialed link to another relay. Every second link passed its first throughput test (35–80 Mbit)
   and was at 0 Mbit a few minutes later, while the original links survived. A short test after adding

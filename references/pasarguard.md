@@ -25,6 +25,7 @@ between releases.
 18. Inbounds without groups, and adding a tunnel inbound through the API
 19. Database connection pool exhaustion
 20. A panel domain behind Cloudflare's proxy, and turning the proxy off
+21. Updating the panel image unattended, with a dump and an image rollback
 
 ## 1. Layout and read-only DB access
 
@@ -66,6 +67,10 @@ between releases.
   and resends the config and all users. Users drop for a few seconds; a slow or overloaded node can take
   1–2 minutes. Batch DB changes, restart once, off-peak, and tell the operator first.
 - Your SSH session to the panel host may drop briefly during the restart. That is harmless.
+- A panel container that someone stopped by hand stays stopped under `restart: always` **until the Docker
+  daemon restarts**, so a reboot of that host starts it again. A stopped panel is not noticed by nodes
+  (they keep serving), only by subscription downloads and admins; look for `Exited` panel containers in
+  every audit, and see `node-lifecycle.md` §7 to keep an intentional stop across a reboot.
 
 ## 3. keep_alive: why nodes stop by themselves
 
@@ -353,3 +358,27 @@ validators cannot reach the relays. Before the certificate expires, move it to D
 `_acme-challenge` CNAME for each name to a zone whose API token you hold and renew with DNS-01, or keep
 one proxied name per certificate. Note the expiry date in the inventory. If the certificate is renewed
 without a deploy hook, copy the files and restart the panel yourself.
+
+## 21. Updating The Panel Image Unattended, With A Dump And An Image Rollback
+
+`operator-observed`, November 2026 (a minor version step, 5.5.1 to 5.6.0, on a MySQL panel; the same script
+was later used on a PostgreSQL panel). Nodes keep serving while the panel is down, so a panel update is safe
+to schedule for the quietest hour if three conditions hold:
+
+1. **Look first, change later.** Pull the new image early (this changes nothing that is running), read its
+   version (`docker run --rm --entrypoint sh IMAGE -c 'cat /code/VERSION'`) and compare it with the running
+   one. A change of the major or minor number needs the release notes; a patch step does not. After a panel
+   upgrade re-run one read-only API call before trusting helper scripts (token minting changed in 5.5).
+2. **Dump the database, then touch only the panel service.** `docker compose up -d --no-deps SERVICE`
+   recreates the panel and leaves the database container alone. Check the dump with `gzip -t` and a size
+   threshold; abort when it fails.
+3. **Judge success by nodes, not by the container.** The container is up in seconds, the HTTP port answers
+   after one to two minutes (the first start after an upgrade can take that long), and the nodes reconnect
+   one by one. Compare the number of `connected` nodes before and after. If it does not recover within
+   about five minutes, re-tag the old image (kept under a name before the update) to the tag the compose
+   file uses and recreate. A rollback restores the code, not the schema; the dump is for that.
+
+`scripts/panel/scheduled_panel_update.sh` does all of this for MySQL and PostgreSQL panels and logs every
+step. Run it by hand as a transient unit, or let a one-shot timer on the panel host start it at the chosen
+UTC time. Do not combine it with a host reboot in the same window.
+
