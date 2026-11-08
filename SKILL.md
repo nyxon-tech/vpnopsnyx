@@ -38,6 +38,25 @@ Assume the operator may run a paid VPN/proxy service where one bad command can d
    health and real-user bytes the next day before reporting it as stable; some paths
    are filtered within an hour of carrying traffic.
 
+## Live Fleet Data (optional: a DowntimeLess panel)
+
+If the operator runs a DowntimeLess panel, read it before running any server command. It already holds the
+fleet's state, health scores, incident history, traffic, quota forecasts and a playbook per issue, so one
+request replaces many checks and saves time and tokens.
+
+- Configuration lives outside the repository: `DOWNTIMELESS_URL=...` in `~/.config/downtimeless/config` and the API key in
+  `~/.config/downtimeless/key` (mode 0600). Send it as `Authorization: Bearer <key>`. Never print, log or commit the key.
+- First call `GET $DOWNTIMELESS_URL/api/v1/reports/briefing?format=md`: open issues with evidence, health scores,
+  classified path problems, traffic, quota, recent changes and what to check first.
+- For every open issue code call `GET /api/v1/reports/playbooks/{code}` (likely causes, read-only checks, safe fixes,
+  what never to do). Other reports: `/reports/daily`, `/reports/incidents`, `/reports/traffic`, `/reports/availability`,
+  `/reports/capacity`, `/reports/relays`, `/reports/changes`. The panel serves its own guide at `/llms.txt`.
+- Reads are free. Any `POST /api/v1/servers/{id}/jobs` that changes a server (reboot, service restart, package upgrade,
+  log cleanup, agent update, certificate changes) follows the Hard Safety Rules: propose it, wait for the operator's yes,
+  then run it, and report the result.
+- Panel data is one vantage point, not proof. Confirm user impact with the Real Data Test, and fall back to the manual
+  checks in this skill when the panel or an endpoint is unreachable.
+
 ## Hard Safety Rules
 
 - Never print, commit, or store panel passwords, API tokens, Reality private keys, WireGuard private keys, tunnel tokens, subscription URLs, Cloudflare tokens, SSH keys, or production inventories.
