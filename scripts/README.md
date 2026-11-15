@@ -15,7 +15,7 @@ operator tools.
 | `node/realuse.sh` | exit | Real-user bytes and RTT per relay on one inbound port, from `ss -ti`. Separates "users connect but get no data" from a healthy path. |
 | `node/health.sh` | any host | One-line snapshot: CPU busy/steal, NIC rx/tx, TCP retransmits, free download headroom, RAM, disk, failed units, inactive tunnel/DNAT units, stopped containers. |
 | `panel/node_usage.py` | PasarGuard panel container | Users and GB per node per hour (MySQL/MariaDB or PostgreSQL), in a read-only transaction. |
-| `relay/data_matrix.sh` | an in-country probe that is not one of the relays | TLS/Reality fallback test of every relay × location port. Proves the listener path only (see `SKILL.md`, Real Data Test). |
+| `relay/data_matrix.sh` | an in-country probe that is not one of the relays | TLS/Reality fallback test of every relay × location port. `TRIES=N` repeats each cell and prints the ok-ratio (use 6, or 20 for a location split over two exits, to catch a half-dead tunnel). Proves the listener path only (see `SKILL.md`, Real Data Test). |
 | `relay/udp_survival.py` | probe and target | Whether a single UDP flow survives past its first packets, before offering WireGuard, KCP, or QUIC on a path. |
 | `local/cf.sh` | operator workstation | Cloudflare DNS listing and A-record add/delete. The token is read from a mode-600 file and never appears in argv or history. |
 | `node/bpstatus.sh` | relay or exit | Every active BackPack link with its role, carrier, peer and packet loss to the peer. A unit can be `active` while the path is dead. |

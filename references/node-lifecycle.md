@@ -263,3 +263,23 @@ as the checklist and finish with a search for the old address:
 8. **Late finds:** `grep -R OLDIP /etc` on the relay and the exits, `nft list ruleset | grep OLDIP`, and
    the DNS listing again.
 
+## 16. Rebooting Hosts One By One (Pending-Reboot Packages)
+
+Do it in a quiet window with the owner's yes, one host at a time, exits before relays.
+
+1. Snapshot first (running services, containers, listening TCP/UDP ports, reserved ports and port range,
+   nft rule count) and keep it for the diff.
+2. Check that every fixed port of every brand on that host is in `net.ipv4.ip_local_reserved_ports` and that
+   the sysctl files hold the intended values (`pasarguard.md` §8). Add what is missing **before** the reboot.
+3. A location split over two exits: drain the exit being rebooted by pointing the relay DNAT map (or
+   the redirect rule) at its sibling only, check the sibling's headroom (free RAM, cores), reboot, test
+   every relay path to it (`scripts/relay/data_matrix.sh`), then restore the split. Keep the masquerade
+   rule for the sibling in place throughout.
+4. Reboot (`scripts/local/reboot_verify.sh` waits for a new `boot_id`). The jump host itself is rebooted
+   by connecting directly, not through itself.
+5. Diff against the snapshot: ignore random Xray/containerd local ports; investigate any fixed port that
+   did not come back, a node whose Xray exited 255, and a live sysctl that differs from its file.
+6. Panel: all nodes connected, node usage back to the normal level, subscription URL answers.
+7. Hosts with no swap: add a swapfile (`fallocate -l 2G`, `mkswap`, `swapon`, fstab line,
+   `vm.swappiness=10`) before the next busy period.
+

@@ -203,6 +203,10 @@ curl -s -m 8 --resolve www.cloudflare.com:PORT:RELAY_IP -o /dev/null \
 
 Any HTTP status usually means bytes flowed through the path. `000` means the path accepted no useful data or timed out. Use an SNI/domain that matches the inbound's fallback behavior.
 
+One probe is not a verdict: a half-dead tunnel, or one half of a numgen split, passes some probes by luck.
+Repeat the test (`TRIES=6` in `scripts/relay/data_matrix.sh`, `TRIES=20` for a split location) and read the
+ok-ratio; run it after every network event and every reboot (`references/tunnels.md` §20).
+
 This test proves only the path to the listener and its TLS/Reality fallback. It does
 not prove user authentication, proxy outbound health, non-TLS inbounds, or available
 bandwidth. First test the same fallback locally on the exit. For throughput, isolate
