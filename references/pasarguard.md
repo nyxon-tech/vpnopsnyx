@@ -382,3 +382,18 @@ to schedule for the quietest hour if three conditions hold:
 step. Run it by hand as a transient unit, or let a one-shot timer on the panel host start it at the chosen
 UTC time. Do not combine it with a host reboot in the same window.
 
+## 22. Notification Failures: HTTP 400 To Administrators' Telegram Ids
+
+The panel posts each user status change to the configured group/topic **and** to the `telegram_id` stored
+on the user's administrator. A failed delivery is logged as `Notification delivery failed with HTTP 400`
+and retried (`max_retries`, normally three lines per event) without saying why.
+
+1. Verify the group and bot with the Bot API from the panel host (read the token inside the shell; never
+   print it): `getMe`, `getChat` (type, `is_forum`), `getChatMember` for the bot (administrator,
+   `can_manage_topics`). `sendChatAction` with `message_thread_id` checks that a topic exists without
+   posting a message.
+2. `getChat` every administrator's stored `telegram_id`. `chat not found` means the person never started the
+   bot (or the id is wrong); the group alerts are unaffected.
+3. Ask those administrators to start the notification bot. Do not clear the ids if a management bot looks
+   administrators up by that field.
+

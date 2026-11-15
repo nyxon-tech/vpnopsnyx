@@ -443,3 +443,21 @@ When installing the tunnel binary on a new exit, a copy through a slow operator 
 the same release from the project's release page on the exit, and installing it only if its SHA-256
 matches the binary already running in the fleet, was faster and just as safe.
 
+## 20. A Tunnel Server That Wedges After A Network Blip
+
+Symptoms: a location through one relay fails every time (or a split location fails a fixed fraction of the
+time) while the client side shows established connections, the unit is `active`, the panel node is
+connected and the agent is quiet. The relay-side server log shows a "new control channel requested" /
+"use of closed network connection" pair at the minute of the blip, and the exit-side client log shows
+`dial ... operation was canceled` or `i/o timeout` to the relay's control port.
+
+1. Prove it from a probe that is not one of the relays, with enough samples
+   (`TRIES=6`; `TRIES=20` when a numgen map splits the location over two exits):
+   `RELAYS="a:IP_A b:IP_B" LOCS="de:19444 nl:19621" TRIES=20 bash -s < scripts/relay/data_matrix.sh`.
+2. On the relay, test each half separately against `127.0.0.1` (a local connection bypasses PREROUTING):
+   the tunnel's own listener port, and the sibling's redirect port. One half at 0-70% and the other at 100% names the tunnel.
+3. Restart the exit-side client of that tunnel first (cheapest). If the ratio does not move, restart the
+   **relay-side server unit** of that one tunnel; only that path flaps. Re-run step 1.
+4. Record which unit was restarted and the minute of the blip; if it repeats, look for the cross-border
+   event first (provider, route) before blaming the tunnel software.
+

@@ -306,6 +306,45 @@ Short and factual: symptom → diagnosis → fix → lesson. Names, addresses an
     the owner to rotate it) and ask the owner to install an SSH key instead; rotate a token that was
     printed.
 
+79. **A short cross-border blip left two tunnels half-dead while the panel, the agents and `systemctl` all said healthy.**
+    Around the same minute, the control channel of two relay-side BackPack servers dropped and never recovered:
+    one location through one relay failed 100% of the time, another failed about 30% (one half of a numgen
+    split). Clients still held connections and the nodes still showed "connected", so nothing alerted. A
+    single probe passed by luck. Lesson: after any network event, run the relay x location matrix from a probe
+    that is not one of the relays with `TRIES=6` (and `TRIES=20` for a split location) and read the
+    ok-ratio, not one status code. A client-side restart did nothing; **restarting the relay-side server unit
+    of that one tunnel** fixed it in seconds (only that path flaps). Ask first if your rules require it, and
+    prefer the client restart as the cheaper first step. `scripts/relay/data_matrix.sh`, `tunnels.md` §20.
+80. **After a reboot an exit's Xray would not start because a tunnel's outgoing connection took its port.**
+    The exit came back, the node showed "backend not initialized", and Xray looped on exit status 255. A
+    tunnel client dialing a local service port with `ip_local_port_range 1024 65535` and no reserved ports can
+    connect to itself and hold the port (TIME-WAIT/ESTABLISHED on `127.0.0.1:PORT`). The same happened on a
+    second brand's container that shares an exit: its ports were not in the reservation list. Lesson:
+    reserve every fixed port, including the other brand's node and tunnel ports, **before** rebooting a host
+    (`ip_local_reserved_ports`, `pasarguard.md` §8); `ss -K` frees an existing stuck connection; verify with
+    `docker logs` that Xray reports "started"; the live `ip_local_port_range` can also fall back to the
+    default after boot, so compare the live value with the file (`sysctl --system` re-applies). The sysctl
+    list is normalized by the kernel (ranges merge), so a text diff of live vs file is cosmetic.
+81. **Fixed-port alerts for random Xray ports after every reboot.** A monitoring panel baselined random
+    local listener ports (Xray's internal API ports) and raised "port stopped listening" criticals after each
+    restart. They are not service ports. Lesson: drop those baselines (a panel with a listener-baseline API
+    should expose "forget this port") and treat only fixed service ports as outages; confirm with the
+    relay x location matrix, not with the alert.
+82. **Hundreds of HTTP 400 "notification delivery failed" lines a day, while the admin group received every
+    alert.** The panel sends each user status-change message twice: to the shared group and to the Telegram
+    id stored on the user's admin. For administrators who never pressed start on the notification bot (or
+    whose id is wrong) Telegram answers `chat not found` and the panel retries three times. Lesson: check
+    the group with `getChat`/`getChatMember` and topics with `sendChatAction` (nothing is posted), then
+    `getChat` each admin id; ask those admins to start the bot. Do not clear their stored ids when another
+    bot identifies them by that field. `pasarguard.md` §22.
+83. **Rebooting a whole fleet, and a host with no swap that had already been OOM-killed.** Sequence that
+    worked with no user-visible outage beyond seconds per host: snapshot services, containers and listening
+    ports on each host first; reboot one host at a time; wait for a new `boot_id`; diff the snapshot; test
+    the node in the panel. For a location split over two exits, first drain the exit (point the relay DNAT
+    map at the sibling only; keep the matching masquerade rule), reboot, test the relay paths, then restore
+    the split. An exit with no swap and a busy Xray was killed by the OOM killer: add a 2 GB swapfile and
+    `vm.swappiness=10` (cheap insurance, not a fix for a too-small host). `node-lifecycle.md` §16.
+
 Provider tickets: give a short table of measurements with time and time zone, compare the failing
 destinations with a working baseline (1.1.1.1, domestic datacenters), state what changed (for example a
 new IP), and ask for a concrete fix (re-routing, another IP range, removing a bandwidth limit, moving off
